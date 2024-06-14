@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: "Lato", sans-serif;
+}
+
+.div-login{
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+.div1{
+    width: 30%;
+    background: linear-gradient(0deg, rgba(49, 121, 116, 1) 10%, rgba(142, 218, 213, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.div2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10%;
+}
+h2{
+    color: #8EDAD5;
+    font-size: 50px;
+}
+.user-logo{
+    padding-top: 30px;
+}
+  .loginBox {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 300px;
+    text-align: center;
+  }
+
+  
+  .inputGroup {
+    margin-bottom: 15px;
+    width: 40%;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+
+  .inputGroup {
+    position: relative;
+    margin-bottom: 15px;
+    
+  }
+  
+  .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px; 
+    width: 20px;
+  }
+  
+  .inputGroup input {
+    width: 90%;
+    padding: 10px 10px 10px 40px; 
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #f0eeee;
+  }
+  
+
+form{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5%;
+}
+.btn-ingresar{
+  margin-top: 35%;
+  background-color: #8EDAD5;
+  color: white;
+  padding: 20% 60%;
+  text-transform: uppercase;
+  font-weight: bold;
+
+}

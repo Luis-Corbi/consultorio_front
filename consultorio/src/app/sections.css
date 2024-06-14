@@ -1,0 +1,74 @@
+@import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: "Lato", sans-serif;
+}
+.container{
+    display: flex;
+}
+.container-navbar{
+    height: 100vh;
+}
+.navbar{
+    width: 20%;
+    background: linear-gradient(0deg, rgba(49, 121, 116, 1) 10%, rgba(142, 218, 213, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    
+    height: 100vh;
+}
+
+.logo{
+    width: 100%;
+}
+
+.div-links{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 60%;
+    margin-left: 5%;
+}
+
+.a-navbar{
+    color: white;
+    text-decoration: none;
+    
+    display: flex;
+    align-items: center;
+    gap: 5%;
+}
+
+.div-principal {
+    width: 100%;
+    
+}
+
+.bar{
+    height: 10%;
+    border-bottom: #e3e1e1 solid 2px;
+    background-color: #ffffff7c;
+}
+
+.hoy-logo, .pacientes-logo , .calendar-logo{
+    height: 70%;
+}
+
+
+.div-section-turnos{
+   display: flex;
+   flex-direction: row;
+
+}
+
+.div-calendar{
+    height: 96vh;
+    padding: 2% 5%;
+    width: 85%;
+}
