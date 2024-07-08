@@ -2,7 +2,7 @@
 import React from 'react';
 import '../sections.css';  
 import Sidebar from '../components/sidebar'
-
+import Bar from '../components/bar';
 
 
 
@@ -14,12 +14,16 @@ const Calendario = dynamic(() => import('../components/calendar'), { ssr: false 
 const Turnos: React.FC = () => {
     return (
        
-        <div className='div-section-turnos'>
-        <Sidebar/>
+                <div className='container'>
+                        
+                <Sidebar/>
+                <div className='div-principal'>
 
-            <Calendario/>
-        </div>
-      
+                <Bar/>
+                <Calendario defaultView="month" />
+                </div>
+
+                </div>
 );
 }
 export default Turnos;

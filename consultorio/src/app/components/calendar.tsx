@@ -1,16 +1,19 @@
 "use client"
 import React, { useState } from 'react';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 
 import { Calendar, momentLocalizer, Event, View, Messages, NavigateAction  } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/es'; 
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
 
+interface CalendarioProps { //con esta funcion podemos mostrar en la home solo la vista diaria.
+    defaultView: View;
+  }  
 
 const messages: Messages = {
   allDay: 'Todo el día',
@@ -28,9 +31,9 @@ const messages: Messages = {
   showMore: total => `+ Ver más (${total})`
 };
 
-const Calendario: React.FC = () => {
+const Calendario: React.FC<CalendarioProps> = ({ defaultView }) => {
     const [events, setEvents] = useState<Event[]>([]);
-    const [view, setView] = useState<View>('month');
+    const [view, setView] = useState<View>(defaultView);
     const [date, setDate] = useState<Date>(new Date());
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
@@ -57,13 +60,12 @@ const Calendario: React.FC = () => {
     };
 
   return (
-    <div   className='div-calendar' style={{ height: '100vh' }}>
+    <div   className='div-calendar'>
       <Calendar
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: '100%' }}
         selectable
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectEvent}

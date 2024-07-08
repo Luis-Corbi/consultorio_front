@@ -48,9 +48,9 @@ const LoginForm: React.FC = () => {
                             required
                         />
                     </div>
-                    <Link href="/dashboard">
+                    <Link className='btn-ingresar' href="/dashboard">
                         
-                            <button className='btn-ingresar' type="submit">Ingresar</button>
+                            Ingresar
                         
                     </Link>
                 </form>

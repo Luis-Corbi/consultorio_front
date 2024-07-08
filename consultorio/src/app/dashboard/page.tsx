@@ -3,6 +3,7 @@ import React from 'react';
 import '../sections.css';  
 import Bar from '../components/bar';
 import Sidebar from '../components/sidebar'
+import Calendario from '../components/calendar';
 
 const Panel: React.FC = () => {
   return (
@@ -12,7 +13,7 @@ const Panel: React.FC = () => {
         <div className='div-principal'>
 
         <Bar/>
-        
+        <Calendario defaultView="day" />
         </div>
         
     </div>

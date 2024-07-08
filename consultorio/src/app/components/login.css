@@ -87,12 +87,13 @@ form{
   align-items: center;
   padding-top: 5%;
 }
-.btn-ingresar{
-  margin-top: 35%;
-  background-color: #8EDAD5;
-  color: white;
-  padding: 20% 60%;
-  text-transform: uppercase;
-  font-weight: bold;
 
+.btn-ingresar{
+  margin-top: 3%;
+    background-color: #8EDAD5;
+    color: white;
+    padding: 2% 6%;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
 }
