@@ -27,3 +27,13 @@ export interface Speciality {
     roles: Role[];
   }
   
+  export interface Appointment {
+    id?: number;
+    professional: number;
+    patient: number;
+    date: string;
+    hour: string;
+    status: string;
+    notes: string;
+  }
+  

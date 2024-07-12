@@ -1,14 +1,20 @@
-import { GetServerSideProps } from 'next';
-import { User, Role } from '../../types/types';
 import { fetchUser, fetchUsers } from '../../lib/pacientes';
+import Sidebar from '@/app/components/sidebar';
+import Bar from '@/app/components/bar';
 
 
 const UserPage = async ({ params }: { params: { id: string } }) => {
     const user = await fetchUser(params.id);
   
     return (
+      <div className='container'>
+      <Sidebar/>
       <div>
-        <h1>{user.name} {user.lastname}</h1>
+        <div className='div-principal'>
+
+          <Bar/>
+          <h1>Profesionales</h1>
+          <h1>{user.name} {user.lastname}</h1>
         <p>DNI: {user.DNI}</p>
         <p>Teléfono: {user.telephone}</p>
         <p>Email: {user.email}</p>
@@ -20,7 +26,14 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
         <p>Número de Licencia: {user.licence_number}</p>
         <p>Especialidad: {user.speciality.name}</p>
         <p>Notas: {user.notes}</p>
+          
+        </div>
+        
       </div>
+    </div>
+
+        
+      
     );
   };
   

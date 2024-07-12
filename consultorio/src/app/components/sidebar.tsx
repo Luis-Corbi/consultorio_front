@@ -14,7 +14,7 @@ const Sidebar: React.FC = () => {
             <Link  className='a-navbar' href="/dashboard">
               
                 <img src="/assets/hoy.png" alt="logohoy" className='hoy-logo'/>
-                Hoy
+                Home
           
             </Link>
             <Link className='a-navbar' href="/pacientes">

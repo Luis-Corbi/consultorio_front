@@ -1,11 +1,11 @@
-// src/app/pacientes/page.tsx
+
 "use client"
 import React, { useEffect, useState,  Suspense  } from 'react';
 import '../sections.css';  
 import Sidebar from '../components/sidebar';
 import Bar from '../components/bar';
-import UsersTable from '../components/userstable';
-
+import ProTable from '../components/protable';
+import { fetchUsers } from '../lib/pacientes';
 import { User, Speciality, Role } from '../types/types';
 import { fetchUsersByRole } from '../lib/pacientes';
 
@@ -17,7 +17,7 @@ const Fetchtable: React.FC = () => {
   React.useEffect(() => {
     const getUsers = async () => {
       try {
-        const data = await fetchUsersByRole(3); 
+        const data = await fetchUsersByRole(2); 
         setUsers(data);
       } catch (err) {
         setError((err as Error).message);
@@ -32,10 +32,10 @@ const Fetchtable: React.FC = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  return <UsersTable users={users} />;
+  return <ProTable users={users} />;
 };
 
-const Page: React.FC = () => {
+const tableprofesionales: React.FC = () => {
   return (
     <div className='container'>
       <Sidebar/>
@@ -43,7 +43,7 @@ const Page: React.FC = () => {
         <div className='div-principal'>
 
           <Bar/>
-          <h1>Pacientes</h1>
+          <h1>Profesionales</h1>
 
           <Fetchtable />
         </div>
@@ -53,4 +53,4 @@ const Page: React.FC = () => {
   );
 };
 
-export default Page;
+export default tableprofesionales;

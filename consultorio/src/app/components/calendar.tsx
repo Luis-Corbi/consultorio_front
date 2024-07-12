@@ -1,19 +1,15 @@
 "use client"
 import React, { useState } from 'react';
-
-
-import { Calendar, momentLocalizer, Event, View, Messages, NavigateAction  } from 'react-big-calendar';
+import { Calendar, momentLocalizer, Event, View, Messages, NavigateAction } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/es'; 
-
-
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import Modal from 'react-modal';
+import { createAppointment } from '../lib/turnos';
+import { Appointment } from '../types/types';
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
-
-interface CalendarioProps { //con esta funcion podemos mostrar en la home solo la vista diaria.
-    defaultView: View;
-  }  
 
 const messages: Messages = {
   allDay: 'Todo el día',
@@ -31,22 +27,62 @@ const messages: Messages = {
   showMore: total => `+ Ver más (${total})`
 };
 
-const Calendario: React.FC<CalendarioProps> = ({ defaultView }) => {
-    const [events, setEvents] = useState<Event[]>([]);
-    const [view, setView] = useState<View>(defaultView);
-    const [date, setDate] = useState<Date>(new Date());
+interface CalendarioProps {
+  defaultView: View;
+}
 
-  const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
-    const title = window.prompt('Nombre del nuevo evento');
-    if (title) {
+const Calendario: React.FC<CalendarioProps> = ({ defaultView }) => {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [view, setView] = useState<View>(defaultView);
+  const [date, setDate] = useState<Date>(new Date());
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [newAppointment, setNewAppointment] = useState<Appointment>({
+    professional: 1,
+    patient: 2,
+    date: '',
+    hour: '',
+    status: 'scheduled',
+    notes: ''
+  });
+
+  const handleSelectSlot = ({ start }: { start: Date }) => {
+    setNewAppointment({
+      ...newAppointment,
+      date: moment(start).format('YYYY-MM-DD'),
+      hour: moment(start).format('HH:mm:ss')
+    });
+    setModalIsOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewAppointment({
+      ...newAppointment,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const savedAppointment = await createAppointment(newAppointment);
       setEvents([
         ...events,
         {
-          start,
-          end,
-          title,
-        },
+          start: new Date(savedAppointment.date + 'T' + savedAppointment.hour),
+          end: new Date(new Date(savedAppointment.date + 'T' + savedAppointment.hour).getTime() + 30 * 60000), // Duración de 30 minutos
+          title: savedAppointment.notes
+        }
       ]);
+      setModalIsOpen(false);
+      alert('Turno guardado correctamente');
+    } catch (error) {
+      console.error('Error al guardar el turno:', error);
+      alert('Error al guardar el turno');
     }
   };
 
@@ -55,17 +91,19 @@ const Calendario: React.FC<CalendarioProps> = ({ defaultView }) => {
       setEvents(events.filter((e) => e !== event));
     }
   };
-    const handleNavigate = (newDate: Date, view: View, action: NavigateAction) => {
-        setDate(newDate);
-    };
+
+  const handleNavigate = (newDate: Date, view: View, action: NavigateAction) => {
+    setDate(newDate);
+  };
 
   return (
-    <div   className='div-calendar'>
+    <div className='div-calendar' style={{ height: '90vh' }}>
       <Calendar
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
+        style={{ height: '100%' }}
         selectable
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectEvent}
@@ -83,13 +121,35 @@ const Calendario: React.FC<CalendarioProps> = ({ defaultView }) => {
         toolbar={true}
         messages={messages} 
       />
+      <Modal isOpen={modalIsOpen} onRequestClose={handleCloseModal} contentLabel="Nuevo Turno">
+        <h2>Nuevo Turno</h2>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Profesional:
+            <input type="number" name="professional" value={newAppointment.professional} onChange={handleInputChange} />
+          </label>
+          <label>
+            Paciente:
+            <input type="number" name="patient" value={newAppointment.patient} onChange={handleInputChange} />
+          </label>
+          <label>
+            Fecha:
+            <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} />
+          </label>
+          <label>
+            Hora:
+            <input type="time" name="hour" value={newAppointment.hour} onChange={handleInputChange} />
+          </label>
+          <label>
+            Notas:
+            <textarea name="notes" value={newAppointment.notes} onChange={handleInputChange}></textarea>
+          </label>
+          <button type="submit">Guardar Turno</button>
+          <button type="button" onClick={handleCloseModal}>Cancelar</button>
+        </form>
+      </Modal>
     </div>
   );
 };
 
 export default Calendario;
-
-
-
-
-

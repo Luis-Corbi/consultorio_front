@@ -1,7 +1,5 @@
 'use client'
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { User } from '../types/types';
 
 
@@ -9,7 +7,7 @@ interface UsersTableProps {
   users: User[];
 }
 
-const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
+const ProTable: React.FC<UsersTableProps> = ({ users }) => {
   return (
     <table>
       <thead>
@@ -21,7 +19,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
           <th>Email</th>
           <th>Direccion</th>
           <th>Genero</th>
-          <th>Fecha de Nac.</th>
+          <th>Num. de matricula</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -34,11 +32,11 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
             <td>{user.telephone}</td>
             <td>{user.email}</td>
             <td>{user.address}</td>
-            <td>{user.gender}</td>
-            <td>{user.birth_date}</td>
+            <td>{user.licence_number}</td>
+            <td>{user.speciality.name}</td>
             <td>
               <Link href={`/pacientes/${user.id}`}>
-                <button>Ver Usuario</button>
+                <button>Ver </button>
               </Link>
             </td>
           </tr>
@@ -48,4 +46,4 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   );
 };
 
-export default UsersTable;
+export default ProTable;
