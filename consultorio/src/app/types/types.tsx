@@ -22,11 +22,13 @@ export interface Speciality {
     health_insurance: string;
     health_insurance_number: string;
     licence_number: string;
-    speciality: Speciality;
+    speciality: string;
     notes: string;
-    roles: Role[];
+    roles: { id: number; name: string }[];
   }
-  
+
+
+
   export interface Appointment {
     id?: number;
     professional: number;
@@ -36,4 +38,3 @@ export interface Speciality {
     status: string;
     notes: string;
   }
-  

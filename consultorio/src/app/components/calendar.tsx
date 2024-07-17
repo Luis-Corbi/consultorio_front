@@ -1,12 +1,12 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer, Event, View, Messages, NavigateAction } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/es'; 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import Modal from 'react-modal';
-import { createAppointment } from '../lib/turnos';
+import { createAppointment, fetchAppointments } from '../lib/turnos';
 import { Appointment } from '../types/types';
+import './Calendario.css'; // Importa el archivo CSS con los estilos del modal
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
@@ -45,6 +45,24 @@ const Calendario: React.FC<CalendarioProps> = ({ defaultView }) => {
     notes: ''
   });
 
+  useEffect(() => {
+    const loadAppointments = async () => {
+      try {
+        const appointments = await fetchAppointments();
+        const events = appointments.map(appointment => ({
+          start: new Date(appointment.date + 'T' + appointment.hour),
+          end: new Date(new Date(appointment.date + 'T' + appointment.hour).getTime() + 30 * 60000), // Duración de 30 minutos
+          title: appointment.notes
+        }));
+        setEvents(events);
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+      }
+    };
+
+    loadAppointments();
+  }, []);
+
   const handleSelectSlot = ({ start }: { start: Date }) => {
     setNewAppointment({
       ...newAppointment,
@@ -69,7 +87,9 @@ const Calendario: React.FC<CalendarioProps> = ({ defaultView }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log('Submitting new appointment:', newAppointment);
       const savedAppointment = await createAppointment(newAppointment);
+      console.log('Saved appointment:', savedAppointment);
       setEvents([
         ...events,
         {
@@ -121,33 +141,38 @@ const Calendario: React.FC<CalendarioProps> = ({ defaultView }) => {
         toolbar={true}
         messages={messages} 
       />
-      <Modal isOpen={modalIsOpen} onRequestClose={handleCloseModal} contentLabel="Nuevo Turno">
-        <h2>Nuevo Turno</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Profesional:
-            <input type="number" name="professional" value={newAppointment.professional} onChange={handleInputChange} />
-          </label>
-          <label>
-            Paciente:
-            <input type="number" name="patient" value={newAppointment.patient} onChange={handleInputChange} />
-          </label>
-          <label>
-            Fecha:
-            <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} />
-          </label>
-          <label>
-            Hora:
-            <input type="time" name="hour" value={newAppointment.hour} onChange={handleInputChange} />
-          </label>
-          <label>
-            Notas:
-            <textarea name="notes" value={newAppointment.notes} onChange={handleInputChange}></textarea>
-          </label>
-          <button type="submit">Guardar Turno</button>
-          <button type="button" onClick={handleCloseModal}>Cancelar</button>
-        </form>
-      </Modal>
+      {modalIsOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleCloseModal}>&times;</span>
+            <h2>Nuevo Turno</h2>
+            <form onSubmit={handleSubmit}>
+              <label>
+                Profesional:
+                <input type="number" name="professional" value={newAppointment.professional} onChange={handleInputChange} />
+              </label>
+              <label>
+                Paciente:
+                <input type="number" name="patient" value={newAppointment.patient} onChange={handleInputChange} />
+              </label>
+              <label>
+                Fecha:
+                <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} />
+              </label>
+              <label>
+                Hora:
+                <input type="time" name="hour" value={newAppointment.hour} onChange={handleInputChange} />
+              </label>
+              <label>
+                Notas:
+                <textarea name="notes" value={newAppointment.notes} onChange={handleInputChange}></textarea>
+              </label>
+              <button type="submit">Guardar Turno</button>
+              <button type="button" onClick={handleCloseModal}>Cancelar</button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -26,6 +26,10 @@ const Sidebar: React.FC = () => {
                 <img src="/assets/calendar.png" alt="logocalendar" className='calendar-logo'/>
                 Turnos
             </Link>
+            <Link className='a-navbar' href="/profesionales">
+                <img src="/assets/doctor.png" alt="logocalendar" className='calendar-logo'/>
+                Profesionales
+            </Link>
           </div>
           <div>logout</div>
         </div>

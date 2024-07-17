@@ -9,6 +9,7 @@
 }
 .container{
     display: flex;
+    width: 100%;
 }
 .container-navbar{
     height: 100vh;

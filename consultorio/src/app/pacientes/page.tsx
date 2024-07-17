@@ -39,7 +39,7 @@ const Page: React.FC = () => {
   return (
     <div className='container'>
       <Sidebar/>
-      <div>
+      <div className='container'>
         <div className='div-principal'>
 
           <Bar/>

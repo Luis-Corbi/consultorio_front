@@ -21,6 +21,24 @@ export const createAppointment = async (appointment: Appointment): Promise<Appoi
   return res.json();
 };
 
+//traer turnos
+export const fetchAppointments = async (): Promise<Appointment[]> => {
+  const res = await fetch('http://127.0.0.1:8000/api/appointments/', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('Failed to fetch appointments:', res.status, errorText);
+    throw new Error('Failed to fetch appointments');
+  }
+
+  return res.json();
+};
+
 export const findOrCreatePatient = async (name: string, lastname: string): Promise<User> => {
   let res = await fetch(`http://127.0.0.1:8000/api/users/?name=${name}&lastname=${lastname}`);
 
