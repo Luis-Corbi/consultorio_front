@@ -8,7 +8,9 @@ const Sidebar: React.FC = () => {
       
         <div className='navbar'>
           <div>
+          <Link  className='a-navbar' href="/dashboard">
             <img className='logo' src="/assets/logo.png" alt="Logo" />
+            </Link>
           </div>
           <div className='div-links'>
             <Link  className='a-navbar' href="/dashboard">
@@ -31,7 +33,6 @@ const Sidebar: React.FC = () => {
                 Profesionales
             </Link>
           </div>
-          <div>logout</div>
         </div>
       
     );
