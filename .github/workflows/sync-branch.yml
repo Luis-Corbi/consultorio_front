@@ -27,11 +27,22 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      - name: Add destination repository as a remote
+      - name: Remove and re-add destination repository as a remote
         run: |
+          git remote remove destination || true
           git remote add destination git@github.com:Luis-Corbi/consultorio_front.git
           git fetch destination
-          
-      - name: Force push changes to destination repository
-        run: git push --force -u destination refs/heads/main:refs/heads/main
 
+      - name: Checkout main branch from destination
+        run: git checkout -b main destination/main
+
+      - name: Merge changes from main to main
+        run: git merge --strategy=recursive --strategy-option=theirs --allow-unrelated-histories main
+
+      - name: Verify repository status
+        run: |
+          git fsck --full
+          git gc --prune=now
+
+      - name: Push changes to destination repository
+        run: git push --force -u destination refs/heads/main:refs/heads/main
