@@ -32,8 +32,6 @@ jobs:
           git remote add destination git@github.com:Luis-Corbi/consultorio_front.git
           git fetch destination
           
-      - name: Pull latest changes from destination repository
-        run: git pull destination main --rebase
+      - name: Force push changes to destination repository
+        run: git push --force -u destination refs/heads/main:refs/heads/main
 
-      - name: Push changes to destination repository
-        run: git push -u destination refs/heads/main:refs/heads/main
