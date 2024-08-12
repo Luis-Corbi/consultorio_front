@@ -22,7 +22,7 @@ jobs:
 
       - name: Add destination repository as a remote
         run: |
-          git remote add destination https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Luis-Corbi/consultorio_front.git
+          git remote add destination https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Luis-Corbi/consultorio_front
           git fetch destination
           git push -u destination ${{ github.ref }}:refs/heads/${{ github.ref }}
 
