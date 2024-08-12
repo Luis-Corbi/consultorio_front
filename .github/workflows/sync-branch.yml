@@ -33,7 +33,7 @@ jobs:
           git fetch destination
           
       - name: Pull latest changes from destination repository
-        run: git pull destination main --no-rebase
+        run: git pull destination main --rebase
 
       - name: Push changes to destination repository
         run: git push -u destination refs/heads/main:refs/heads/main
