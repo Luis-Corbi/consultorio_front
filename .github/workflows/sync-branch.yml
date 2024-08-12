@@ -32,6 +32,10 @@ jobs:
           git remote add destination git@github.com:Luis-Corbi/consultorio_front.git
           git fetch destination
           
+      - name: Merge changes from deploy to main
+        run: |
+          git checkout main
+          git merge --no-ff deploy
+
       - name: Force push changes to destination repository
         run: git push --force -u destination refs/heads/main:refs/heads/main
-
