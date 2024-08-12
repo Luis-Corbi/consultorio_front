@@ -3,7 +3,7 @@ name: Sync Branch to Another Repo
 on:
   push:
     branches:
-      - main
+      - deploy
 
 jobs:
   sync_branch:
@@ -34,10 +34,15 @@ jobs:
           git fetch destination
 
       - name: Checkout main branch from destination
-        run: git checkout -b main destination/main
+        run: |
+          if git show-ref --verify --quiet refs/heads/main; then
+            git checkout main
+          else
+            git checkout -b main destination/main
+          fi
 
-      - name: Merge changes from main to main
-        run: git merge --strategy=recursive --strategy-option=theirs --allow-unrelated-histories main
+      - name: Merge changes from deploy to main
+        run: git merge --strategy=recursive --strategy-option=theirs --allow-unrelated-histories deploy
 
       - name: Verify repository status
         run: |
