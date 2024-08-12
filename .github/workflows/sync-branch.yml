@@ -3,7 +3,7 @@ name: Sync Branch to Another Repo
 on:
   push:
     branches:
-      - main
+      - deploy
 
 jobs:
   sync_branch:
