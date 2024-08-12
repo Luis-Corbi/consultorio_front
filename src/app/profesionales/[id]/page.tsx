@@ -24,7 +24,7 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
         <p>Seguro de Salud: {user.health_insurance}</p>
         <p>Número de Seguro de Salud: {user.health_insurance_number}</p>
         <p>Número de Licencia: {user.licence_number}</p>
-        <p>Especialidad: {user.speciality.name}</p>
+        <p>Especialidad: {user.speciality}</p>
         <p>Notas: {user.notes}</p>
           
         </div>
