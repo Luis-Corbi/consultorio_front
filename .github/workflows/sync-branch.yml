@@ -36,7 +36,7 @@ jobs:
         run: git checkout -b main destination/main
 
       - name: Merge changes from deploy to main
-        run: git merge --no-ff --allow-unrelated-histories deploy
+        run: git merge --strategy=recursive --strategy-option=theirs --allow-unrelated-histories deploy
 
       - name: Force push changes to destination repository
         run: git push --force -u destination refs/heads/main:refs/heads/main
