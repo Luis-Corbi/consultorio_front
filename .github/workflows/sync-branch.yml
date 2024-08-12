@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - main
-permissions:
-  contents: write
+
 jobs:
   sync_branch:
     runs-on: ubuntu-latest
@@ -20,12 +19,15 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
       - name: Add destination repository as a remote
         run: |
-          git remote add destination https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Luis-Corbi/consultorio_front
+          git remote add destination git@github.com:Luis-Corbi/consultorio_front.git
           git fetch destination
-          git push -u destination ${{ github.ref }}:refs/heads/${{ github.ref }}
-
-      - name: Confirm push
-        run: |
-          echo "Branch ${{ github.ref }} has been pushed to consultorio_front"
+          git push -u destination refs/heads/main:refs/heads/main
