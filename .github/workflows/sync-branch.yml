@@ -34,12 +34,16 @@ jobs:
           cd temp_repo
           git checkout main || git checkout -b main
 
-      - name: Merge changes from deploy to main
+      - name: Merge changes and resolve conflicts
         run: |
           cd temp_repo
           git remote add source ${{ github.workspace }}
           git fetch source
-          git merge --allow-unrelated-histories source/deploy
+          git merge --no-commit --no-ff source/deploy || true
+          git status
+          git diff --name-only --diff-filter=U | xargs -I{} git checkout --theirs {}
+          git add .
+          git commit -m "Merge deploy branch and resolve conflicts" || echo "No changes to commit"
 
       - name: Verify repository integrity
         run: |
@@ -50,4 +54,4 @@ jobs:
       - name: Push changes to destination repository
         run: |
           cd temp_repo
-          git push --mirror origin
+          git push origin main
