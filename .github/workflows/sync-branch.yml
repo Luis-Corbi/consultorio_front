@@ -33,16 +33,14 @@ jobs:
 
       - name: Merge changes and resolve conflicts
         run: |
-          cd consultorio-front
+          cd consultorio_front
           git checkout main || git checkout -b main
           git remote add source git@github.com:consultorio-par/consultorio-front.git
           git fetch source
           git merge --no-commit --no-ff source/deploy || true
           
-          # Mostrar archivos en conflicto
           git status
           
-          # Resolver conflictos tomando los cambios de la rama 'deploy'
           git diff --name-only --diff-filter=U | xargs -I{} git checkout --theirs {}
           git add .
           git commit -m "Merge deploy branch and resolve conflicts" || echo "No changes to commit"
