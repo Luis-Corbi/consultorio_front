@@ -1,8 +1,12 @@
-import { User , Speciality} from '../types/types';
+import { User, Speciality } from '../types/types';
+
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://consultorio-back.onrender.com/api'
+  : 'http://127.0.0.1:8000/api';
 
 // Función para obtener todos los usuarios
 export const fetchUsers = async (): Promise<User[]> => {
-  const res = await fetch('http://127.0.0.1:8000/api/users/');
+  const res = await fetch(`${API_BASE_URL}/users/`);
   if (!res.ok) {
     throw new Error('Failed to fetch users');
   }
@@ -11,23 +15,26 @@ export const fetchUsers = async (): Promise<User[]> => {
 
 // Función para obtener un usuario específico
 export const fetchUser = async (id: string): Promise<User> => {
-  const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`);
+  const res = await fetch(`${API_BASE_URL}/users/${id}`);
   if (!res.ok) {
     throw new Error('Failed to fetch user');
   }
   return res.json();
 };
+
 // Función para obtener todos los usuarios con un rol específico
 export const fetchUsersByRole = async (roleId: number): Promise<User[]> => {
-  const res = await fetch('http://127.0.0.1:8000/api/users/');
+  const res = await fetch(`${API_BASE_URL}/users/`);
   if (!res.ok) {
     throw new Error('Failed to fetch users');
   }
   const users: User[] = await res.json();
   return users.filter(user => user.roles.some(role => role.id === roleId));
 };
+
+// Función para crear un nuevo usuario
 export const createUser = async (user: Omit<User, 'id' | 'roles'> & { roles: number[] }): Promise<void> => {
-  const res = await fetch('http://127.0.0.1:8000/api/users/', {
+  const res = await fetch(`${API_BASE_URL}/users/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -41,11 +48,12 @@ export const createUser = async (user: Omit<User, 'id' | 'roles'> & { roles: num
     throw new Error(`Failed to create user: ${JSON.stringify(errorData)}`);
   }
 };
+
+// Función para obtener todas las especialidades
 export const getSpecialities = async (): Promise<Speciality[]> => {
-  const res = await fetch('http://127.0.0.1:8000/api/specialities/');
+  const res = await fetch(`${API_BASE_URL}/specialities/`);
   if (!res.ok) {
     throw new Error('Failed to fetch specialities');
   }
-  const specialities: Speciality[] = await res.json();
-  return specialities;
+  return res.json();
 };
