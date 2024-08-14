@@ -33,9 +33,9 @@ jobs:
 
       - name: Merge changes and resolve conflicts
         run: |
-          cd consultorio_front
+          cd consultorio-front
           git checkout main || git checkout -b main
-          git remote add source ${{ github.workspace }}.git
+          git remote add source ${{ github.repository_url }}.git
           git fetch source
           git merge --no-commit --no-ff source/deploy || true
           
@@ -49,11 +49,11 @@ jobs:
 
       - name: Verify repository integrity
         run: |
-          cd consultorio_front
+          cd consultorio-front
           git fsck --full
           git gc --aggressive --prune=now
 
       - name: Push changes to destination repository
         run: |
-          cd consultorio_front
+          cd consultorio-front
           git push origin main
