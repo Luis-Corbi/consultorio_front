@@ -3,7 +3,7 @@ name: Sync Branch to Another Repo
 on:
   push:
     branches:
-      - main
+      - deploy
 
 jobs:
   sync_branch:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout source repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref }}
+          fetch-depth: 0
 
       - name: Setup Git
         run: |
@@ -21,9 +21,11 @@ jobs:
           git config --global user.email "action@github.com"
           
       - name: Setup SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
@@ -31,9 +33,11 @@ jobs:
         run: |
           git remote add destination git@github.com:Luis-Corbi/consultorio_front.git
           git fetch destination
-          
-      - name: Pull latest changes from destination repository
-        run: git pull destination main --rebase
+
+      - name: Merge changes from deploy to destination's main
+        run: |
+          git checkout -b temp_main destination/main
+          git merge --strategy=recursive --strategy-option=theirs --allow-unrelated-histories origin/deploy
 
       - name: Push changes to destination repository
-        run: git push -u destination refs/heads/main:refs/heads/main
+        run: git push destination temp_main:main
