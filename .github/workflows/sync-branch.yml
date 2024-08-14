@@ -37,10 +37,14 @@ jobs:
       - name: Merge changes and resolve conflicts
         run: |
           cd temp_repo
-          git remote add source ${{ github.workspace }}
+          git remote add source ${{ github.repository_url }}
           git fetch source
           git merge --no-commit --no-ff source/deploy || true
+          
+          # Mostrar archivos en conflicto
           git status
+          
+          # Resolver conflictos tomando los cambios de la rama 'deploy'
           git diff --name-only --diff-filter=U | xargs -I{} git checkout --theirs {}
           git add .
           git commit -m "Merge deploy branch and resolve conflicts" || echo "No changes to commit"
