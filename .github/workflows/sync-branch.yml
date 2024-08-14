@@ -13,7 +13,7 @@ jobs:
       - name: Checkout source repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref }}
+          fetch-depth: 0
 
       - name: Setup Git
         run: |
@@ -27,22 +27,27 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      - name: Remove and re-add destination repository as a remote
+      - name: Clean and re-clone destination repository
         run: |
-          git remote remove destination || true
-          git remote add destination git@github.com:Luis-Corbi/consultorio_front.git
-          git fetch destination
-
-      - name: Checkout main branch from destination
-        run: git checkout -b main destination/main
+          rm -rf temp_repo
+          git clone git@github.com:Luis-Corbi/consultorio_front.git temp_repo
+          cd temp_repo
+          git checkout main || git checkout -b main
 
       - name: Merge changes from deploy to main
-        run: git merge --strategy=recursive --strategy-option=theirs --allow-unrelated-histories deploy
-
-      - name: Verify repository status
         run: |
+          cd temp_repo
+          git remote add source ${{ github.workspace }}
+          git fetch source
+          git merge --allow-unrelated-histories source/deploy
+
+      - name: Verify repository integrity
+        run: |
+          cd temp_repo
           git fsck --full
-          git gc --prune=now
+          git gc --aggressive --prune=now
 
       - name: Push changes to destination repository
-        run: git push --force -u destination refs/heads/main:refs/heads/main
+        run: |
+          cd temp_repo
+          git push --mirror origin
