@@ -35,7 +35,7 @@ jobs:
         run: |
           cd consultorio-front
           git checkout main || git checkout -b main
-          git remote add source ${{ github.repository_url }}.git
+          git remote add source git@github.com:consultorio-par/consultorio-front.git
           git fetch source
           git merge --no-commit --no-ff source/deploy || true
           
