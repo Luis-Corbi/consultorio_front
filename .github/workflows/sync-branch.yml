@@ -27,17 +27,15 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      - name: Clean and re-clone destination repository
+      - name: Clone destination repository
         run: |
-          rm -rf temp_repo
-          git clone git@github.com:Luis-Corbi/consultorio_front.git temp_repo
-          cd temp_repo
-          git checkout main || git checkout -b main
+          git clone git@github.com:Luis-Corbi/consultorio_front.git
 
       - name: Merge changes and resolve conflicts
         run: |
-          cd temp_repo
-          git remote add source ${{ github.repository_url }}
+          cd consultorio_front
+          git checkout main || git checkout -b main
+          git remote add source ${{ github.workspace }}.git
           git fetch source
           git merge --no-commit --no-ff source/deploy || true
           
@@ -51,11 +49,11 @@ jobs:
 
       - name: Verify repository integrity
         run: |
-          cd temp_repo
+          cd consultorio_front
           git fsck --full
           git gc --aggressive --prune=now
 
       - name: Push changes to destination repository
         run: |
-          cd temp_repo
+          cd consultorio_front
           git push origin main
