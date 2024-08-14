@@ -49,11 +49,11 @@ jobs:
 
       - name: Verify repository integrity
         run: |
-          cd consultorio-front
+          cd consultorio_front
           git fsck --full
           git gc --aggressive --prune=now
 
       - name: Push changes to destination repository
         run: |
-          cd consultorio-front
+          cd consultorio_front
           git push origin main
