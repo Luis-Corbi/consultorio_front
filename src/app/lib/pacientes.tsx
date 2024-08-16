@@ -61,7 +61,7 @@ export const getSpecialities = async (): Promise<Speciality[]> => {
 
 export const updateUser = async (userId: string, userData: EditableUser) => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/`, {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
