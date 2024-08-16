@@ -10,15 +10,15 @@ const UserPage = ({ params }: { params: { id: string } }) => {
   const [user, setUser] = useState<EditableUser | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedUser = await fetchUser(params.id);
-      // Excluye campos no editables
-      const {  speciality, roles, ...editableData } = fetchedUser;
-      setUser(editableData as EditableUser);
-    };
-    fetchData();
-  }, [params.id]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const fetchedUser = await fetchUser(params.id);
+  //     // Excluye campos no editables
+  //     const {  speciality, roles, ...editableData } = fetchedUser;
+  //     setUser(editableData as EditableUser);
+  //   };
+  //   fetchData();
+  // }, [params.id]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -32,7 +32,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
         await updateUser(params.id, user);
         setIsEditing(false);
         const updatedUser = await fetchUser(params.id);
-        setUser(updatedUser as EditableUser);
+        // setUser(updatedUser as EditableUser);
       } catch (error) {
         console.error('Error updating user:', error);
         // Manejar el error de manera adecuada, como mostrar un mensaje al usuario
