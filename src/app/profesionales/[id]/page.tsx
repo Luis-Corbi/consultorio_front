@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react';
-import { fetchUser, updateUser } from '../../lib/pacientes';
+import { fetchUser } from '../../lib/pacientes';
 import { EditableUser } from '../../types/types';
 import Sidebar from '@/app/components/sidebar';
 import Bar from '@/app/components/bar';
@@ -29,7 +29,7 @@ const UserPage = ({ params }: { params: { id: string } }) => {
     e.preventDefault();
     if (user) {
       try {
-        await updateUser(params.id, user);
+        //await updateUser(params.id, user);
         setIsEditing(false);
         const updatedUser = await fetchUser(params.id);
         // setUser(updatedUser as EditableUser);
