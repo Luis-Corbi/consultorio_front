@@ -76,8 +76,10 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
               <td>{user.gender}</td>
               <td>{user.birth_date}</td>
               <td className='ver-paciente'>
-                <Link href={`/pacientes/${user.id}`}>
-                  <button>Ver Usuario</button>
+                <Link  className='button-ver-p' href={`/pacientes/${user.id}`} >
+                  <img className='logo-paciente' src="../assets/ver-paciente.png" alt="" />
+                  Ver 
+                  
                 </Link>
               </td>
             </tr>

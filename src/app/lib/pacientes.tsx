@@ -57,3 +57,30 @@ export const getSpecialities = async (): Promise<Speciality[]> => {
   }
   return res.json();
 };
+
+
+
+
+
+// export const updateUser = async (userId: string, userData: EditableUser) => {
+//   try {
+//     const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/`, {
+//       method: 'PUT',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ajusta la forma de obtener el token si es necesario
+//       },
+//       body: JSON.stringify(userData),
+//     });
+
+//     if (!response.ok) {
+//       const errorMessage = await response.text();
+//       throw new Error(`Failed to update user: ${errorMessage}`);
+//     }
+
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Error updating user:', error);
+//     throw error;
+//   }
+// };
