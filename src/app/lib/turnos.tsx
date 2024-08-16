@@ -1,10 +1,13 @@
 // src/lib/appointments.ts
 
 import { Appointment, User } from '../types/types';
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://consultorio-back.onrender.com/api'
+  : 'http://127.0.0.1:8000/api';
 
 export const createAppointment = async (appointment: Appointment): Promise<Appointment> => {
   console.log('Creating appointment:', appointment); // Log para ver los datos de la cita
-  const res = await fetch('http://127.0.0.1:8000/api/appointments/', {
+  const res = await fetch(`${API_BASE_URL}/appointments/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -22,53 +25,64 @@ export const createAppointment = async (appointment: Appointment): Promise<Appoi
 };
 
 //traer turnos
-export const fetchAppointments = async (): Promise<Appointment[]> => {
-  const res = await fetch('http://127.0.0.1:8000/api/appointments/', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
+
+
+export const fetchAllAppointments = async (): Promise<Appointment[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/appointments/`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    console.error('Failed to fetch appointments:', res.status, errorText);
-    throw new Error('Failed to fetch appointments');
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching all appointments:', error);
+    return [];
   }
-
-  return res.json();
 };
 
-export const findOrCreatePatient = async (name: string, lastname: string): Promise<User> => {
-  let res = await fetch(`http://127.0.0.1:8000/api/users/?name=${name}&lastname=${lastname}`);
-
-  if (res.ok) {
-    const patients: User[] = await res.json();
-    if (patients.length > 0) {
-      return patients[0];
+export const fetchAppointmentsByProfessional = async (professionalId: number): Promise<Appointment[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/appointments/professional/${professionalId}/`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    return response.json();
+  } catch (error) {
+    console.error(`Error fetching appointments for professional ${professionalId}:`, error);
+    return [];
   }
+};
 
-  // Si no se encuentra el paciente, crear uno nuevo
-  console.log('Creating new patient:', { name, lastname }); // Log para ver los datos del nuevo paciente
-  res = await fetch('http://127.0.0.1:8000/api/users/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      name,
-      lastname,
-      roles: [{ id: 3, name: 'patient' }],
-      // Agregar otros campos necesarios para crear un usuario
-    })
-  });
-
-  if (!res.ok) {
-    const errorText = await res.text(); // Obtener el texto del error
-    console.error('Failed to create patient:', res.status, errorText); // Log para ver el estado y el error
-    throw new Error('Failed to create patient');
+export const fetchProfessionals = async () => {
+  try {
+    // Primero, obtén todos los usuarios
+    const response = await fetch(`${API_BASE_URL}/users/`);
+    const users = await response.json();
+    
+    // Filtra los usuarios para obtener solo los profesionales
+    const professionals = users.filter((user: any) => 
+      user.roles.some((role: any) => role.id === 2)
+    );
+    
+    return professionals;
+  } catch (error) {
+    console.error('Error fetching professionals:', error);
+    return [];
   }
+};
+export const deleteAppointment = async (appointmentId: number): Promise<void> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/appointments/${appointmentId}/`, {
+      method: 'DELETE',
+    });
 
-  return res.json();
+    if (!response.ok) {
+      throw new Error(`Failed to delete appointment. HTTP error! status: ${response.status}`);
+    }
+    
+    console.log('Appointment deleted successfully');
+  } catch (error) {
+    console.error('Error deleting appointment:', error);
+    throw error;
+  }
 };

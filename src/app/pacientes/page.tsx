@@ -1,6 +1,6 @@
 // src/app/pacientes/page.tsx
 "use client"
-import React, { useEffect, useState,  Suspense  } from 'react';
+import React from 'react';
 import '../sections.css';  
 import Sidebar from '../components/sidebar';
 import Bar from '../components/bar';

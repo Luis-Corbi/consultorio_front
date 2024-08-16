@@ -16,7 +16,7 @@
     border-radius: 8px;
     background-color: #fef9f9;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    height: 70%;
+    height: 77%;
     width: 60%;
   }
   
@@ -46,7 +46,7 @@
   
   .modal-buttons {
     display: flex;
-    width: 50%;
+    width: 100%;
     justify-content: space-around;
   }
   
@@ -176,4 +176,34 @@ Link{
 th{
 
   text-align: start;
+}
+
+.button-ver-p{
+  width: 75%;
+  display: flex;
+  text-decoration: none;
+  color: white;
+  align-items: center;
+  gap: 5%;
+  display: flex;
+  margin-right: 10px;
+  background-color: #8EDAD5;
+  padding: 1px;
+  border: 1px solid #8EDAD5;
+  border-radius: 5px;
+  cursor: pointer;
+  flex-direction: row;
+}
+
+.logo-paciente{
+  height: 24px;
+}
+
+.color-prof{
+  width: '20px';
+  height: '20px';
+  
+  border: '1px solid #ccc';
+  border-radius: '50%';
+  display: 'inline-block';
 }
