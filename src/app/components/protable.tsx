@@ -1,15 +1,12 @@
-'use client'
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
 import { User } from '../types/types';
 import CrearProfesionalForm from './CrearProf';
-import  "../pacientes/pacientes.css"
-
+import "../pacientes/pacientes.css"
 
 interface UsersTableProps {
   users: User[];
 }
-
 
 const ProTable: React.FC<UsersTableProps> = ({ users }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,6 +49,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
       <table>
         <thead>
           <tr>
+            <th>Color</th> 
             <th>Nombre</th>
             <th>Apellido</th>
             <th>DNI</th>
@@ -66,6 +64,23 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
         <tbody>
           {currentUsers.map((user) => (
             <tr key={user.id}>
+              <td>
+                {user.color ? (
+                  <div
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      backgroundColor: user.color,
+                      border: '1px solid #ccc',
+                      borderRadius: '50%',
+                      display: 'inline-block',
+                      marginLeft:'15%'
+                    }}
+                  ></div>
+                ) : (
+                  'No color'
+                )}
+              </td>
               <td className='td-bold'>{user.name}</td>
               <td className='td-bold'>{user.lastname}</td>
               <td>{user.DNI}</td>
@@ -74,9 +89,10 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
               <td>{user.address}</td>
               <td>{user.gender}</td>
               <td>{user.birth_date}</td>
+              
               <td className='ver-paciente'>
                 <Link href={`/profesionales/${user.id}`}>
-                  <button>Ver </button>
+                  <button>Ver</button>
                 </Link>
               </td>
             </tr>
@@ -95,12 +111,8 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
           </button>
         ))}
       </div>
-
-      
     </>
   );
 };
-
-
 
 export default ProTable;

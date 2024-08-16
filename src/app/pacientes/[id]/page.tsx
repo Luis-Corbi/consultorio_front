@@ -2,7 +2,7 @@ import { fetchUser, fetchUsers } from '../../lib/pacientes';
 import Sidebar from '@/app/components/sidebar';
 import Bar from '@/app/components/bar';
 import { User, Speciality } from '../../types/types';
-
+import '../../sections.css';  
 const UserPage = async ({ params }: { params: { id: string } }) => {
     const user = await fetchUser(params.id);
   
