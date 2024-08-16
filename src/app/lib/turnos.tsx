@@ -1,10 +1,13 @@
 // src/lib/appointments.ts
 
 import { Appointment, User } from '../types/types';
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://consultorio-back.onrender.com/api'
+  : 'http://127.0.0.1:8000/api';
 
 export const createAppointment = async (appointment: Appointment): Promise<Appointment> => {
   console.log('Creating appointment:', appointment); // Log para ver los datos de la cita
-  const res = await fetch('http://127.0.0.1:8000/api/appointments/', {
+  const res = await fetch(`${API_BASE_URL}/appointments/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -26,7 +29,7 @@ export const createAppointment = async (appointment: Appointment): Promise<Appoi
 
 export const fetchAllAppointments = async (): Promise<Appointment[]> => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/appointments/');
+    const response = await fetch(`${API_BASE_URL}/appointments/`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -39,7 +42,7 @@ export const fetchAllAppointments = async (): Promise<Appointment[]> => {
 
 export const fetchAppointmentsByProfessional = async (professionalId: number): Promise<Appointment[]> => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/appointments/professional/${professionalId}/`);
+    const response = await fetch(`${API_BASE_URL}/appointments/professional/${professionalId}/`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -53,7 +56,7 @@ export const fetchAppointmentsByProfessional = async (professionalId: number): P
 export const fetchProfessionals = async () => {
   try {
     // Primero, obtén todos los usuarios
-    const response = await fetch('http://127.0.0.1:8000/api/users/');
+    const response = await fetch(`${API_BASE_URL}/users/`);
     const users = await response.json();
     
     // Filtra los usuarios para obtener solo los profesionales
@@ -69,7 +72,7 @@ export const fetchProfessionals = async () => {
 };
 export const deleteAppointment = async (appointmentId: number): Promise<void> => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/appointments/${appointmentId}/`, {
+    const response = await fetch(`${API_BASE_URL}/appointments/${appointmentId}/`, {
       method: 'DELETE',
     });
 

@@ -38,8 +38,10 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
   };
   
   export async function generateStaticParams() {
-    const users = await fetchUsers();
-  
+    const users = await fetchUsers().catch((error) => {
+      console.error('Error fetching users:', error);
+      return [];
+    });
     return users.map(user => ({
       id: user.id.toString(),
     }));
