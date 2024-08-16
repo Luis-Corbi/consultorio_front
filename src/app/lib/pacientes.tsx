@@ -1,4 +1,4 @@
-import { User, Speciality } from '../types/types';
+import { User, Speciality, EditableUser } from '../types/types';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://consultorio-back.onrender.com/api'
@@ -59,28 +59,25 @@ export const getSpecialities = async (): Promise<Speciality[]> => {
 };
 
 
+export const updateUser = async (userId: string, userData: EditableUser) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ajusta la forma de obtener el token si es necesario
+      },
+      body: JSON.stringify(userData),
+    });
 
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`Failed to update user: ${errorMessage}`);
+    }
 
-
-// export const updateUser = async (userId: string, userData: EditableUser) => {
-//   try {
-//     const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/`, {
-//       method: 'PUT',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${localStorage.getItem('token')}`, // Ajusta la forma de obtener el token si es necesario
-//       },
-//       body: JSON.stringify(userData),
-//     });
-
-//     if (!response.ok) {
-//       const errorMessage = await response.text();
-//       throw new Error(`Failed to update user: ${errorMessage}`);
-//     }
-
-//     return await response.json();
-//   } catch (error) {
-//     console.error('Error updating user:', error);
-//     throw error;
-//   }
-// };
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};
