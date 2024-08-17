@@ -116,6 +116,24 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   }, [selectedProfessional, professionals]);
 
   const handleSelectSlot = ({ start }: { start: Date }) => {
+    const currentDate = new Date();
+  
+    // Calcula la fecha límite de 90 días desde la fecha actual
+    const maxDate = new Date();
+    maxDate.setDate(currentDate.getDate() + 90);
+  
+    // Verifica si la fecha seleccionada es anterior a la fecha actual o posterior a la fecha límite
+    if (start < currentDate) {
+      alert('No puedes seleccionar una fecha pasada para crear un turno.');
+      return; // Si es una fecha pasada,
+    }
+  
+    if (start > maxDate) {
+      alert('No puedes seleccionar una fecha más allá de los próximos 90 días.');
+      return; // Si la fecha es después de 90 días, no hagas nada
+    }
+  
+    
     setNewAppointment({
       ...newAppointment,
       date: moment(start).format('YYYY-MM-DD'),
@@ -124,6 +142,8 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     setIsViewingAppointment(false); 
     setModalIsOpen(true);
   };
+  
+  
 
   const handleCloseModal = () => {
     setModalIsOpen(false);
@@ -144,38 +164,62 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-        console.log('Submitting new appointment:', newAppointment);
-        const savedAppointment = await createAppointment(newAppointment);
-        console.log('Saved appointment:', savedAppointment);
-        
-        // Crear las fechas de inicio y fin usando moment para asegurar la consistencia
-        const start = moment(`${savedAppointment.date}T${savedAppointment.hour}`).toDate();
-        const end = moment(start).add(15, 'minutes').toDate(); // Duración de 30 minutos
-
-        const newEvent: CustomEvent = {
-            start,
-            end,
-            title: savedAppointment.notes,
-            appointment: savedAppointment,
-            color: professionals.find(p => p.id === savedAppointment.professional)?.color || '#3174ad', // Asignar color
-        };
-
-        setEvents([...events, newEvent]);
-        setModalIsOpen(false);
-        
-        // Recargar turnos y profesionales
-        await loadAppointments(); 
-        await loadProfessionals(); 
-        
-        alert('Turno guardado correctamente');
-    } catch (error) {
-        console.error('Error al guardar el turno:', error);
-        alert('Error al guardar el turno');
+    
+    const appointmentDateTime = new Date(`${newAppointment.date}T${newAppointment.hour}`);
+    const now = new Date();
+  
+    if (appointmentDateTime < now) {
+      alert("No puedes crear un turno en una fecha y hora pasada.");
+      return;
     }
-};
+    const maxDate = new Date();
+    maxDate.setDate(now.getDate() + 90);
+    if (appointmentDateTime > maxDate) {
+      alert('No puedes crear una fecha más allá de los próximos 90 días.');
+      return; 
+    }
+  
+  
+    try {
+      console.log('Submitting new appointment:', newAppointment);
+      const savedAppointment = await createAppointment(newAppointment);
+      console.log('Saved appointment:', savedAppointment);
+  
+      const start = moment(`${savedAppointment.date}T${savedAppointment.hour}`).toDate();
+      const end = moment(start).add(15, 'minutes').toDate();
+  
+      const newEvent: CustomEvent = {
+        start,
+        end,
+        title: savedAppointment.notes,
+        appointment: savedAppointment,
+        color: professionals.find(p => p.id === savedAppointment.professional)?.color || '#3174ad',
+      };
+  
+      setEvents([...events, newEvent]);
+      setModalIsOpen(false);
+  
+      await loadAppointments();
+      await loadProfessionals();
+  
+      alert('Turno guardado correctamente');
+    } catch (error) {
+      console.error('Error al guardar el turno:', error);
+      alert('Error al guardar el turno');
+    }
+  };
 
   const handleSelectEvent = (event: CustomEvent) => {
+    const currentDate = new Date();
+    const appointmentDate = new Date(event.appointment.date);
+  
+    // Verifica si la fecha del turno es anterior a la fecha actual
+    if (appointmentDate < currentDate) {
+      alert('No puedes visualizar un turno con una fecha pasada.');
+      return; // Si la fecha es pasada, no hagas nada
+    }
+  
+    // Si la fecha es válida, procede a mostrar el turno
     setSelectedAppointment(event.appointment);
     setIsViewingAppointment(true); // Indica que se está visualizando un turno
     setModalIsOpen(true);
