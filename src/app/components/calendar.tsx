@@ -116,14 +116,28 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   }, [selectedProfessional, professionals]);
 
   const handleSelectSlot = ({ start }: { start: Date }) => {
-    setNewAppointment({
-      ...newAppointment,
-      date: moment(start).format('YYYY-MM-DD'),
-      hour: moment(start).format('HH:mm:ss')
-    });
-    setIsViewingAppointment(false); 
-    setModalIsOpen(true);
+    const now = new Date();
+    const selectedDate = new Date(start);
+    
+    // Verificar si la fecha seleccionada ya pasó
+    if (selectedDate < now) {
+      // Si la fecha ya pasó, permitir ver los detalles de los turnos
+      setSelectedAppointment(null); // Asegúrate de que no haya un turno seleccionado
+      setIsViewingAppointment(true); // Indica que se está visualizando un turno pasado
+      setModalIsOpen(true); // Abre el modal para ver detalles
+    } else {
+      // Si la fecha es válida y no ha pasado, permitir la creación del turno
+      setNewAppointment({
+        ...newAppointment,
+        date: moment(start).format('YYYY-MM-DD'),
+        hour: moment(start).format('HH:mm:ss')
+      });
+      setIsViewingAppointment(false); // Asegúrate de que no se está viendo un turno pasado
+      setModalIsOpen(true); // Abre el modal para crear un nuevo turno
+    }
   };
+  
+  
 
   const handleCloseModal = () => {
     setModalIsOpen(false);
@@ -144,38 +158,78 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-        console.log('Submitting new appointment:', newAppointment);
-        const savedAppointment = await createAppointment(newAppointment);
-        console.log('Saved appointment:', savedAppointment);
-        
-        // Crear las fechas de inicio y fin usando moment para asegurar la consistencia
-        const start = moment(`${savedAppointment.date}T${savedAppointment.hour}`).toDate();
-        const end = moment(start).add(15, 'minutes').toDate(); // Duración de 30 minutos
-
-        const newEvent: CustomEvent = {
-            start,
-            end,
-            title: savedAppointment.notes,
-            appointment: savedAppointment,
-            color: professionals.find(p => p.id === savedAppointment.professional)?.color || '#3174ad', // Asignar color
-        };
-
-        setEvents([...events, newEvent]);
-        setModalIsOpen(false);
-        
-        // Recargar turnos y profesionales
-        await loadAppointments(); 
-        await loadProfessionals(); 
-        
-        alert('Turno guardado correctamente');
-    } catch (error) {
-        console.error('Error al guardar el turno:', error);
-        alert('Error al guardar el turno');
+    
+    // Crear un objeto Date para la fecha y hora del turno
+    const appointmentDateTime = new Date(`${newAppointment.date}T${newAppointment.hour}`);
+    const now = new Date();
+    
+    // Verificar si la fecha y hora del turno ya han pasado
+    if (appointmentDateTime < now) {
+      alert("No puedes crear un turno en una fecha y hora pasada.");
+      return;
     }
-};
+    
+    // Verificar si la fecha del turno está más allá de los próximos 90 días
+    const maxDate = new Date();
+    maxDate.setDate(now.getDate() + 90);
+    if (appointmentDateTime > maxDate) {
+      alert('No puedes crear una fecha más allá de los próximos 90 días.');
+      return; 
+    }
+  
+      // Verificar si la hora del turno está dentro de los intervalos permitidos
+    const appointmentHour = appointmentDateTime.getHours();
+    const appointmentMinutes = appointmentDateTime.getMinutes();
+    
+    // Primer intervalo: 09:00 a 13:00
+    const isInFirstInterval = (appointmentHour > 9 || (appointmentHour === 9 && appointmentMinutes >= 0)) &&
+                              (appointmentHour < 13 || (appointmentHour === 13 && appointmentMinutes === 0));
+    
+    // Segundo intervalo: 16:30 a 20:30
+    const isInSecondInterval = (appointmentHour > 16 || (appointmentHour === 16 && appointmentMinutes >= 30)) &&
+                              (appointmentHour < 20 || (appointmentHour === 20 && appointmentMinutes <= 30));
+    
+    if (!isInFirstInterval && !isInSecondInterval) {
+      alert("Solo puedes crear turnos entre 09:00-13:00 y 16:30-20:30.");
+      return;
+    }
+  
+    
+    try {
+      console.log('Submitting new appointment:', newAppointment);
+      const savedAppointment = await createAppointment(newAppointment);
+      console.log('Saved appointment:', savedAppointment);
+  
+      const start = moment(`${savedAppointment.date}T${savedAppointment.hour}`).toDate();
+      const end = moment(start).add(15, 'minutes').toDate();
+  
+      const newEvent: CustomEvent = {
+        start,
+        end,
+        title: savedAppointment.notes,
+        appointment: savedAppointment,
+        color: professionals.find(p => p.id === savedAppointment.professional)?.color || '#3174ad',
+      };
+  
+      setEvents([...events, newEvent]);
+      setModalIsOpen(false);
+  
+      await loadAppointments();
+      await loadProfessionals();
+  
+      alert('Turno guardado correctamente');
+    } catch (error) {
+      console.error('Error al guardar el turno:', error);
+      alert('Error al guardar el turno');
+    }
+  };
+  
 
   const handleSelectEvent = (event: CustomEvent) => {
+    const currentDate = new Date();
+    const appointmentDate = new Date(event.appointment.date);
+  
+    // Establece el turno seleccionado y abre el modal para verlo
     setSelectedAppointment(event.appointment);
     setIsViewingAppointment(true); // Indica que se está visualizando un turno
     setModalIsOpen(true);
@@ -282,13 +336,14 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
         defaultDate={new Date()}
         date={date}
         onNavigate={handleNavigate}
-        min={new Date(1970, 1, 1, 9, 0)}
+        min={new Date(1970, 1, 1, 8, 0)}
         max={new Date(1970, 1, 1, 20, 30)}
         toolbar={true}
         messages={messages} 
         eventPropGetter={eventStyleGetter}
       />
   
+      {/* Modal de Detalles del Turno */}
       {/* Modal de Detalles del Turno */}
       {modalIsOpen && isViewingAppointment && selectedAppointment && (
         <div className="modal">
@@ -304,11 +359,15 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
             </div>
             <div className='botones-modal'>
               <button type="button" onClick={handleCloseModal}>Cerrar</button>
-              <button type="button" onClick={handleDeleteAppointment} className="delete-button">Eliminar Turno</button>
+              {/* Mostrar el botón de eliminar solo si la fecha del turno no ha pasado */}
+              {new Date(selectedAppointment.date) >= new Date() && (
+                <button type="button" onClick={handleDeleteAppointment} className="delete-button">Eliminar Turno</button>
+              )}
             </div>
           </div>
         </div>
       )}
+
   
       {/* Modal para Nuevo Turno */}
       {modalIsOpen && !isViewingAppointment && (

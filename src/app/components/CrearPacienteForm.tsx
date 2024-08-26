@@ -69,7 +69,7 @@ interface CrearPacienteFormProps {
 
     return (
         <div className="modal-container">
-        <div className="modal-content">
+       
           <h2 className="modal-title">Crear Paciente</h2>
           <form onSubmit={handleSubmit} className="modal-form">
             <label>
@@ -137,7 +137,7 @@ interface CrearPacienteFormProps {
             </div>
           </form>
         </div>
-      </div>
+     
     );
   };
   
