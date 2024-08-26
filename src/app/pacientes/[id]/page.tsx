@@ -1,10 +1,13 @@
 import { fetchUser, fetchUsers } from '../../lib/pacientes';
+import { getUser, getUsers } from '../../lib/auth';
+
 import Sidebar from '@/app/components/sidebar';
 import Bar from '@/app/components/bar';
 import { User, Speciality } from '../../types/types';
 import '../../sections.css';  
+
 const UserPage = async ({ params }: { params: { id: string } }) => {
-    const user = await fetchUser(params.id);
+    const user = await getUser(params.id);
   
     return (
       <div className='container'>
@@ -48,6 +51,3 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
   }
   
   export default UserPage;
-
-
-

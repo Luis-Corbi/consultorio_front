@@ -5,52 +5,57 @@ import '../sections.css';
 import Sidebar from '../components/sidebar';
 import Bar from '../components/bar';
 import ProTable from '../components/protable';
-import { fetchUsers } from '../lib/pacientes';
-import { User, Speciality, Role } from '../types/types';
 import { fetchUsersByRole } from '../lib/pacientes';
+import CrearProfesionalForm from '../components/CrearProf'; // Importa el formulario
 
-const Fetchtable: React.FC = () => {
-  const [users, setUsers] = React.useState<User[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [error, setError] = React.useState<string | null>(null);
+const TableProfesionales: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
 
-  React.useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const data = await fetchUsersByRole(2); 
-        setUsers(data);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchUsers = async () => {
+    try {
+      const data = await fetchUsersByRole(2); 
+      setUsers(data);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    getUsers();
+  useEffect(() => {
+    fetchUsers();
   }, []);
+
+  const handleCreate = () => {
+    fetchUsers(); // Recarga la lista de usuarios
+    setShowCreateForm(false); // Cierra el formulario
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  return <ProTable users={users} />;
-};
-
-const tableprofesionales: React.FC = () => {
   return (
     <div className='container'>
-      <Sidebar/>
+      <Sidebar />
       <div className='container'>
         <div className='div-principal'>
-
-          <Bar/>
+          <Bar />
           <h1>Profesionales</h1>
-
-          <Fetchtable />
+          <button onClick={() => setShowCreateForm(true)}>Crear Profesional</button>
+          {showCreateForm && (
+            <CrearProfesionalForm 
+              onClose={() => setShowCreateForm(false)} 
+              onCreate={handleCreate} // Asegúrate de pasar la función aquí
+            />
+          )}
+          <ProTable users={users} />
         </div>
-        
       </div>
     </div>
   );
 };
 
-export default tableprofesionales;
+export default TableProfesionales;

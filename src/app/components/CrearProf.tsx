@@ -5,9 +5,10 @@ import "../pacientes/pacientes.css";
 
 interface CrearPacienteFormProps {
     onClose: () => void;
+    onCreate: () => void;  // Asegúrate de que esta propiedad esté bien definida
 }
 
-const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
+const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCreate }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -65,6 +66,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => 
           console.log('Submitting user:', newUser);
       
           await createUser(newUser);
+          onCreate(); // Llama a la función para recargar la lista
           onClose();
         } catch (error) {
           console.error('Failed to create user:', error);
@@ -73,7 +75,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => 
 
     return (
         <div className="modal-container">
-            
+            <div className="modal-content">
                 <h2 className="modal-title">Crear Profesional</h2>
                 <form onSubmit={handleSubmit} className="modal-form">
                     <label>
@@ -156,7 +158,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => 
                         <button type="button" onClick={onClose}>Cancelar</button>
                     </div>
                 </form>
-            
+            </div>
         </div>
     );
 };

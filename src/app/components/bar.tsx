@@ -1,5 +1,6 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
+import Cookies from 'js-cookie'; // Importa js-cookie para manejar cookies
 
 import styles from '../components/dropdown.module.css';
 import Icondown from '../icons/down.jsx';
@@ -13,6 +14,11 @@ const Bar = () => {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    Cookies.remove('access_token'); // Borra el token de las cookies
+    window.location.href = '/'; // Redirige al login
   };
 
   return (
@@ -37,7 +43,7 @@ const Bar = () => {
             <div className={styles.dropdownContent}>
               <a href="#">Perfil</a>
               <a href="#">Configuración</a>
-              <a href="/">Salir</a>
+              <a href="#" onClick={handleLogout}>Salir</a> {/* Usa handleLogout para el clic */}
             </div>
           )}
         </div>

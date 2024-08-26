@@ -344,7 +344,6 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
       />
   
       {/* Modal de Detalles del Turno */}
-      {/* Modal de Detalles del Turno */}
       {modalIsOpen && isViewingAppointment && selectedAppointment && (
         <div className="modal">
           <div className="modal-content">
@@ -367,7 +366,6 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
           </div>
         </div>
       )}
-
   
       {/* Modal para Nuevo Turno */}
       {modalIsOpen && !isViewingAppointment && (
