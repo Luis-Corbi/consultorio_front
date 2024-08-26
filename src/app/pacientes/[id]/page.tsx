@@ -1,0 +1,53 @@
+import { fetchUser, fetchUsers } from '../../lib/pacientes';
+import { getUser, getUsers } from '../../lib/auth';
+
+import Sidebar from '@/app/components/sidebar';
+import Bar from '@/app/components/bar';
+import { User, Speciality } from '../../types/types';
+import '../../sections.css';  
+
+const UserPage = async ({ params }: { params: { id: string } }) => {
+    const user = await getUser(params.id);
+  
+    return (
+      <div className='container'>
+      <Sidebar/>
+      <div>
+        <div className='div-principal'>
+
+          <Bar/>
+          <h1>Usuarios:</h1>
+          <h1>{user.name} {user.lastname}</h1>
+        <p>DNI: {user.DNI}</p>
+        <p>Teléfono: {user.telephone}</p>
+        <p>Email: {user.email}</p>
+        <p>Dirección: {user.address}</p>
+        <p>Género: {user.gender}</p>
+        <p>Fecha de Nacimiento: {user.birth_date}</p>
+        <p>Seguro de Salud: {user.health_insurance}</p>
+        <p>Número de Seguro de Salud: {user.health_insurance_number}</p>
+        <p>Número de Licencia: {user.licence_number}</p>
+        
+        <p>Notas: {user.notes}</p>
+          
+        </div>
+        
+      </div>
+    </div>
+
+        
+      
+    );
+  };
+  
+  export async function generateStaticParams() {
+    const users = await fetchUsers().catch((error) => {
+      console.error('Error fetching users:', error);
+      return [];
+    });
+    return users.map(user => ({
+      id: user.id.toString(),
+    }));
+  }
+  
+  export default UserPage;

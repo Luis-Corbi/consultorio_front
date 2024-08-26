@@ -1,0 +1,43 @@
+name: Sync Branch to Another Repo
+
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  sync_branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          
+      - name: Setup SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Add destination repository as a remote
+        run: |
+          git remote add destination git@github.com:Luis-Corbi/consultorio_front.git
+          git fetch destination
+
+      - name: Merge changes from deploy to destination's main
+        run: |
+          git checkout -b temp_main destination/main
+          git merge --strategy=recursive --strategy-option=theirs --allow-unrelated-histories origin/deploy
+
+      - name: Push changes to destination repository
+        run: git push destination temp_main:main
