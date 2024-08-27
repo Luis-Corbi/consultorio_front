@@ -91,7 +91,6 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
 
   return (
     <div className="modal-container">
-      <div className="modal-content">
         <h2 className="modal-title">Crear Paciente</h2>
         <form onSubmit={handleSubmit} className="modal-form">
           <label>
@@ -156,7 +155,6 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
             <button type="button" onClick={onClose}>Cancelar</button>
           </div>
         </form>
-      </div>
     </div>
   );
 };

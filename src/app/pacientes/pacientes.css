@@ -87,7 +87,6 @@ input {
     transition: all 0.3s ease;
   }
   
-  /* Estilo para el input cuando está seleccionado */
   input:focus {
     border-color: #0177a9;
     outline: none;
