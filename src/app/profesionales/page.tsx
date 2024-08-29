@@ -7,6 +7,8 @@ import Bar from '../components/bar';
 import ProTable from '../components/protable';
 import { fetchUsersByRole } from '../lib/pacientes';
 import CrearProfesionalForm from '../components/CrearProf'; // Importa el formulario
+import { User } from '../types/types'; 
+
 
 const TableProfesionales: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -30,8 +32,8 @@ const TableProfesionales: React.FC = () => {
   }, []);
 
   const handleCreate = () => {
-    fetchUsers(); // Recarga la lista de usuarios
-    setShowCreateForm(false); // Cierra el formulario
+    fetchUsers(); 
+    setShowCreateForm(false); 
   };
 
   if (loading) return <div>Loading...</div>;
@@ -44,11 +46,11 @@ const TableProfesionales: React.FC = () => {
         <div className='div-principal'>
           <Bar />
           <h1>Profesionales</h1>
-          <button onClick={() => setShowCreateForm(true)}>Crear Profesional</button>
+          {/* <button onClick={() => setShowCreateForm(true)}>Crear Profesional</button> */}
           {showCreateForm && (
             <CrearProfesionalForm 
               onClose={() => setShowCreateForm(false)} 
-              onCreate={handleCreate} // Asegúrate de pasar la función aquí
+              onCreate={handleCreate} 
             />
           )}
           <ProTable users={users} />

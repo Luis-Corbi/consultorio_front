@@ -75,6 +75,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
 
     return (
         <div className="modal-container">
+            
                 <h2 className="modal-title">Crear Profesional</h2>
                 <form onSubmit={handleSubmit} className="modal-form">
                     <label>
@@ -131,7 +132,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
                     </label>
                     <label>
                         Especialidad:
-                        <select className='select' value={speciality} onChange={(e) => setSpeciality(e.target.value)} required>
+                        <select className='select-form' value={speciality} onChange={(e) => setSpeciality(e.target.value)} required>
                             <option value="">Selecciona una especialidad</option>
                             {specialities.map((speciality) => (
                                 <option key={speciality.id} value={speciality.id}>
@@ -157,8 +158,8 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
                         <button type="button" onClick={onClose}>Cancelar</button>
                     </div>
                 </form>
+            
         </div>
     );
 };
-
 export default CrearProfesionalForm;
