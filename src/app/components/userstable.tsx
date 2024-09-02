@@ -43,10 +43,10 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
 
       {isModalOpen && (
         <div className="modal-overlay">
-          <div className="modal">
+          
             <button className="close-button" onClick={closeModal}>&times;</button>
             <CrearPacienteForm onClose={closeModal} />
-          </div>
+          
         </div>
       )}
 
