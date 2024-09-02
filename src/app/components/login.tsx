@@ -4,8 +4,20 @@
 import React, { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { login } from '../lib/auth';
-import './login.css';  
+import './login.css';
+import api from '../lib/api';
+
+interface UserData {
+  id: number;
+  email: string;
+  name: string;
+  specialty?: string;
+}
+
+interface DecodedToken {
+  user_id?: number;
+  exp: number;
+}
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -18,25 +30,21 @@ const LoginForm: React.FC = () => {
     const checkToken = () => {
       const token = Cookies.get('access_token');
       if (token) {
-        const decodedToken = decodeJwt(token); // Decodifica el token para verificar su expiración
-        const now = Date.now() / 1000;
-        
-        if (decodedToken.exp > now) {
-          // Token es válido
-          router.push('/dashboard');
-        } else {
-          // Token ha expirado
-          Cookies.remove('access_token');
-          setError('La sesión ha expirado');
-        }
+        router.push('/dashboard');
       } else {
-        setLoading(false); // No hay token, permite el login
+        setLoading(false);
       }
     };
-
     checkToken();
   }, [router]);
 
+  const login = async (email: string, password: string) => {
+    const response = await api.post(`/login/`, { username: email, password });
+    const { access, refresh } = response.data;
+    Cookies.set('access_token', access);
+    Cookies.set('refresh_token', refresh);
+    return access;
+  };
   const decodeJwt = (token: string) => {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -46,11 +54,36 @@ const LoginForm: React.FC = () => {
     
     return JSON.parse(jsonPayload);
   };
+  const getUserId = async (token: string): Promise<number> => {
+    try {
+      const decodedToken = decodeJwt(token);
+      if (decodedToken.user_id) {
+        return decodedToken.user_id;
+      }
+    } catch (error) {
+      console.error('Error decoding token:', error);
+    }
+
+    const response = await  api.get(`/users`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data.id;
+  };
+
+  const getUserData = async (token: string, userId: number): Promise<UserData> => {
+    const response = await api.get(`/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data;
+  };
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      await login(email, password);
+      const accessToken = await login(email, password);
+      const userId = await getUserId(accessToken);
+      const userData = await getUserData(accessToken, userId);
+      localStorage.setItem('userData', JSON.stringify(userData));
       router.push('/dashboard');
     } catch (err) {
       setError('Invalid email or password');
