@@ -44,7 +44,6 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
 
       {isModalOpen && (
         <div className="modal-overlay">
-            <button className="close-button" onClick={closeModal}>&times;</button>
             <CrearProfesionalForm onClose={closeModal} onCreate={handleCreate} />
         </div>
         

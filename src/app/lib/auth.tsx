@@ -16,13 +16,13 @@ export const logout = async () => {
   Cookies.remove('refresh_token');
 };
 
-// Otros métodos para manejar usuarios, citas, etc.
-export const getUsers = async () => {
-  const response = await api.get('users/');
-  return response.data;
-};
+// // Otros métodos para manejar usuarios, citas, etc.
+// export const getUsers = async () => {
+//   const response = await api.get('users/');
+//   return response.data;
+// };
 
-export const getUser = async (id: string) => {
-  const response = await api.get(`users/${id}/`);
-  return response.data;
-};
+// export const getUser = async (id: string) => {
+//   const response = await api.get(`users/${id}?`);
+//   return response.data;
+// };

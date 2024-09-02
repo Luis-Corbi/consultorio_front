@@ -206,6 +206,7 @@ th{
   border-radius: 5px;
   cursor: pointer;
   flex-direction: row;
+  justify-content: center;
 }
 
 .logo-paciente{

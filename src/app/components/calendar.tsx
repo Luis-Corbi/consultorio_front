@@ -1,4 +1,6 @@
 "use client"
+import axios from 'axios';
+
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer, Event, View, Messages, NavigateAction } from 'react-big-calendar';
 import moment from 'moment';
@@ -63,11 +65,13 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   const loadProfessionals = async () => {
     try {
       const fetchedProfessionals = await fetchProfessionals();
+      console.log('Fetched professionals:', fetchedProfessionals); // Log para verificar los datos
       setProfessionals(fetchedProfessionals);
     } catch (error) {
       console.error('Error fetching professionals:', error);
     }
   };
+  
 
   // Función para cargar los turnos
   const loadAppointments = async () => {
@@ -145,12 +149,12 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    console.log(`Field changed: ${name}, New value: ${value}`);
     setNewAppointment({
       ...newAppointment,
       [name]: value
     });
-  };
-
+};
   const handleProfessionalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = parseInt(e.target.value);
     setSelectedProfessional(selectedId || null); // Asegúrate de que se maneja correctamente el valor null
@@ -159,17 +163,14 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Crear un objeto Date para la fecha y hora del turno
     const appointmentDateTime = new Date(`${newAppointment.date}T${newAppointment.hour}`);
     const now = new Date();
-    
-    // Verificar si la fecha y hora del turno ya han pasado
+  
     if (appointmentDateTime < now) {
       alert("No puedes crear un turno en una fecha y hora pasada.");
       return;
     }
-    
-    // Verificar si la fecha del turno está más allá de los próximos 90 días
+  
     const maxDate = new Date();
     maxDate.setDate(now.getDate() + 90);
     if (appointmentDateTime > maxDate) {
@@ -177,24 +178,20 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
       return; 
     }
   
-      // Verificar si la hora del turno está dentro de los intervalos permitidos
     const appointmentHour = appointmentDateTime.getHours();
     const appointmentMinutes = appointmentDateTime.getMinutes();
-    
-    // Primer intervalo: 09:00 a 13:00
+  
     const isInFirstInterval = (appointmentHour > 9 || (appointmentHour === 9 && appointmentMinutes >= 0)) &&
                               (appointmentHour < 13 || (appointmentHour === 13 && appointmentMinutes === 0));
-    
-    // Segundo intervalo: 16:30 a 20:30
+  
     const isInSecondInterval = (appointmentHour > 16 || (appointmentHour === 16 && appointmentMinutes >= 30)) &&
-                              (appointmentHour < 20 || (appointmentHour === 20 && appointmentMinutes <= 30));
-    
+                               (appointmentHour < 20 || (appointmentHour === 20 && appointmentMinutes <= 30));
+  
     if (!isInFirstInterval && !isInSecondInterval) {
       alert("Solo puedes crear turnos entre 09:00-13:00 y 16:30-20:30.");
       return;
     }
   
-    
     try {
       console.log('Submitting new appointment:', newAppointment);
       const savedAppointment = await createAppointment(newAppointment);
@@ -219,10 +216,16 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   
       alert('Turno guardado correctamente');
     } catch (error) {
-      console.error('Error al guardar el turno:', error);
-      alert('Error al guardar el turno');
+      if (axios.isAxiosError(error)) {
+        console.error('Error al guardar el turno:', error.response?.data);
+        alert(`Error al guardar el turno: ${error.response?.data?.detail || 'Error desconocido'}`);
+      } else {
+        console.error('Error inesperado:', error);
+        alert('Error inesperado al guardar el turno');
+      }
     }
   };
+  
   
 
   const handleSelectEvent = (event: CustomEvent) => {
@@ -374,7 +377,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
             <span className="close" onClick={handleCloseModal}>&times;</span>
             <h2>Nuevo Turno</h2>
             <form onSubmit={handleSubmit}>
-              <label>
+            <label>
                 Profesional:
                 <select name="professional" value={newAppointment.professional} onChange={handleInputChange}>
                   {professionals.map(professional => (
@@ -384,7 +387,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
                   ))}
                 </select>
               </label>
-              <label>
+               <label>
                 Paciente:
                 <select name="patient" value={newAppointment.patient} onChange={handleInputChange}>
                   {patients.map(patient => (

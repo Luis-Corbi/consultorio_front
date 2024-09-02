@@ -50,7 +50,7 @@ export const fetchProfessionals = async () => {
     
     // Filtra los usuarios para obtener solo los profesionales
     const professionals = users.filter((user: any) => 
-      user.roles.some((role: any) => role.id === 2)
+      user.roles.some((role: any) => role.id === 1)
     );
     
     return professionals;
