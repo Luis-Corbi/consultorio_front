@@ -1,4 +1,4 @@
-// src/app/pacientes/[id]/page.tsx
+// src/app/profesionales/[id]/page.tsx
 
 import { fetchUser } from '@/app/lib/pacientes';
 import Sidebar from '@/app/components/sidebar';
@@ -28,6 +28,11 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
     if (!user) {
       notFound(); // Utiliza notFound para redirigir a una página 404
     }
+    const genderMap: { [key: string]: string } = {
+      M: 'Masculino',
+      F: 'Femenino',
+      O: 'Otro'
+    };
 
     return (
         <div className='container'>
@@ -42,7 +47,7 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
             <p><strong>Teléfono:</strong> {user.telephone}</p>
             <p><strong>Email:</strong> {user.email}</p>
             <p><strong>Dirección:</strong> {user.address}</p>
-            <p><strong>Género:</strong> {user.gender}</p>
+            <p><strong>Género:</strong> {genderMap[user.gender] || 'No especificado'}</p>
             <p><strong>Fecha de Nacimiento:</strong> {user.birth_date}</p>
             <p><strong>Seguro de Salud:</strong> {user.health_insurance}</p>
             <p><strong>Número de Seguro de Salud:</strong> {user.health_insurance_number}</p>
