@@ -4,12 +4,11 @@ import { Calendar, momentLocalizer, Event, View, Messages, NavigateAction } from
 import moment from 'moment';
 import 'moment/locale/es'; 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { createAppointment, fetchAllAppointments, fetchAppointmentsByProfessional,fetchProfessionals,deleteAppointment} from '../lib/turnos';
+import { createAppointment, fetchAllAppointments, fetchAppointmentsByProfessional, fetchProfessionals, softDeleteAppointment } from '../lib/turnos';
 import { fetchUsersByRole } from '../lib/pacientes';
 import { Appointment, User } from '../types/types';
 import './Calendario.css'; 
 import ModalAlert from './modalAlert';
-
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
@@ -38,8 +37,8 @@ interface CustomEvent extends Event {
 interface CalendarioProps {
   defaultView: View;
 }
-const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
 
+const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   const [events, setEvents] = useState<CustomEvent[]>([]);
   const [view, setView] = useState<View>(defaultView);
   const [date, setDate] = useState<Date>(new Date());
@@ -48,7 +47,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false);
   const [professionals, setProfessionals] = useState<User[]>([]);
   const [patients, setPatients] = useState<User[]>([]);
-  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null); // Estado para el turno seleccionado
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [selectedProfessional, setSelectedProfessional] = useState<number | null>(null);
   const [newAppointment, setNewAppointment] = useState<Appointment>({
     professional: 1,
@@ -59,7 +58,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     notes: ''
   });
 
-  // Función para cargar los profesionales
+  // Cargar profesionales
   const loadProfessionals = async () => {
     try {
       const fetchedProfessionals = await fetchProfessionals();
@@ -69,7 +68,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     }
   };
 
-  // Función para cargar los turnos
+  // Cargar turnos
   const loadAppointments = async () => {
     try {
       let appointments: Appointment[] = [];
@@ -80,14 +79,14 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
       }
       const events = appointments.map(appointment => {
         const professional = professionals.find(p => p.id === appointment.professional);
-        const color = professional ? professional.color : '#000000'; // Color por defecto si no se encuentra el profesional
+        const color = professional ? professional.color : '#000000';
 
         return {
           start: new Date(`${appointment.date}T${appointment.hour}`),
           end: new Date(new Date(`${appointment.date}T${appointment.hour}`).getTime() + 30 * 60000),
           title: appointment.notes,
           appointment,
-          color // Añade el color al evento
+          color
         };
       });
       setEvents(events);
@@ -96,7 +95,6 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     }
   };
 
-  // Cargar profesionales y pacientes al montar el componente
   useEffect(() => {
     loadProfessionals();
     const loadUsers = async () => {
@@ -110,7 +108,6 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     loadUsers();
   }, []);
 
-  // Cargar turnos cuando se selecciona un profesional o cambian los profesionales
   useEffect(() => {
     loadAppointments();
   }, [selectedProfessional, professionals]);
@@ -121,7 +118,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
       date: moment(start).format('YYYY-MM-DD'),
       hour: moment(start).format('HH:mm:ss')
     });
-    setIsViewingAppointment(false); 
+    setIsViewingAppointment(false);
     setModalIsOpen(true);
   };
 
@@ -139,45 +136,40 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
 
   const handleProfessionalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = parseInt(e.target.value);
-    setSelectedProfessional(selectedId || null); // Asegúrate de que se maneja correctamente el valor null
+    setSelectedProfessional(selectedId || null);
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-        console.log('Submitting new appointment:', newAppointment);
-        const savedAppointment = await createAppointment(newAppointment);
-        console.log('Saved appointment:', savedAppointment);
-        
-        // Crear las fechas de inicio y fin usando moment para asegurar la consistencia
-        const start = moment(`${savedAppointment.date}T${savedAppointment.hour}`).toDate();
-        const end = moment(start).add(15, 'minutes').toDate(); // Duración de 30 minutos
+      const savedAppointment = await createAppointment(newAppointment);
 
-        const newEvent: CustomEvent = {
-            start,
-            end,
-            title: savedAppointment.notes,
-            appointment: savedAppointment,
-            color: professionals.find(p => p.id === savedAppointment.professional)?.color || '#3174ad', // Asignar color
-        };
+      const start = moment(`${savedAppointment.date}T${savedAppointment.hour}`).toDate();
+      const end = moment(start).add(30, 'minutes').toDate();
 
-        setEvents([...events, newEvent]);
-        setModalIsOpen(false);
-        
-        // Recargar turnos y profesionales
-        await loadAppointments(); 
-        await loadProfessionals(); 
-        
-        alert('Turno guardado correctamente');
+      const newEvent: CustomEvent = {
+        start,
+        end,
+        title: savedAppointment.notes,
+        appointment: savedAppointment,
+        color: professionals.find(p => p.id === savedAppointment.professional)?.color || '#3174ad',
+      };
+
+      setEvents([...events, newEvent]);
+      setModalIsOpen(false);
+      await loadAppointments();
+      await loadProfessionals();
+
+      alert('Turno guardado correctamente');
     } catch (error) {
-        console.error('Error al guardar el turno:', error);
-        alert('Error al guardar el turno');
+      console.error('Error al guardar el turno:', error);
+      alert('Error al guardar el turno');
     }
-};
+  };
 
   const handleSelectEvent = (event: CustomEvent) => {
     setSelectedAppointment(event.appointment);
-    setIsViewingAppointment(true); // Indica que se está visualizando un turno
+    setIsViewingAppointment(true);
     setModalIsOpen(true);
   };
 
@@ -189,30 +181,24 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     const professional = professionals.find(p => p.id === id);
     return professional ? `${professional.name} ${professional.lastname}` : 'Profesional no encontrado';
   };
-  
-  // Función para obtener el nombre completo del paciente a partir de su ID
+
   const getPatientName = (id: number) => {
     const patient = patients.find(p => p.id === id);
     return patient ? `${patient.name} ${patient.lastname}` : 'Paciente no encontrado';
   };
-  
- 
-  // Funcion delete 
+
   const handleDeleteAppointment = async () => {
     if (!selectedAppointment || selectedAppointment.id === undefined) return;
-    
-    setIsConfirmDeleteOpen(true); 
+    setIsConfirmDeleteOpen(true);
   };
 
   const confirmDeleteAppointment = async () => {
     if (!selectedAppointment || selectedAppointment.id === undefined) return;
-
     try {
-      await deleteAppointment(selectedAppointment.id);
-
+      await softDeleteAppointment(selectedAppointment.id);
       setEvents(events.filter(event => event.appointment.id !== selectedAppointment.id));
       setModalIsOpen(false);
-      setIsConfirmDeleteOpen(false); 
+      setIsConfirmDeleteOpen(false);
       alert('Turno eliminado correctamente');
     } catch (error) {
       console.error('Error al eliminar el turno:', error);
@@ -224,13 +210,9 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     setIsConfirmDeleteOpen(false);
   };
 
-
-
-
-
   const eventStyleGetter = (event: CustomEvent) => {
     const style = {
-      backgroundColor: event.color || '#3174ad', // Usa el color del evento o un color por defecto
+      backgroundColor: event.color || '#3174ad',
       borderRadius: '0px',
       opacity: 0.8,
       color: 'white',
@@ -243,14 +225,8 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
 
   return (
     <div className='div-calendar' style={{ height: '80vh' }}>
-      {/* Modal de Confirmación de Eliminación */}
-      <ModalAlert
-        isOpen={isConfirmDeleteOpen}
-        onClose={closeConfirmDeleteModal}
-        onConfirm={confirmDeleteAppointment}
-      />
-  
-      {/* Filtro por Profesional */}
+      <ModalAlert isOpen={isConfirmDeleteOpen} onClose={closeConfirmDeleteModal} onConfirm={confirmDeleteAppointment} />
+
       <label className='filtro-prof'>
         Filtrar por profesional:
         <select value={selectedProfessional ?? ''} onChange={handleProfessionalChange}>
@@ -262,8 +238,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
           ))}
         </select>
       </label>
-  
-      {/* Calendario */}
+
       <Calendar
         localizer={localizer}
         events={events}
@@ -276,8 +251,8 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
         views={['month', 'week', 'day']}
         view={view}
         onView={(view) => setView(view)}
-        step={15} // Cada celda del calendario representa 15 minutos
-        timeslots={4} // Cada hora se divide en 4 timeslots de 15 minutos
+        step={15}
+        timeslots={4}
         showMultiDayTimes
         defaultDate={new Date()}
         date={date}
@@ -285,51 +260,39 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
         min={new Date(1970, 1, 1, 9, 0)}
         max={new Date(1970, 1, 1, 20, 30)}
         toolbar={true}
-        messages={messages} 
+        messages={messages}
         eventPropGetter={eventStyleGetter}
       />
-  
-      {/* Modal de Detalles del Turno */}
+
       {modalIsOpen && isViewingAppointment && selectedAppointment && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={handleCloseModal}>&times;</span>
-            <h2>Detalles del Turno</h2>
-            <div className='div-modal'>
-              <p><strong>Profesional:</strong> {getProfessionalName(selectedAppointment.professional)}</p>
-              <p><strong>Paciente:</strong> {getPatientName(selectedAppointment.patient)}</p>
-              <p><strong>Fecha:</strong> {selectedAppointment.date}</p>
-              <p><strong>Hora:</strong> {selectedAppointment.hour}</p>
-              <p><strong>Notas:</strong> {selectedAppointment.notes}</p>
-            </div>
-            <div className='botones-modal'>
-              <button type="button" onClick={handleCloseModal}>Cerrar</button>
-              <button type="button" onClick={handleDeleteAppointment} className="delete-button">Eliminar Turno</button>
-            </div>
+            <h2>Ver Turno</h2>
+            <p>Paciente: {getPatientName(selectedAppointment.patient)}</p>
+            <p>Profesional: {getProfessionalName(selectedAppointment.professional)}</p>
+            <p>Fecha: {selectedAppointment.date}</p>
+            <p>Hora: {selectedAppointment.hour}</p>
+            <p>Notas: {selectedAppointment.notes}</p>
+            <button onClick={() => setModalIsOpen(false)}>Cerrar</button>
+            <button onClick={handleDeleteAppointment}>Eliminar Turno</button>
           </div>
         </div>
       )}
-  
-      {/* Modal para Nuevo Turno */}
+
       {modalIsOpen && !isViewingAppointment && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={handleCloseModal}>&times;</span>
             <h2>Nuevo Turno</h2>
             <form onSubmit={handleSubmit}>
               <label>
-                Profesional:
-                <select name="professional" value={newAppointment.professional} onChange={handleInputChange}>
-                  {professionals.map(professional => (
-                    <option key={professional.id} value={professional.id}>
-                      {professional.name} {professional.lastname}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
                 Paciente:
-                <select name="patient" value={newAppointment.patient} onChange={handleInputChange}>
+                <select
+                  name="patient"
+                  value={newAppointment.patient}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccionar Paciente</option>
                   {patients.map(patient => (
                     <option key={patient.id} value={patient.id}>
                       {patient.name} {patient.lastname}
@@ -338,26 +301,45 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
                 </select>
               </label>
               <label>
-                Fecha:
-                <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} />
+                Profesional:
+                <select
+                  name="professional"
+                  value={newAppointment.professional}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccionar Profesional</option>
+                  {professionals.map(professional => (
+                    <option key={professional.id} value={professional.id}>
+                      {professional.name} {professional.lastname}
+                    </option>
+                  ))}
+                </select>
               </label>
               <label>
-                Hora:
-                <input type="time" name="hour" value={newAppointment.hour} onChange={handleInputChange} />
+                Fecha: {moment(newAppointment.date).format('DD/MM/YYYY')}
+              </label>
+              <label>
+                Hora: {moment(newAppointment.hour, 'HH:mm:ss').format('HH:mm')}
               </label>
               <label>
                 Notas:
-                <textarea name="notes" value={newAppointment.notes} onChange={handleInputChange}></textarea>
+                <textarea
+                  name="notes"
+                  value={newAppointment.notes}
+                  onChange={handleInputChange}
+                />
               </label>
-              <div className='botones-modal'>
-                <button type="submit">Guardar Turno</button>
-                <button type="button" onClick={handleCloseModal}>Cancelar</button>
-              </div>
+              <button type="submit">Guardar Turno</button>
+              <button type="button" onClick={handleCloseModal}>
+                Cancelar
+              </button>
             </form>
           </div>
         </div>
       )}
     </div>
   );
-}
+};
+
 export default Calendario;
