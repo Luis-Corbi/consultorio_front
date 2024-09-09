@@ -31,22 +31,26 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   // Total pages
   const totalPages = Math.ceil(users.length / usersPerPage);
 
+  const genderMap: { [key: string]: string } = {
+    M: 'Masculino',
+    F: 'Femenino',
+    O: 'Otro'
+  };
   return (
     <>
       <div className='botones-table'>
         <input type="text" />
-        <div className='crear-pac'>
+        <div className='crear-pac' onClick={openModal}>
           <img className='plus-icon' src="/assets/plus.png" alt="" />
-          <button className='btn-pacientes' onClick={openModal}>Crear Paciente</button>
+          <button className='btn-pacientes'>Crear Paciente</button>
         </div>
       </div>
 
       {isModalOpen && (
         <div className="modal-overlay">
-          <div className="modal">
-            <button className="close-button" onClick={closeModal}>&times;</button>
+          
             <CrearPacienteForm onClose={closeModal} />
-          </div>
+          
         </div>
       )}
 
@@ -73,7 +77,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
               <td>{user.telephone}</td>
               <td>{user.email}</td>
               <td>{user.address}</td>
-              <td>{user.gender}</td>
+              <td>{genderMap[user.gender] || 'No especificado'}</td>
               <td>{user.birth_date}</td>
               <td className='ver-paciente'>
                 <Link  className='button-ver-p' href={`/pacientes/${user.id}`} >
@@ -99,40 +103,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
         ))}
       </div>
 
-      <style jsx>{`
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-        }
-
-        .modal {
-          background: white;
-          padding: 20px;
-          border-radius: 8px;
-          max-width: 500px;
-          width: 100%;
-        }
-
-        .close-button {
-          background: none;
-          border: none;
-          font-size: 1.5rem;
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          cursor: pointer;
-        }
-
-        
-      `}</style>
+      
     </>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { User } from '../types/types';
 import CrearProfesionalForm from './CrearProf';
-import "../pacientes/pacientes.css"
+import "../pacientes/pacientes.css";
 
 interface UsersTableProps {
   users: User[];
@@ -16,40 +16,48 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  // Calculate the current users to display
+  const handleCreate = () => {
+    // Recarga la lista de usuarios o actualiza el estado de la lista
+    closeModal();
+  };
+
+  // Calcula los usuarios actuales para mostrar
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
-  // Change page
+  // Cambia la página
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  // Total pages
+  // Total de páginas
   const totalPages = Math.ceil(users.length / usersPerPage);
-
+  
+  const genderMap: { [key: string]: string } = {
+    M: 'Masculino',
+    F: 'Femenino',
+    O: 'Otro'
+  };
   return (
     <>
       <div className='botones-table'>
         <input type="text" />
-        <div className='crear-pac'>
+        <div className='crear-pac' onClick={openModal}>
           <img className='plus-icon' src="/assets/plus.png" alt="" />
-          <button className='btn-pacientes' onClick={openModal}>Crear Profesional</button>
+          <button className='btn-pacientes'>Crear Profesional</button>
         </div>
       </div>
 
       {isModalOpen && (
         <div className="modal-overlay">
-          <div className="modal">
-            <button className="close-button" onClick={closeModal}>&times;</button>
-            <CrearProfesionalForm onClose={closeModal} />
-          </div>
+            <CrearProfesionalForm onClose={closeModal} onCreate={handleCreate} />
         </div>
+        
       )}
 
       <table>
         <thead>
           <tr>
-            <th>Color</th> 
+            <th>Color</th>
             <th>Nombre</th>
             <th>Apellido</th>
             <th>DNI</th>
@@ -87,12 +95,12 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
               <td>{user.telephone}</td>
               <td>{user.email}</td>
               <td>{user.address}</td>
-              <td>{user.gender}</td>
+              <td>{genderMap[user.gender] || 'No especificado'}</td>
               <td>{user.birth_date}</td>
-              
               <td className='ver-paciente'>
-                <Link href={`/profesionales/${user.id}`}>
-                  <button>Ver</button>
+                <Link className='button-ver-p' href={`/profesionales/${user.id}`}>
+                <img className='logo-paciente' src="../assets/doctor.png" alt="" />
+                  Ver
                 </Link>
               </td>
             </tr>

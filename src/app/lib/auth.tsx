@@ -16,13 +16,34 @@ export const logout = async () => {
   Cookies.remove('refresh_token');
 };
 
-// Otros métodos para manejar usuarios, citas, etc.
-export const getUsers = async () => {
-  const response = await api.get('users/');
-  return response.data;
-};
+// // Otros métodos para manejar usuarios, citas, etc.
+// export const getUsers = async () => {
+//   const response = await api.get('users/');
+//   return response.data;
+// };
 
-export const getUser = async (id: string) => {
-  const response = await api.get(`users/${id}/`);
-  return response.data;
-};
+// export const getUser = async (token: string): Promise<number> => {
+//   try {
+//     const decodedToken = decodeJwt(token);
+//     if (decodedToken.user_id) {
+//       return decodedToken.user_id;
+//     }
+//   } catch (error) {
+//     console.error('Error decoding token:', error);
+//   }
+
+//   const response = await api.get(`/users`, {
+//     headers: { Authorization: `Bearer ${token}` }
+//   });
+//   return response.data.id;
+// };
+
+// const decodeJwt = (token: string) => {
+//   const base64Url = token.split('.')[1];
+//   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+//   const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+//     `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`
+//   ).join(''));
+  
+//   return JSON.parse(jsonPayload);
+// };

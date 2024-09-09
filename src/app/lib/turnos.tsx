@@ -37,8 +37,16 @@ export const fetchAppointmentsByProfessional = async (professionalId: number): P
 // Función para obtener profesionales
 export const fetchProfessionals = async (): Promise<User[]> => {
   try {
-    const res = await api.get('/professionals/');
-    return res.data;
+
+    const response = await api.get('/users/');
+    const users = response.data;
+    
+    // Filtra los usuarios para obtener solo los profesionales
+    const professionals = users.filter((user: any) => 
+      user.roles.some((role: any) => role.id === 1)
+    );
+    
+    return professionals;
   } catch (error) {
     console.error('Error fetching professionals:', error);
     throw error;

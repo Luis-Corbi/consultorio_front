@@ -1,53 +1,62 @@
-import { fetchUser, fetchUsers } from '../../lib/pacientes';
-import { getUser, getUsers } from '../../lib/auth';
-
+// src/app/pacientes/[id]/page.tsx
+import { fetchUser } from '@/app/lib/pacientes';
 import Sidebar from '@/app/components/sidebar';
 import Bar from '@/app/components/bar';
-import { User, Speciality } from '../../types/types';
-import '../../sections.css';  
+import { User } from '@/app/types/types';
+import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
+import '../../sections.css'; 
+interface Props {
+  user: User | null;
+}
 
 const UserPage = async ({ params }: { params: { id: string } }) => {
-    const user = await getUser(params.id);
-  
+  // Obtener el token de las cookies
+  const cookieStore = cookies();
+  const token = cookieStore.get('access_token')?.value || '';
+
+  if (!token) {
+    return <div>Token no disponible, por favor inicie sesión.</div>;
+  }
+
+  try {
+    // Llamar a la función para obtener el usuario
+    const user: User | null = await fetchUser(params.id, false, token);
+
+    if (!user) {
+      notFound(); // Utiliza notFound para redirigir a una página 404
+    }
+    const genderMap: { [key: string]: string } = {
+      M: 'Masculino',
+      F: 'Femenino',
+      O: 'Otro'
+    };
     return (
       <div className='container'>
-      <Sidebar/>
-      <div>
-        <div className='div-principal'>
-
-          <Bar/>
-          <h1>Usuarios:</h1>
-          <h1>{user.name} {user.lastname}</h1>
-        <p>DNI: {user.DNI}</p>
-        <p>Teléfono: {user.telephone}</p>
-        <p>Email: {user.email}</p>
-        <p>Dirección: {user.address}</p>
-        <p>Género: {user.gender}</p>
-        <p>Fecha de Nacimiento: {user.birth_date}</p>
-        <p>Seguro de Salud: {user.health_insurance}</p>
-        <p>Número de Seguro de Salud: {user.health_insurance_number}</p>
-        <p>Número de Licencia: {user.licence_number}</p>
-        
-        <p>Notas: {user.notes}</p>
-          
+      <Sidebar />
+      <div className='container'>
+          <div className='div-principal'>
+            <Bar />
+            <h1>Detalles del Paciente:</h1>
+            <p><strong>Nombre:</strong> {user.name}</p>
+            <p><strong>Apellido:</strong> {user.lastname}</p>
+            <p><strong>DNI:</strong> {user.DNI}</p>
+            <p><strong>Teléfono:</strong> {user.telephone}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Dirección:</strong> {user.address}</p>
+            <p><strong>Género:</strong> {genderMap[user.gender] || 'No especificado'}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {user.birth_date}</p>
+            <p><strong>Seguro de Salud:</strong> {user.health_insurance}</p>
+            <p><strong>Número de Seguro de Salud:</strong> {user.health_insurance_number}</p>
+            <p><strong>Notas:</strong> {user.notes}</p>
+          </div>
         </div>
-        
       </div>
-    </div>
-
-        
-      
     );
-  };
-  
-  export async function generateStaticParams() {
-    const users = await fetchUsers().catch((error) => {
-      console.error('Error fetching users:', error);
-      return [];
-    });
-    return users.map(user => ({
-      id: user.id.toString(),
-    }));
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return <div>Error al cargar los datos del usuario.</div>;
   }
-  
-  export default UserPage;
+};
+
+export default UserPage;

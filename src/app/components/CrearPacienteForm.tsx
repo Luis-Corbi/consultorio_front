@@ -43,7 +43,7 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     try {
       const newUser = {
         username,
@@ -63,9 +63,9 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
         notes,
         roles: [3], // Asegúrate de que este ID corresponda al rol de paciente en tu backend
       };
-
+  
       console.log('Submitting user:', newUser);
-
+  
       await axios.post(
         'http://127.0.0.1:8000/api/users/',
         newUser,
@@ -76,12 +76,18 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
           },
         }
       );
-
+  
       onClose();
     } catch (error) {
-      console.error('Failed to create user:', error.response ? error.response.data : error.message);
+      // Asegúrate de que el error es de tipo AxiosError
+      if (axios.isAxiosError(error)) {
+        console.error('Failed to create user:', error.response ? error.response.data : error.message);
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
     }
   };
+  
 
   // Función para obtener el token JWT
   const getAuthToken = () => {
@@ -91,7 +97,6 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
 
   return (
     <div className="modal-container">
-      <div className="modal-content">
         <h2 className="modal-title">Crear Paciente</h2>
         <form onSubmit={handleSubmit} className="modal-form">
           <label>
@@ -128,7 +133,7 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
           </label>
           <label>
             Género:
-            <select className='select' value={gender} onChange={(e) => setGender(e.target.value)} required>
+            <select className='select-form' value={gender} onChange={(e) => setGender(e.target.value)} required>
               <option value="">Selecciona un género</option>
               <option value="M">Masculino</option>
               <option value="F">Femenino</option>
@@ -156,7 +161,6 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
             <button type="button" onClick={onClose}>Cancelar</button>
           </div>
         </form>
-      </div>
     </div>
   );
 };

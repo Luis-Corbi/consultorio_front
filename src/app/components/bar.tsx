@@ -1,30 +1,58 @@
+// src/app/components/bar.tsx
 "use client";
-import React, { useState } from 'react';
-import Cookies from 'js-cookie'; // Importa js-cookie para manejar cookies
 
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 import styles from '../components/dropdown.module.css';
 import Icondown from '../icons/down.jsx';
 import NotificationIcon from '../icons/notification';
 
-const buttonClasses = 'inline-flex items-center bg-secondary text-secondary-foreground p-2 rounded-lg hover:bg-secondary/80';
-const dropdownClasses = 'absolute right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg';
+interface Speciality {
+  id: number;
+  name: string;
+}
+interface UserData {
+  id: number;
+  name: string;
+  lastname: string;
+  speciality?: Speciality;
+  email: string;
+}
 
-const Bar = () => {
+const Bar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    } else {
+      window.location.href = '/';
+    }
+  }, [router]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleLogout = () => {
-    Cookies.remove('access_token'); // Borra el token de las cookies
-    window.location.href = '/'; // Redirige al login
+    Cookies.remove('access_token');
+    Cookies.remove('refresh_token');
+    localStorage.removeItem('userData');
+    window.location.href = '/';
   };
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.welcome}>
-        <span>Bienvenido, <span className={styles.username}>Daniel!</span></span>
+        <span>Bienvenido, <span className={styles.username}>{userData.name}!</span></span>
       </div>
       <div className={styles.icons}>
         <div className={styles.notification}>
@@ -34,8 +62,8 @@ const Bar = () => {
           <div className={styles.userDetails}>
             <div className={styles.avatar}></div>
             <div className={styles.info}>
-              <span className={styles.name}>DR. Daniel</span>
-              <span className={styles.role}>Dentista</span>
+              <span className={styles.name}>{userData.name} {userData.lastname}</span>
+              <span className={styles.role}>{userData.speciality?.name || 'Especialidad no especificada'}</span>
             </div>
           </div>
           <div className={styles.dropdownArrow}><Icondown /> </div>
@@ -43,7 +71,7 @@ const Bar = () => {
             <div className={styles.dropdownContent}>
               <a href="#">Perfil</a>
               <a href="#">Configuración</a>
-              <a href="#" onClick={handleLogout}>Salir</a> {/* Usa handleLogout para el clic */}
+              <a href="#" onClick={handleLogout}>Salir</a>
             </div>
           )}
         </div>

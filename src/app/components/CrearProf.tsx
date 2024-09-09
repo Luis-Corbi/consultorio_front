@@ -17,7 +17,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
     const [telephone, setTelephone] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
-    const [gender, setGender] = useState('');
+    const [gender, setGender] = useState<string>('');
     const [birthDate, setBirthDate] = useState('');
     const [healthInsurance, setHealthInsurance] = useState('');
     const [healthInsuranceNumber, setHealthInsuranceNumber] = useState('');
@@ -39,7 +39,6 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
   
       fetchSpecialities();
     }, []);
-  
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -59,7 +58,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
             licence_number: licenceNumber,
             speciality: speciality.toString(), 
             notes,
-            roles: [2], 
+            roles: [1], 
             color
           };
       
@@ -75,7 +74,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
 
     return (
         <div className="modal-container">
-            <div className="modal-content">
+            
                 <h2 className="modal-title">Crear Profesional</h2>
                 <form onSubmit={handleSubmit} className="modal-form">
                     <label>
@@ -112,7 +111,12 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
                     </label>
                     <label>
                         Género:
-                        <input type="text" value={gender} onChange={(e) => setGender(e.target.value)} required />
+                        <select className='select-form' value={gender} onChange={(e) => setGender(e.target.value)} required>
+                        <option value="">Selecciona un género</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                        <option value="O">Otro</option>
+                        </select>
                     </label>
                     <label>
                         Fecha de Nac.:
@@ -132,7 +136,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
                     </label>
                     <label>
                         Especialidad:
-                        <select className='select' value={speciality} onChange={(e) => setSpeciality(e.target.value)} required>
+                        <select className='select-form' value={speciality} onChange={(e) => setSpeciality(e.target.value)} required>
                             <option value="">Selecciona una especialidad</option>
                             {specialities.map((speciality) => (
                                 <option key={speciality.id} value={speciality.id}>
@@ -158,9 +162,8 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
                         <button type="button" onClick={onClose}>Cancelar</button>
                     </div>
                 </form>
-            </div>
+            
         </div>
     );
 };
-
 export default CrearProfesionalForm;
