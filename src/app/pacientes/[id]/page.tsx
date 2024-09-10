@@ -5,13 +5,9 @@ import Bar from '@/app/components/bar';
 import { User } from '@/app/types/types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-
-interface Props {
-  user: User | null;
-}
-
+import UploadReport from '@/app/components/pacientes/CrearReporte';
+import MedicalReports from '@/app/components/pacientes/ReportePaciente';
 const UserPage = async ({ params }: { params: { id: string } }) => {
-  // Obtener el token de las cookies
   const cookieStore = cookies();
   const token = cookieStore.get('access_token')?.value || '';
 
@@ -20,20 +16,19 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
   }
 
   try {
-    // Llamar a la función para obtener el usuario
     const user: User | null = await fetchUser(params.id, false, token);
 
     if (!user) {
-      notFound(); // Utiliza notFound para redirigir a una página 404
+      notFound();
     }
 
     return (
       <div className='container'>
-      <Sidebar />
-      <div className='container'>
+        <Sidebar />
+        <div className='container'>
           <div className='div-principal'>
             <Bar />
-            <h1>Usuarios:</h1>
+            <h1>Paciente:</h1>
             <h1>{user.name} {user.lastname}</h1>
             <p>DNI: {user.DNI}</p>
             <p>Teléfono: {user.telephone}</p>
@@ -45,6 +40,9 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
             <p>Número de Seguro de Salud: {user.health_insurance_number}</p>
             <p>Número de Licencia: {user.licence_number}</p>
             <p>Notas: {user.notes}</p>
+
+            <UploadReport patientId={params.id} token={token} />
+            <MedicalReports patientId={params.id} token={token} />
           </div>
         </div>
       </div>
