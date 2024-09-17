@@ -55,7 +55,6 @@
     height: 98%;
 }
 
-/* Estilo para los labels del formulario */
 .modal-form label {
   width: 48%;
   height: 7%;
@@ -63,8 +62,9 @@
   flex-direction: column;
 }
 
-/* Estilo para los inputs del formulario */
-.modal-form input,
+
+.modal-form ,
+.input-table-paciente,
 .modal-form textarea {
   width: calc(100% - 10px);
   padding: 8px;
@@ -98,19 +98,7 @@
   color: white;
 }
 
-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-  }
-  
-  /* Estilo para el input cuando estÃ¡ seleccionado */
-  input:focus {
-    border-color: #0177a9;
-    outline: none;
-    box-shadow: 0 0 5px #037171;
-  }
+
   .crear-pac{
     
   
@@ -227,4 +215,144 @@ th{
   border: 1px solid #ccc;
   border-radius: 4px;
   transition: all 0.3s ease;
+}
+
+/* Estilo para la tabla */
+.tabla-usuarios , .tabla-prof {
+  background-color: white;
+    margin-left: 3%;
+    width: 94%;
+    border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+/* Estilo para cada fila de la tabla */
+tbody tr {
+  border-bottom: 1px solid #ccc; /* Borde gris */
+  transition: background-color 0.3s ease;
+}
+
+/* Cambiar color de fondo al hacer hover */
+tbody tr:hover {
+  background-color: #91d7d237; /* Verde claro */
+}
+
+/* Estilo para la cabecera de la tabla */
+thead th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  border-bottom: 2px solid #ccc;
+}
+
+.div-datos-paciente{
+  overflow-x: scroll;
+  height: 87vh;
+  padding: 0px 8%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.form-reporte{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.button-subir-reporte{
+  width: 100%;
+  text-decoration: none;
+  color: white;
+  align-items: center;
+  background-color: #8EDAD5;
+  border: 1px solid #8EDAD5;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 38px;
+
+}
+
+.datos{
+  width: 40%;
+  margin-top: 2%;
+  background-color: white;
+  margin-right: 2%;
+  padding: 3%;
+  border-radius: 5%;
+  height: 50%;
+}
+
+.reportes{
+  width: 60%;
+  margin-top: 2%;
+}
+
+.logo-usuario-datos{
+  width: 30%;
+  height: 30%;
+}
+
+.div-identificacion{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link-odontograma{
+  width: 35%;
+
+  text-decoration: none;
+ 
+  
+  gap: 5%;
+}
+
+.div-odonto{
+    gap: 3%;
+    display: flex;
+    color: white;
+    align-items: center;
+    background-color: #5BB5B0;
+    border-radius: 6%;
+    padding: 2%;
+}
+
+.div-contenedor{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.logo-odonto{
+  margin-left: 2%;
+}
+
+.linea{
+  background-color: #A19F9F;
+  height: 2px;
+  margin-top: 3%;
+  
+}
+.contenedor-datos{
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60%;
+}
+
+
+.div-datos{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.p-datos{
+  width: 50%;
 }

@@ -49,7 +49,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
         
       )}
 
-      <table>
+      <table className='tabla-prof'>
         <thead>
           <tr>
             <th>Color</th>
@@ -93,8 +93,8 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
               <td>{user.gender}</td>
               <td>{user.birth_date}</td>
               <td className='ver-paciente'>
-                <Link href={`/profesionales/${user.id}`}>
-                  <button>Ver</button>
+                <Link className='button-ver-p' href={`/profesionales/${user.id}`}>
+                  Ver
                 </Link>
               </td>
             </tr>

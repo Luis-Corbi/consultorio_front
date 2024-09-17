@@ -5,7 +5,7 @@ import '../sections.css';
 import Sidebar from '../components/sidebar';
 import Bar from '../components/bar';
 import UsersTable from '../components/userstable';
-
+import "../pacientes/pacientes.css";
 import { User, Speciality, Role } from '../types/types';
 import { fetchUsersByRole } from '../lib/pacientes';
 

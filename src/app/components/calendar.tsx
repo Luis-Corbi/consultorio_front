@@ -85,7 +85,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
       const events = appointments.map(appointment => {
         const professional = professionals.find(p => p.id === appointment.professional);
         const color = professional ? professional.color : '#000000'; // Color por defecto si no se encuentra el profesional
-
+        
         return {
           start: new Date(`${appointment.date}T${appointment.hour}`),
           end: new Date(new Date(`${appointment.date}T${appointment.hour}`).getTime() + 30 * 60000),
@@ -399,11 +399,11 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
               </label>
               <label>
                 Fecha:
-                <input type="date" name="date" value={newAppointment.date} onChange={handleInputChange} />
+                <input className='input-calendar' type="date" name="date" value={newAppointment.date} onChange={handleInputChange} />
               </label>
               <label>
                 Hora:
-                <input type="time" name="hour" value={newAppointment.hour} onChange={handleInputChange} />
+                <input className='input-calendar' type="time" name="hour" value={newAppointment.hour} onChange={handleInputChange} />
               </label>
               <label>
                 Notas:

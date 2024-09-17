@@ -1,4 +1,5 @@
 'use client';
+import './medicalreport.css';
 
 import { useState } from 'react';
 import axios from 'axios';
@@ -61,6 +62,8 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
             setType('');
             setDiagnosis(''); 
             setTreatment(''); 
+
+            window.location.reload();
         } else {
             throw new Error('Error al subir el reporte.');
         }
@@ -76,14 +79,16 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
   return (
     <div>
       <h2>Agregar Reporte Médico</h2>
-      <form onSubmit={handleSubmit}>
-        <input 
+      <form  className='form-reporte' onSubmit={handleSubmit}>
+        <input  
+          className='input-pacientes'
           type="file" 
           accept=".pdf" 
           onChange={handleFileChange} 
           disabled={loading} 
         />
         <input
+        className='input-pacientes'
           type="text"
           name="professionalId"
           value={professionalId}
@@ -92,6 +97,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           disabled={loading}
         />
         <input
+        className='input-pacientes'
           type="text"
           name="type"
           value={type}
@@ -100,6 +106,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           disabled={loading}
         />
         <input
+        className='input-pacientes'
           type="text"
           name="diagnosis"
           value={diagnosis}
@@ -108,6 +115,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           disabled={loading}
         />
         <input
+        className='input-pacientes'
           type="text"
           name="treatment"
           value={treatment}
@@ -115,7 +123,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           placeholder="Tratamiento"
           disabled={loading}
         />
-        <button type="submit" disabled={loading}>
+        <button className='button-subir-reporte'  type="submit" disabled={loading}>
           {loading ? 'Subiendo...' : 'Subir Reporte'}
         </button>
         {error && <p style={{ color: 'red' }}>{error}</p>}

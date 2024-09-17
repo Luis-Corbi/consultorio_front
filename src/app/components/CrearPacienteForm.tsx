@@ -101,35 +101,35 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
         <form onSubmit={handleSubmit} className="modal-form">
           <label>
             Nombre de usuario:
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+            <input className='input-table-paciente' type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
           </label>
           <label>
             Contraseña:
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input className='input-table-paciente' type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </label>
           <label>
             Nombre:
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+            <input className='input-table-paciente' type="text" value={name} onChange={(e) => setName(e.target.value)} required />
           </label>
           <label>
             Apellido:
-            <input type="text" value={lastname} onChange={(e) => setLastname(e.target.value)} required />
+            <input className='input-table-paciente' type="text" value={lastname} onChange={(e) => setLastname(e.target.value)} required />
           </label>
           <label>
             DNI:
-            <input type="text" value={dni} onChange={(e) => setDni(e.target.value)} required />
+            <input className='input-table-paciente' type="text" value={dni} onChange={(e) => setDni(e.target.value)} required />
           </label>
           <label>
             Teléfono:
-            <input type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)} required />
+            <input className='input-table-paciente' type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)} required />
           </label>
           <label>
             Email:
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input className='input-table-paciente' type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </label>
           <label>
             Dirección:
-            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} required />
+            <input className='input-table-paciente' type="text" value={address} onChange={(e) => setAddress(e.target.value)} required />
           </label>
           <label>
             Género:
@@ -142,15 +142,15 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
           </label>
           <label>
             Fecha de Nac.:
-            <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} required />
+            <input className='input-table-paciente' type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} required />
           </label>
           <label>
             Seguro Médico:
-            <input type="text" value={healthInsurance} onChange={(e) => setHealthInsurance(e.target.value)} />
+            <input className='input-table-paciente' type="text" value={healthInsurance} onChange={(e) => setHealthInsurance(e.target.value)} />
           </label>
           <label>
             Número de Seguro Médico:
-            <input type="text" value={healthInsuranceNumber} onChange={(e) => setHealthInsuranceNumber(e.target.value)} />
+            <input className='input-table-paciente' type="text" value={healthInsuranceNumber} onChange={(e) => setHealthInsuranceNumber(e.target.value)} />
           </label>
           <label>
             Notas:

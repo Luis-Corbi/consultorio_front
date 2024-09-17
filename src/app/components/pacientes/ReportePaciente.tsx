@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import './medicalreport.css';
 
 interface MedicalReport {
   id: number;
@@ -31,7 +32,7 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/medical_reports/by_patient/?patient=${patientId}`, {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         console.log(response.data); // Log the data to inspect
@@ -47,7 +48,7 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
         setLoading(false);
       }
     };
-  
+
     fetchReports();
   }, [patientId, token]);
 
@@ -55,25 +56,30 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
-    <div>
+    <div className="reports-container">
       <h2>Reportes Médicos</h2>
       {reports.length > 0 ? (
-        <ul>
-          {reports.map((report) => (
-            <li key={report.id}>
-              <p>Fecha: {report.date}</p>
-              <p>Hora: {report.hour}</p>
-              <p>Tipo: {report.type}</p>
-              <p>Diagnóstico: {report.diagnosis}</p>
-              <p>Tratamiento: {report.treatment}</p>
-              {report.file && (
-                <a href={`http://127.0.0.1:8000${report.file}`} target="_blank" rel="noopener noreferrer">
-                  {report.file.split('/').pop()}
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
+        <table className="timeline-table">
+          <tbody>
+            {reports.map((report) => (
+              <tr key={report.id} className="timeline-row">
+                <td className="timeline-icon"></td>
+                <td className="timeline-content">
+                  <p><strong>Fecha:</strong> {report.date}</p>
+                  <p><strong>Hora:</strong> {report.hour}</p>
+                  <p><strong>Tipo:</strong> {report.type}</p>
+                  <p><strong>Diagnóstico:</strong> {report.diagnosis}</p>
+                  <p><strong>Tratamiento:</strong> {report.treatment}</p>
+                  {report.file && (
+                    <a href={`http://127.0.0.1:8000${report.file}`} target="_blank" rel="noopener noreferrer">
+                      {report.file.split('/').pop()}
+                    </a>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : (
         <p>No hay reportes médicos disponibles para este paciente.</p>
       )}

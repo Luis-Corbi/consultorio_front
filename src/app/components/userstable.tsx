@@ -50,7 +50,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
         </div>
       )}
 
-      <table>
+      <table className='tabla-usuarios'>
         <thead>
           <tr>
             <th>Nombre</th>
