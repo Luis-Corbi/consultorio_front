@@ -32,7 +32,7 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
     const genderMap: { [key: string]: string } = {
       M: 'Masculino',
       F: 'Femenino',
-      O: 'Otro'
+      O: 'No binario'
     };
     return (
       <div className='container'>

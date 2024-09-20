@@ -137,7 +137,7 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
               <option value="">Selecciona un género</option>
               <option value="M">Masculino</option>
               <option value="F">Femenino</option>
-              <option value="O">Otro</option>
+              <option value="O">No binario</option>
             </select>
           </label>
           <label>
