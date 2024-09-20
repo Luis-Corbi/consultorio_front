@@ -5,13 +5,17 @@ import Bar from '@/app/components/bar';
 import { User } from '@/app/types/types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
+import UploadReport from '@/app/components/pacientes/CrearReporte';
+import MedicalReports from '@/app/components/pacientes/ReportePaciente';
+import "../pacientes.css";
+import '../../components/pacientes/medicalreport.css';
+import Link from 'next/link';
 import '../../sections.css'; 
 interface Props {
   user: User | null;
 }
 
 const UserPage = async ({ params }: { params: { id: string } }) => {
-  // Obtener el token de las cookies
   const cookieStore = cookies();
   const token = cookieStore.get('access_token')?.value || '';
 
@@ -20,11 +24,10 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
   }
 
   try {
-    // Llamar a la función para obtener el usuario
     const user: User | null = await fetchUser(params.id, false, token);
 
     if (!user) {
-      notFound(); // Utiliza notFound para redirigir a una página 404
+      notFound();
     }
     const genderMap: { [key: string]: string } = {
       M: 'Masculino',
@@ -33,22 +36,61 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
     };
     return (
       <div className='container'>
-      <Sidebar />
-      <div className='container'>
+        <Sidebar />
+        <div className='container'>
           <div className='div-principal'>
             <Bar />
-            <h1>Detalles del Paciente:</h1>
-            <p><strong>Nombre:</strong> {user.name}</p>
-            <p><strong>Apellido:</strong> {user.lastname}</p>
-            <p><strong>DNI:</strong> {user.DNI}</p>
-            <p><strong>Teléfono:</strong> {user.telephone}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Dirección:</strong> {user.address}</p>
-            <p><strong>Género:</strong> {genderMap[user.gender] || 'No especificado'}</p>
-            <p><strong>Fecha de Nacimiento:</strong> {user.birth_date}</p>
-            <p><strong>Seguro de Salud:</strong> {user.health_insurance}</p>
-            <p><strong>Número de Seguro de Salud:</strong> {user.health_insurance_number}</p>
-            <p><strong>Notas:</strong> {user.notes}</p>
+            <div className='div-datos-paciente'>
+              <div className='datos' >
+                <div className='div-identificacion'>
+                  <div className='div-contenedor'>
+                    <img className='logo-usuario-datos' src="/assets/usuario.png" alt="Logo-usuario" />
+                    <h2>{user.name} {user.lastname}</h2>
+                  </div>
+                  <Link  className='link-odontograma' href="#">
+                  <div className='div-odonto'>
+
+                  <img className='logo-odonto' src="/assets/odontograma.png" alt="Logo-odonto" />
+                  <p>Odontograma</p>
+                  </div>
+             
+                </Link>
+              
+                </div>
+                <div className='linea'></div>
+              <div className='contenedor-datos'>
+              <div  className='div-datos'>
+              <p className='p-datos'><strong>DNI:</strong> {user.DNI}</p>
+              <p className='p-datos'><strong>Teléfono:</strong> {user.telephone}</p>
+              </div>
+              <div  className='div-datos'>
+              <p className='p-datos'><strong>Email:</strong> {user.email}</p>
+              <p className='p-datos'><strong>Dirección:</strong> {user.address}</p>
+              </div>
+              <div  className='div-datos'>
+              <p className='p-datos'><strong>Género:</strong> {genderMap[user.gender] || 'No especificado'}</p>
+              <p className='p-datos'><strong>Fecha de Nacimiento:</strong> {user.birth_date}</p>
+              </div>
+              
+              <div  className='div-datos'>
+              <p className='p-datos'><strong>Seguro de Salud:</strong> {user.health_insurance}</p>
+              <p className='p-datos'><strong>Número de Seguro de Salud:</strong> {user.health_insurance_number}</p>
+              </div>
+              <div  className='div-datos'>
+              <p className='p-datos'><strong>Número de Licencia:</strong> {user.licence_number}</p>
+              <p className='p-datos'><strong>Notas:</strong> {user.notes}</p>
+              </div>
+             
+              </div>
+
+              </div>
+              <div className='reportes'>
+              <UploadReport patientId={params.id} token={token} />
+              <MedicalReports patientId={params.id} token={token} />
+              </div>
+            </div>
+           
+            
           </div>
         </div>
       </div>

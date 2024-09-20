@@ -54,7 +54,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
         
       )}
 
-      <table>
+      <table className='tabla-prof'>
         <thead>
           <tr>
             <th>Color</th>

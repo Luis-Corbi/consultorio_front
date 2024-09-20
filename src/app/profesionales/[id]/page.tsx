@@ -13,7 +13,6 @@ interface Props {
 }
 
 const UserPage = async ({ params }: { params: { id: string } }) => {
-  // Obtener el token de las cookies
   const cookieStore = cookies();
   const token = cookieStore.get('access_token')?.value || '';
 
@@ -26,7 +25,7 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
     const user: User | null = await fetchUser(params.id, false, token);
 
     if (!user) {
-      notFound(); // Utiliza notFound para redirigir a una página 404
+      notFound();
     }
     const genderMap: { [key: string]: string } = {
       M: 'Masculino',
@@ -53,6 +52,23 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
             <p><strong>Número de Seguro de Salud:</strong> {user.health_insurance_number}</p>
             <p><strong>Número de Licencia:</strong> {user.licence_number}</p>
             <p><strong>Notas:</strong> {user.notes}</p>
+            <p><strong>color:</strong>
+            {user.color ? (
+              <div
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  backgroundColor: user.color,
+                  border: '1px solid #ccc',
+                  borderRadius: '50%',
+                  display: 'inline-block',
+                  marginLeft: '15%'
+                }}
+              ></div>
+            ) : (
+              'No color'
+            )}
+            </p>
           </div>
         </div>
       </div>
