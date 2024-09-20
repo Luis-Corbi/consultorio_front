@@ -9,8 +9,11 @@ import UploadReport from '@/app/components/pacientes/CrearReporte';
 import MedicalReports from '@/app/components/pacientes/ReportePaciente';
 import "../pacientes.css";
 import '../../components/pacientes/medicalreport.css';
-
 import Link from 'next/link';
+import '../../sections.css'; 
+interface Props {
+  user: User | null;
+}
 
 const UserPage = async ({ params }: { params: { id: string } }) => {
   const cookieStore = cookies();
@@ -26,7 +29,11 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
     if (!user) {
       notFound();
     }
-
+    const genderMap: { [key: string]: string } = {
+      M: 'Masculino',
+      F: 'Femenino',
+      O: 'Otro'
+    };
     return (
       <div className='container'>
         <Sidebar />
@@ -61,7 +68,7 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
               <p className='p-datos'><strong>Dirección:</strong> {user.address}</p>
               </div>
               <div  className='div-datos'>
-              <p className='p-datos'><strong>Género:</strong> {user.gender}</p>
+              <p className='p-datos'><strong>Género:</strong> {genderMap[user.gender] || 'No especificado'}</p>
               <p className='p-datos'><strong>Fecha de Nacimiento:</strong> {user.birth_date}</p>
               </div>
               

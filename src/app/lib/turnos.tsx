@@ -1,50 +1,43 @@
 import api from './api';
-import { Appointment } from '../types/types';
+import { Appointment, User } from '../types/types';
 
-// Función para crear una cita
+// Función para crear un turno
 export const createAppointment = async (appointment: Appointment): Promise<Appointment> => {
-  console.log('Creating appointment:', appointment); // Log para ver los datos de la cita
-  const res = await api.post('/appointments/', appointment);
-
-  if (!res.status) {
-    console.error('Failed to create appointment:', res.status, res.data); // Log para ver el estado y el error
-    throw new Error('Failed to create appointment');
+  try {
+    const res = await api.post('/appointments/', appointment);
+    return res.data;
+  } catch (error) {
+    console.error('Error creating appointment:', error);
+    throw error;
   }
-
-  return res.data;
 };
 
-// Función para obtener todas las citas
+// Función para obtener todos los turnos
 export const fetchAllAppointments = async (): Promise<Appointment[]> => {
   try {
-    const response = await api.get('/appointments/');
-    if (!response.status) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.data;
+    const res = await api.get('/appointments/');
+    return res.data;
   } catch (error) {
-    console.error('Error fetching all appointments:', error);
-    return [];
+    console.error('Error fetching appointments:', error);
+    throw error;
   }
 };
 
-// Función para obtener citas por profesional
+// Función para obtener turnos por profesional
 export const fetchAppointmentsByProfessional = async (professionalId: number): Promise<Appointment[]> => {
   try {
-    const response = await api.get(`/appointments/professional/${professionalId}/`);
-    if (!response.status) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.data;
+    const res = await api.get(`/appointments/professional/${professionalId}/`);
+    return res.data;
   } catch (error) {
-    console.error(`Error fetching appointments for professional ${professionalId}:`, error);
-    return [];
+    console.error('Error fetching appointments by professional:', error);
+    throw error;
   }
 };
 
 // Función para obtener profesionales
-export const fetchProfessionals = async () => {
+export const fetchProfessionals = async (): Promise<User[]> => {
   try {
+
     const response = await api.get('/users/');
     const users = response.data;
     
@@ -56,20 +49,14 @@ export const fetchProfessionals = async () => {
     return professionals;
   } catch (error) {
     console.error('Error fetching professionals:', error);
-    return [];
+    throw error;
   }
 };
 
-// Función para eliminar una cita
-export const deleteAppointment = async (appointmentId: number): Promise<void> => {
+// Función para borrar un turno (borrado lógico)
+export const softDeleteAppointment = async (appointmentId: number): Promise<void> => {
   try {
-    const response = await api.delete(`/appointments/${appointmentId}/`);
-
-    if (!response.status) {
-      throw new Error(`Failed to delete appointment. HTTP error! status: ${response.status}`);
-    }
-    
-    console.log('Appointment deleted successfully');
+    await api.delete(`/appointments/${appointmentId}/`);
   } catch (error) {
     console.error('Error deleting appointment:', error);
     throw error;

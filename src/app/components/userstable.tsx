@@ -31,20 +31,24 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   // Total pages
   const totalPages = Math.ceil(users.length / usersPerPage);
 
+  const genderMap: { [key: string]: string } = {
+    M: 'Masculino',
+    F: 'Femenino',
+    O: 'Otro'
+  };
   return (
     <>
       <div className='botones-table'>
         <input type="text" />
-        <div className='crear-pac'>
+        <div className='crear-pac' onClick={openModal}>
           <img className='plus-icon' src="/assets/plus.png" alt="" />
-          <button className='btn-pacientes' onClick={openModal}>Crear Paciente</button>
+          <button className='btn-pacientes'>Crear Paciente</button>
         </div>
       </div>
 
       {isModalOpen && (
         <div className="modal-overlay">
           
-            <button className="close-button" onClick={closeModal}>&times;</button>
             <CrearPacienteForm onClose={closeModal} />
           
         </div>
@@ -73,7 +77,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
               <td>{user.telephone}</td>
               <td>{user.email}</td>
               <td>{user.address}</td>
-              <td>{user.gender}</td>
+              <td>{genderMap[user.gender] || 'No especificado'}</td>
               <td>{user.birth_date}</td>
               <td className='ver-paciente'>
                 <Link  className='button-ver-p' href={`/pacientes/${user.id}`} >
