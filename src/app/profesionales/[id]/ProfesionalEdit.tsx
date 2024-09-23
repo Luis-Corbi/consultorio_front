@@ -116,7 +116,7 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
   const genderMap: { [key: string]: string } = {
     M: 'Masculino',
     F: 'Femenino',
-    O: 'Otro'
+    O: 'No binario'
   };
 
   const renderDato = (data: string | undefined | null) => {
@@ -148,7 +148,7 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
                     <select name='gender' value={formData.gender} onChange={handleInputChange} className='input-dato'>
                       <option value="M">Masculino</option>
                       <option value="F">Femenino</option>
-                      <option value="O">Otro</option>
+                      <option value="O">No binario</option>
                     </select>
                   ) : renderDato(genderMap[user.gender] || 'No especificado')}</p>
                 </div>

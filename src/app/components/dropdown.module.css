@@ -92,3 +92,8 @@
 .dropdownContent a:hover {
   background-color: #f1f1f1;
 }
+
+.logo_usuario_datos {
+  width: 25%;
+  height: 25%;
+}

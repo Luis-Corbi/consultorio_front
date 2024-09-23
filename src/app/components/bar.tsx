@@ -55,12 +55,9 @@ const Bar: React.FC = () => {
         <span>Bienvenido, <span className={styles.username}>{userData.name}!</span></span>
       </div>
       <div className={styles.icons}>
-        <div className={styles.notification}>
-          <NotificationIcon />
-        </div>
         <div className={styles.user} onClick={toggleDropdown}>
           <div className={styles.userDetails}>
-            <div className={styles.avatar}></div>
+          <img className={styles.logo_usuario_datos} src="/assets/usuario.png" alt="Logo-usuario" />
             <div className={styles.info}>
               <span className={styles.name}>{userData.name} {userData.lastname}</span>
               <span className={styles.role}>{userData.speciality?.name || 'Especialidad no especificada'}</span>
@@ -70,7 +67,6 @@ const Bar: React.FC = () => {
           {isOpen && (
             <div className={styles.dropdownContent}>
               <a href="#">Perfil</a>
-              <a href="#">Configuración</a>
               <a href="#" onClick={handleLogout}>Salir</a>
             </div>
           )}
