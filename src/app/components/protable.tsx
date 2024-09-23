@@ -11,6 +11,8 @@ interface UsersTableProps {
 const ProTable: React.FC<UsersTableProps> = ({ users }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filterCriteria, setFilterCriteria] = useState<'nombre' | 'apellido' | 'dni'>('nombre');
+  const [filterValue, setFilterValue] = useState('');
   const usersPerPage = 10;
 
   const openModal = () => setIsModalOpen(true);
@@ -21,16 +23,29 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
     closeModal();
   };
 
+  const filteredUsers = users.filter(user => {
+    switch (filterCriteria) {
+      case 'nombre':
+        return user.name.toLowerCase().includes(filterValue.toLowerCase());
+      case 'apellido':
+        return user.lastname.toLowerCase().includes(filterValue.toLowerCase());
+      case 'dni':
+        return user.DNI.includes(filterValue);
+      default:
+        return true;
+    }
+  });
+
   // Calcula los usuarios actuales para mostrar
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   // Cambia la página
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   // Total de páginas
-  const totalPages = Math.ceil(users.length / usersPerPage);
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
   
   const genderMap: { [key: string]: string } = {
     M: 'Masculino',
@@ -40,7 +55,21 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
   return (
     <>
       <div className='botones-table'>
-        <input type="text" />
+        <div className='div-filtro'>
+        <input className='input-filtro '
+          type="text" 
+          placeholder={`Escribir ${filterCriteria}`} 
+          value={filterValue}
+          onChange={(e) => setFilterValue(e.target.value)} 
+        />
+      <select className='select-filtro ' value={filterCriteria} onChange={(e) => setFilterCriteria(e.target.value as 'nombre' | 'apellido' | 'dni')}>
+          <option value="nombre">Filtrar por Nombre</option>
+          <option value="apellido">Filtrar por Apellido</option>
+          <option value="dni">Filtrar por DNI</option>
+        </select>
+
+        </div>
+       
         <div className='crear-pac' onClick={openModal}>
           <img className='plus-icon' src="/assets/plus.png" alt="" />
           <button className='btn-pacientes'>Crear Profesional</button>

@@ -1,16 +1,9 @@
-// src/app/profesionales/[id]/page.tsx
-
 import { fetchUser } from '@/app/lib/pacientes';
-import Sidebar from '@/app/components/sidebar';
-import Bar from '@/app/components/bar';
+import UserPageContainer from './ProfesionalEdit';
 import { User } from '@/app/types/types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import '../../sections.css';  
-
-interface Props {
-  user: User | null;
-}
+import '../profesionales.css';
 
 const UserPage = async ({ params }: { params: { id: string } }) => {
   const cookieStore = cookies();
@@ -20,13 +13,16 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
     return <div>Token no disponible, por favor inicie sesión.</div>;
   }
 
+  let user: User | null = null;
+
   try {
-    // Llamar a la función para obtener el usuario
-    const user: User | null = await fetchUser(params.id, false, token);
+    user = await fetchUser(params.id, false, token);
 
     if (!user) {
       notFound();
     }
+
+
     const genderMap: { [key: string]: string } = {
       M: 'Masculino',
       F: 'Femenino',
@@ -73,10 +69,13 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
     );
+
   } catch (error) {
     console.error('Error fetching user:', error);
     return <div>Error al cargar los datos del usuario.</div>;
   }
+
+  return <UserPageContainer user={user} token={token} />; // No se pasa onUpdate
 };
 
 export default UserPage;

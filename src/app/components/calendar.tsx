@@ -83,11 +83,12 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
       }
       const events = appointments.map(appointment => {
         const professional = professionals.find(p => p.id === appointment.professional);
+        const patientName = getPatientName(appointment.patient); 
         const color = professional ? professional.color : '#000000';
         return {
           start: new Date(`${appointment.date}T${appointment.hour}`),
           end: new Date(new Date(`${appointment.date}T${appointment.hour}`).getTime() + 30 * 60000),
-          title: appointment.notes,
+          title: patientName, 
           appointment,
           color
         };
