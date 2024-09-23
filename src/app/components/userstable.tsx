@@ -49,7 +49,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   const genderMap: { [key: string]: string } = {
     M: 'Masculino',
     F: 'Femenino',
-    O: 'Otro'
+    O: 'No binario'
   };
 
   return (
