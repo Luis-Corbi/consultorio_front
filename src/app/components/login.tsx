@@ -98,7 +98,7 @@ const LoginForm: React.FC = () => {
         <img src="/assets/logo.png" alt="Logo" />
       </div>
       <div className='div2'>
-        <h2>Bienvenido!</h2>
+        <h2 className='h2-login'>Bienvenido!</h2>
         <img src="/assets/user.png" alt="logouser" className='user-logo' />
         <form onSubmit={handleLogin}>
           <div className="inputGroup">

@@ -62,6 +62,7 @@ export const fetchUsers = async () => {
 export const fetchUsersByRole = async (roleId: number): Promise<User[]> => {
   const token = Cookies.get('access_token');
   if (!token) {
+    console.error('No access token found in cookies.');
     throw new Error('No access token available');
   }
 

@@ -1,7 +1,6 @@
 'use client';
 import './medicalreport.css';
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 interface UploadReportProps {
@@ -18,6 +17,24 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Obtener el ID del profesional desde el usuario autenticado
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/user/profile/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setProfessionalId(response.data.id); // Asignar el ID del usuario
+      } catch (err) {
+        console.error('Error fetching user profile:', err);
+      }
+    };
+
+    fetchUserProfile();
+  }, [token]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
@@ -29,7 +46,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
     if (name === 'type') setType(value);
     if (name === 'diagnosis') setDiagnosis(value);
     if (name === 'treatment') setTreatment(value);
-    if (name === 'professionalId') setProfessionalId(value); // Manejar cambio del ID del profesional
+    // El ID del profesional se asigna automáticamente
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,13 +90,12 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
     } finally {
         setLoading(false);
     }
-};
-
+  };
 
   return (
     <div>
       <h2>Agregar Reporte Médico</h2>
-      <form  className='form-reporte' onSubmit={handleSubmit}>
+      <form className='form-reporte' onSubmit={handleSubmit}>
         <input  
           className='input-pacientes'
           type="file" 
@@ -87,17 +103,9 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           onChange={handleFileChange} 
           disabled={loading} 
         />
+        
         <input
-        className='input-pacientes'
-          type="text"
-          name="professionalId"
-          value={professionalId}
-          onChange={handleChange}
-          placeholder="ID del Profesional"
-          disabled={loading}
-        />
-        <input
-        className='input-pacientes'
+          className='input-pacientes'
           type="text"
           name="type"
           value={type}
@@ -106,7 +114,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           disabled={loading}
         />
         <input
-        className='input-pacientes'
+          className='input-pacientes'
           type="text"
           name="diagnosis"
           value={diagnosis}
@@ -115,7 +123,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           disabled={loading}
         />
         <input
-        className='input-pacientes'
+          className='input-pacientes'
           type="text"
           name="treatment"
           value={treatment}
@@ -123,7 +131,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           placeholder="Tratamiento"
           disabled={loading}
         />
-        <button className='button-subir-reporte'  type="submit" disabled={loading}>
+        <button className='button-subir-reporte' type="submit" disabled={loading}>
           {loading ? 'Subiendo...' : 'Subir Reporte'}
         </button>
         {error && <p style={{ color: 'red' }}>{error}</p>}
