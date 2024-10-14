@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './medicalreport.css';
+import { fetchUsersByRole } from '@/app/lib/pacientes';
 
 interface MedicalReport {
   id: number;
-  professional: string;
+  professional: number; // Asegúrate de que sea un número
   patient: string;
   date: string;
   hour: string;
@@ -16,6 +17,11 @@ interface MedicalReport {
   file: string;
 }
 
+interface Professional {
+  id: number;
+  name: string;
+}
+
 interface MedicalReportsProps {
   patientId: string;
   token: string;
@@ -23,34 +29,59 @@ interface MedicalReportsProps {
 
 const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => {
   const [reports, setReports] = useState<MedicalReport[]>([]);
+  const [professionals, setProfessionals] = useState<Professional[]>([]);
+  const [selectedProfessional, setSelectedProfessional] = useState<number | null>(null); // Cambia el tipo a número
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchReports = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/medical_reports/by_patient/?patient=${patientId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        setReports(response.data); // Almacena todos los reportes para este paciente
+      } else {
+        throw new Error('Error al obtener los reportes médicos.');
+      }
+    } catch (error) {
+      console.error('Error fetching medical reports:', error);
+      setError('Error al obtener los reportes médicos.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchReports = async () => {
-      setLoading(true);
+    fetchReports(); // Llama a la función para obtener los reportes del paciente
+  }, [patientId, token]);
+
+  useEffect(() => {
+    const fetchProfessionals = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/medical_reports/by_patient/?patient=${patientId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(response.data); // Log the data to inspect
-        if (response.status === 200) {
-          setReports(response.data);
-        } else {
-          throw new Error('Error al obtener los reportes médicos.');
-        }
+        const users = await fetchUsersByRole(1); // Filtra por rol de profesional
+        setProfessionals(users); // Asigna los profesionales obtenidos
       } catch (error) {
-        console.error('Error fetching medical reports:', error);
-        setError('Error al obtener los reportes médicos.');
-      } finally {
-        setLoading(false);
+        console.error('Error fetching professionals:', error);
+        setError('Error al obtener la lista de profesionales.');
       }
     };
 
-    fetchReports();
-  }, [patientId, token]);
+    fetchProfessionals(); // Ejecuta la función de forma asíncrona
+  }, [token]);
+
+  const handleProfessionalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedProfessional(value ? Number(value) : null); // Convierte a número o establece a null
+  };
+
+  const filteredReports = selectedProfessional !== null
+    ? reports.filter(report => report.professional === selectedProfessional)
+    : reports;
 
   if (loading) return <p>Cargando reportes...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -58,10 +89,21 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
   return (
     <div className="reports-container">
       <h2>Reportes Médicos</h2>
-      {reports.length > 0 ? (
+      <div>
+        <label htmlFor="professional-select">Filtrar por Profesional:</label>
+        <select id="professional-select" value={selectedProfessional || ''} onChange={handleProfessionalChange}>
+          <option value="">Selecciona un profesional</option>
+          {professionals.map((professional) => (
+            <option key={professional.id} value={professional.id}>
+              {professional.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      {filteredReports.length > 0 ? (
         <table className="timeline-table">
           <tbody>
-            {reports.map((report) => (
+            {filteredReports.map((report) => (
               <tr key={report.id} className="timeline-row">
                 <td className="timeline-icon"></td>
                 <td className="timeline-content">
