@@ -3,7 +3,7 @@
 // components/TurnosDelDia.tsx
 // components/TurnosDelDia.tsx
 // components/TurnosDelDia.tsx
-
+import "../../pacientes/pacientes.css"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -137,16 +137,17 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
       {turnos.length === 0 ? (
         <p>No hay turnos para hoy.</p>
       ) : (
-        <ul>
+        <ul className="ul-lista-pacientes">
           {turnos.map((turno) => (
-            <li key={turno.id}>
-              <strong>Paciente:</strong> {getPatientName(turno.patient)} - 
-              
-             
-              <strong> Hora:</strong> {turno.hour} - 
-            
-              
-            </li>
+            <li 
+            key={turno.id}
+            className="lista-pacientes"
+          >
+            <p className="p-lista-pacientes">  <strong>Paciente:</strong> {getPatientName(turno.patient)} - </p>
+            <p className="p-lista-pacientes"> <strong> Hora:</strong> {turno.hour}</p>
+            -
+          </li>
+          
           ))}
         </ul>
       )}

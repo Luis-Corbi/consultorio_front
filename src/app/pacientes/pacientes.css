@@ -374,3 +374,26 @@ thead th {
   display: flex;
   gap: 5%;
 }
+
+.lista-pacientes{
+  background-color: white;
+    border-radius: 0 10px 10px 0;
+    width: 100%;
+border-left: 4px solid;
+    border-left-color: #037171;
+    margin-top: 5%;
+    display: flex;
+}
+
+.ul-lista-pacientes{
+  width: 100%;
+  list-style: none;
+  margin-right: 5%;
+  border-radius: 0 10px 10px 0;
+  margin-left: 2%;
+}
+
+.p-lista-pacientes{
+  margin-left: 5%;
+  display: flex;
+}

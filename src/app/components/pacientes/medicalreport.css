@@ -85,3 +85,16 @@
     outline: none;
     box-shadow: 0 0 5px #037171;
   }
+
+  #professional-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 20px; /* Espaciado inferior */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el select */
+}
+
+#professional-select option {
+    padding: 10px;
+}
