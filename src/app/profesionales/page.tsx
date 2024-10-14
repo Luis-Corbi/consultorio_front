@@ -6,7 +6,7 @@ import Bar from '../components/bar';
 import ProTable from '../components/protable';
 import CrearProfesionalForm from '../components/CrearProf'; 
 import { User } from '../types/types';
-import { fetchUsersByRole } from '../lib/pacientes'; // Importa la función actualizada
+import { fetchUsersByRole } from '../lib/pacientes';
 
 const TableProfesionales: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -16,7 +16,7 @@ const TableProfesionales: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const data = await fetchUsersByRole(1); // Filtra por rol
+      const data = await fetchUsersByRole(1);
       setUsers(data);
     } catch (err) {
       setError((err as Error).message);

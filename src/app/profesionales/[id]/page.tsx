@@ -1,7 +1,5 @@
 import { fetchUser } from '@/app/lib/pacientes';
 import UserPageContainer from './ProfesionalEdit';
-import Sidebar from '@/app/components/sidebar';
-import Bar from '@/app/components/bar';
 import { User } from '@/app/types/types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';

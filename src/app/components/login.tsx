@@ -9,9 +9,21 @@ import api from '../lib/api';
 
 interface UserData {
   id: number;
+  username: string;
   email: string;
   name: string;
+  lastname: string;
   specialty?: string;
+  birth_date: string;
+  telephone: string;
+  address: string;
+  gender: string;
+  DNI: string;
+  health_insurance: string;
+  health_insurance_number: string;
+  notes: string;
+  licence_number: string;
+  color: string;
 }
 
 interface DecodedToken {

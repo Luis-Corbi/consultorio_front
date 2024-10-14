@@ -66,7 +66,7 @@ const Bar: React.FC = () => {
           <div className={styles.dropdownArrow}><Icondown /> </div>
           {isOpen && (
             <div className={styles.dropdownContent}>
-              <a href="#">Perfil</a>
+              <a href={`/perfil`}>Perfil</a>
               <a href="#" onClick={handleLogout}>Salir</a>
             </div>
           )}
