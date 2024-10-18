@@ -25,7 +25,7 @@
     align-items: center;
     padding-top: 10%;
 }
-h2{
+.h2-login{
     color: #8EDAD5;
     font-size: 50px;
 }
@@ -90,10 +90,11 @@ form{
 
 .btn-ingresar{
   margin-top: 3%;
-    background-color: #8EDAD5;
-    color: white;
-    padding: 2% 6%;
-    text-transform: uppercase;
-    font-weight: bold;
-    text-decoration: none;
+  background-color: #8EDAD5;
+  cursor: pointer;
+  color: white;
+  padding: 2% 6%;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-decoration: none;
 }

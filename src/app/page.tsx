@@ -1,13 +1,17 @@
-"use client"
+// src/app/page.tsx
+"use client";
 import React from 'react';
-import LoginForm from "./components/login";
+import LoginForm from './components/login';
+import './globals.css';
+import { UserProvider } from './components/UserContext';
 
 
 export default function Home() {
   return (
-    <main >
-
-      <LoginForm/>
+    <UserProvider>
+    <main>
+      <LoginForm />
     </main>
+    </UserProvider>
   );
 }

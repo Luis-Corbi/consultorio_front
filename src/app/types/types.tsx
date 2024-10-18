@@ -22,7 +22,7 @@ export interface Speciality {
     health_insurance: string;
     health_insurance_number: string;
     licence_number: string;
-    speciality: string;
+    speciality: { id: number; name: string };
     notes: string;
     roles: { id: number; name: string }[];
     color?: string;
@@ -49,6 +49,7 @@ export interface Speciality {
     // La especialidad y roles también pueden ser opcionales en el formulario si no se editan
     speciality?: string;
     roles?: { id: number; name: string }[];
+    
   }
   
   
