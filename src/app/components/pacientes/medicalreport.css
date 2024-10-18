@@ -1,0 +1,100 @@
+.reports-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .timeline-row {
+    position: relative;
+  }
+  
+  .timeline-icon {
+    width: 50px; /* Ancho de la celda que contiene el punto */
+    vertical-align: top;
+    position: relative;
+  }
+  
+  .timeline-icon::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background-color: #037171;; /* Color del punto */
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: 50%; /* Centra el punto verticalmente */
+    left: 50%; /* Centra el punto horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta la posición del punto */
+    z-index: 1;
+  }
+  
+  .timeline-icon::after {
+    content: '';
+    width: 2px;
+    background-color: #ccc; /* Color de la línea */
+    position: absolute;
+    left: 50%;
+    top: 0; /* Comienza desde la parte superior de la celda */
+    bottom: 0; /* Se extiende hasta la parte inferior de la celda */
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+  
+  .timeline-row:first-child .timeline-icon::after {
+    top: 50%; /* Comienza la línea desde el centro del primer punto */
+  }
+  
+  .timeline-row:last-child .timeline-icon::after {
+    height: 50%; /* La línea termina en el centro del último punto */
+  }
+  
+  .timeline-content {
+    padding-left: 20px;
+    /* border-left: 2px solid #ccc; */
+  }
+  
+  .timeline-content p {
+    margin: 5px 0;
+  }
+  
+  .timeline-content a {
+    color: #037171;;
+    text-decoration: none;
+  }
+  
+  .timeline-content a:hover {
+    text-decoration: underline;
+  }
+  
+
+  .input-pacientes {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    width: 95%;
+  }
+  
+  input:focus {
+    border-color: #0177a9;
+    outline: none;
+    box-shadow: 0 0 5px #037171;
+  }
+
+  #professional-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 20px; /* Espaciado inferior */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el select */
+}
+
+#professional-select option {
+    padding: 10px;
+}

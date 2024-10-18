@@ -5,7 +5,7 @@ import '../sections.css';
 import Sidebar from '../components/sidebar';
 import Bar from '../components/bar';
 import UsersTable from '../components/userstable';
-
+import "../pacientes/pacientes.css";
 import { User, Speciality, Role } from '../types/types';
 import { fetchUsersByRole } from '../lib/pacientes';
 
@@ -17,7 +17,7 @@ const Fetchtable: React.FC = () => {
   React.useEffect(() => {
     const getUsers = async () => {
       try {
-        const data = await fetchUsersByRole(3); 
+        const data = await fetchUsersByRole(3);
         setUsers(data);
       } catch (err) {
         setError((err as Error).message);
@@ -41,13 +41,10 @@ const Page: React.FC = () => {
       <Sidebar/>
       <div className='container'>
         <div className='div-principal'>
-
           <Bar/>
           <h1>Pacientes</h1>
-
           <Fetchtable />
         </div>
-        
       </div>
     </div>
   );
