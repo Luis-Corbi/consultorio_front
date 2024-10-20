@@ -13,6 +13,7 @@
     "axios": "^1.7.5",
     "chart.js": "^4.4.4",
     "chartjs-plugin-datalabels": "^2.2.0",
+    "consultorio": "file:",
     "cors": "^2.8.5",
     "js-cookie": "^3.0.5",
     "moment": "^2.30.1",

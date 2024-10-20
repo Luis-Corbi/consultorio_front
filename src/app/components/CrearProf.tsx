@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createUser, getSpecialities } from '../lib/pacientes'; 
 import { User, Speciality } from '../types/types';
 import "../pacientes/pacientes.css";
+import axios from 'axios'; // Importa axios para las solicitudes
 
 interface CrearPacienteFormProps {
     onClose: () => void;
@@ -28,14 +29,14 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
     const [specialities, setSpecialities] = useState<Speciality[]>([]);
   
     useEffect(() => {
-      const fetchSpecialities = async () => {
-        try {
-          const data = await getSpecialities();
-          setSpecialities(data);
-        } catch (error) {
-          console.error('Failed to fetch specialities:', error);
-        }
-      };
+        const fetchSpecialities = async () => {
+          try {
+            const data = await getSpecialities();
+            setSpecialities(data);
+          } catch (error) {
+            console.error('Error fetching specialities:', error);
+          }
+        };
   
       fetchSpecialities();
     }, []);
@@ -56,21 +57,30 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
             health_insurance: healthInsurance,
             health_insurance_number: healthInsuranceNumber,
             licence_number: licenceNumber,
-            speciality: speciality.toString(), 
+            speciality: parseInt(speciality), 
             notes,
             roles: [1], 
             color
           };
       
           console.log('Submitting user:', newUser);
-      
-          await createUser(newUser);
-          onCreate(); // Llama a la función para recargar la lista
-          onClose();
+
+          await axios.post('http://127.0.0.1:8000/api/users/', newUser, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${getAuthToken()}`, // Agregar el token de autenticación
+            },
+          });
+          onCreate(); // Recarga la lista de usuarios o realiza acciones posteriores
+          onClose(); // Cierra el modal
         } catch (error) {
-          console.error('Failed to create user:', error);
+          console.error('Error creating user:', error);
         }
-    };
+      };
+    
+      const getAuthToken = () => {
+        return document.cookie.split('; ').find(row => row.startsWith('access_token='))?.split('=')[1] || '';
+      };
 
     return (
         <div className="modal-container">
