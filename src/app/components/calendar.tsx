@@ -121,12 +121,11 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     const now = new Date();
     const selectedDate = new Date(start);
     
-    // Verificar si la fecha seleccionada ya pasó
     if (selectedDate < now) {
       // Si la fecha ya pasó, permitir ver los detalles de los turnos
-      setSelectedAppointment(null); // Asegúrate de que no haya un turno seleccionado
-      setIsViewingAppointment(true); // Indica que se está visualizando un turno pasado
-      setModalIsOpen(true); // Abre el modal para ver detalles
+      setSelectedAppointment(null);
+      setIsViewingAppointment(true); 
+      setModalIsOpen(true);
     } else {
       // Si la fecha es válida y no ha pasado, permitir la creación del turno
       setNewAppointment({
@@ -134,8 +133,8 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
         date: moment(start).format('YYYY-MM-DD'),
         hour: moment(start).format('HH:mm:ss')
       });
-      setIsViewingAppointment(false); // Asegúrate de que no se está viendo un turno pasado
-      setModalIsOpen(true); // Abre el modal para crear un nuevo turno
+      setIsViewingAppointment(false);
+      setModalIsOpen(true);
     }
 
   };

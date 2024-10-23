@@ -6,7 +6,6 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import styles from '../components/dropdown.module.css';
 import Icondown from '../icons/down.jsx';
-import NotificationIcon from '../icons/notification';
 
 interface Speciality {
   id: number;

@@ -7,6 +7,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import axios from 'axios';
 import moment from 'moment';
 import "../sections.css"
+import api from '../lib/api';
+
 Chart.register(...registerables, ChartDataLabels);
 
 const AppointmentsChart: React.FC<{ token: string }> = ({ token }) => {
@@ -18,7 +20,7 @@ const AppointmentsChart: React.FC<{ token: string }> = ({ token }) => {
   // Fetch the logged-in user's ID
   const fetchLoggedInUserId = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/user/profile/', {
+      const response = await api.get('/user/profile/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -34,7 +36,7 @@ const AppointmentsChart: React.FC<{ token: string }> = ({ token }) => {
   // Fetch appointments by day for the logged-in user
   const fetchAppointmentsData = async (userId: number) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/appointments-by-day/${userId}/`, {
+      const response = await api.get(`/appointments-by-day/${userId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
