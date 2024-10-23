@@ -5,8 +5,7 @@
 // components/TurnosDelDia.tsx
 import "../../pacientes/pacientes.css"
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
+import api from '../../lib/api';
 interface Appointment {
   id: number;
   professional: number;
@@ -38,7 +37,7 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
   // Fetch the logged-in user's ID
   const fetchLoggedInUserId = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/user/profile/', {
+      const response = await await api.get('/user/profile/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -55,7 +54,7 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
   // Fetch today's appointments for the logged-in user
   const fetchTodayAppointments = async (professionalId: number) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/today-appointments/${professionalId}/`, {
+      const response = await await api.get(`/today-appointments/${professionalId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -86,7 +85,7 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
   // Fetch patients by role
   const fetchPatientsByRole = async (roleId: number) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/users/?role=${roleId}`, {
+      const response = await api.get(`/users/?role=${roleId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

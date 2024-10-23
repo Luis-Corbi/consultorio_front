@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Sidebar from '@/app/components/sidebar';
 import Bar from '@/app/components/bar';
 import { User, EditableUser } from '@/app/types/types';
+import api from '../../lib/api';
 
 const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -31,14 +32,14 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/users/${user.id}/`, {
+      const response = await api.put(`/users/${user.id}/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
 
-      if (response.ok) {
-        const updatedUser = await response.json();
+      if (response.status === 200) {
+        const updatedUser = await response.data;
         setFormData({
           id: updatedUser.id.toString(),
           username: updatedUser.username,
@@ -88,8 +89,7 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
     }
   
     try {
-      const response = await fetch(`http://localhost:8000/api/users/${user.id}/`, {
-        method: 'PUT',
+      const response = await api.put(`/users/${user.id}/`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -97,13 +97,13 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
         body: JSON.stringify(updatedData), 
       });
   
-      if (response.ok) {
+      if (response.status === 200) {
         await fetchUserData();
         setIsEditing(false);
         console.log('Usuario actualizado');
         window.location.reload();
       } else {
-        const errorResponse = await response.json();
+        const errorResponse = await response.data;
         console.error('Error al actualizar los datos:', errorResponse);
         throw new Error('Error al actualizar los datos');
       }
