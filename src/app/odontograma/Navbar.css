@@ -1,0 +1,21 @@
+/* src/components/navbar.css */
+/* navbar.css */
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    background-color: #8bd7d2; /* Fondo de la barra de navegación */
+    padding: 10px 0; /* Espaciado vertical */
+}
+
+.navbar-list {
+    list-style: none; /* Elimina los puntos de la lista */
+    padding: 0; /* Elimina el padding de la lista */
+    margin: 0; /* Elimina el margin de la lista */
+    display: flex; /* Muestra los elementos en línea */
+}
+
+.navbar-item {
+    margin: 0 15px; /* Espacio entre los elementos */
+    cursor: pointer; /* Cambia el cursor al pasar sobre los elementos */
+}

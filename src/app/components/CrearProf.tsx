@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createUser, getSpecialities } from '../lib/pacientes'; 
 import { User, Speciality } from '../types/types';
 import "../pacientes/pacientes.css";
-import axios from 'axios'; 
+import api from '../lib/api';
 
 interface CrearPacienteFormProps {
     onClose: () => void;
@@ -23,20 +23,20 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
     const [healthInsurance, setHealthInsurance] = useState('');
     const [healthInsuranceNumber, setHealthInsuranceNumber] = useState('');
     const [licenceNumber, setLicenceNumber] = useState('');
-    const [speciality, setSpeciality] = useState<Speciality | null>(null);
+    const [speciality, setSpeciality] = useState<string>('');
     const [notes, setNotes] = useState('');
     const [color, setColor] = useState<string>('#ffffff');
     const [specialities, setSpecialities] = useState<Speciality[]>([]);
   
     useEffect(() => {
-        const fetchSpecialities = async () => {
-          try {
-            const data = await getSpecialities();
-            setSpecialities(data);
-          } catch (error) {
+      const fetchSpecialities = async () => {
+        try {
+          const data = await getSpecialities();
+          setSpecialities(data);
+        } catch (error) {
             console.error('Error fetching specialities:', error);
-          }
-        };
+        }
+      };
   
       fetchSpecialities();
     }, []);
@@ -65,7 +65,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
       
           console.log('Submitting user:', newUser);
 
-          await axios.post('http://127.0.0.1:8000/api/users/', newUser, {
+          await api.post('users/', newUser, {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${getAuthToken()}`, 
@@ -140,23 +140,16 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
                             <input className='bg-gray-100 p-1 text-sm w-[100%] mb-[1px]' type="text" value={healthInsurance} onChange={(e) => setHealthInsurance(e.target.value)} />
                         </div>
                         <div className='flex flex-col'>
-                            <label className='w-[100%] text-sm'>Especialidad:</label>
-                            <select 
-                              className="select-form w-[100%] m-0" 
-                              value={speciality ? speciality.id.toString() : ''} 
-                              onChange={(e) => {
-                                const selectedSpeciality = specialities.find(s => s.id === parseInt(e.target.value));
-                                setSpeciality(selectedSpeciality || null);
-                              }} 
-                              required
-                            >
-                                <option value="">Selecciona una especialidad</option>
-                                {specialities.map((speciality) => (
+                            <label className='w-[100%] text-sm'>Especialidad:
+                            <select className="select-form w-[100%] m-0"  value={speciality} onChange={(e) => setSpeciality(e.target.value)} required>
+                              <option value="">Selecciona una especialidad</option>
+                              {specialities.map((speciality) => (
                                   <option key={speciality.id} value={speciality.id}>
                                     {speciality.name}
-                                  </option>
+                                </option>
                                 ))}
                             </select>
+                            </label>
                         </div>
                         <div className='flex flex-col'>
                             <label className='w-[100%] text-sm'>Color:</label>
