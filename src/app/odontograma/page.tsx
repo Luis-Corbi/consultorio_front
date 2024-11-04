@@ -1,14 +1,47 @@
-"use client";
-import React, { useState } from 'react';
-import axios, { AxiosError } from 'axios';
+"use client"; // Esto marca el archivo como un componente de cliente
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import ToothGrid from '../components/Odontograma/ToothGrid';
 import Navbar from '../components/Odontograma/Navbar';
 import Notas from '../components/Odontograma/Notas';
+import UserForm from '../components/Odontograma/userform'; // Importación correcta
 import './odonto.css';
 
 const App = () => {
   const [registros, setRegistros] = useState<{ lado: string; color: string; fecha: string; accion: string }[]>([]);
   const [highlightedTooth, setHighlightedTooth] = useState<{ number: number; color: string; lado: string } | null>(null);
+  const [showUserForm, setShowUserForm] = useState(false); // Estado para mostrar el formulario de usuario
+  const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
+  const [selectedUser, setSelectedUser] = useState<number | null>(null); // Estado para el usuario seleccionado
+
+  // Función para cargar usuarios
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/users/');
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error al cargar los usuarios:', error);
+    }
+  };
+
+  const handleUserRegister = async (username: string, password: string, role: 'paciente' | 'profesional') => {
+    const userData = {
+      username,
+      password,
+      role
+    };
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/register/', userData);
+      console.log('Usuario creado:', response.data);
+      // Limpiar el formulario después de crear el usuario
+      setShowUserForm(false); // Cerrar el formulario
+      fetchUsers(); // Recargar la lista de usuarios
+    } catch (error) {
+      console.error('Error al crear el usuario:', error);
+    }
+  };
 
   const handleRegister = (registro: { lado: string; color: string; fecha: string; accion: string }) => {
     setRegistros([...registros, registro]);
@@ -18,40 +51,43 @@ const App = () => {
     setHighlightedTooth({ number: toothNumber, color, lado });
   };
 
-  // Estado para los inputs de Profesional y Paciente
-  const [profesional, setProfesional] = useState('');
-  const [paciente, setPaciente] = useState('');
+  const toggleUserForm = () => {
+    setShowUserForm(!showUserForm);
+  };
+
+  const handleFinalButtonClick = () => {
+    setShowUserForm(true); // Muestra el formulario al hacer clic en el botón final
+  };
+
+  // Cargar usuarios al montar el componente
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div>
       <div className="background">
         <Navbar />
-        
-        {/* Sección de Profesional y Paciente */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center' ,marginLeft: '220px' }}>
-            <label htmlFor="profesional">Profesional</label>
-            <input
-              type="text"
-              id="profesional"
-              value={profesional}
-              onChange={(e) => setProfesional(e.target.value)}
-              style={{ marginLeft: '10px', padding: '5px' }}
-            />
-            <button style={{ marginLeft: '10px', padding: '5px' }}>Buscar</button>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <label htmlFor="paciente">Paciente</label>
-            <input
-              type="text"
-              id="paciente"
-              value={paciente}
-              onChange={(e) => setPaciente(e.target.value)}
-              style={{ marginLeft: '10px', padding: '5px' }}
-            />
-            <button style={{ marginLeft: '10px', padding: '5px' }}>Buscar</button>
-          </div>
+
+        {/* Desplegable de usuarios */}
+        <div style={{ marginLeft: '500px' }}>
+          <select onChange={(e) => setSelectedUser(Number(e.target.value))} value={selectedUser || ''}>
+            <option value="" disabled>Seleccione un usuario</option>
+            {users.map(user => (
+              <option key={user.id} value={user.id}>{user.username}</option>
+            ))}
+          </select>
         </div>
+
+        {/* Botón para mostrar el formulario de usuario */}
+        <button onClick={toggleUserForm} style={{ margin: '20px' }}>
+          Crear Usuario
+        </button>
+
+        {/* Formulario para crear usuario */}
+        {showUserForm && (
+          <UserForm role="paciente" onClose={toggleUserForm} onRegister={handleUserRegister} />
+        )}
 
         <div style={{ display: 'flex', flex: 1, alignItems: 'flex-start', width: '100%' }}>
           <div className="logo-y-div1" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -73,7 +109,14 @@ const App = () => {
         </div>
 
         <div className='notas-container'>
-          <Notas registros={registros} onRegister={handleRegister} onHighlightTooth={onHighlightTooth} />
+          <Notas registros={registros} onRegister={handleRegister} onHighlightTooth={onHighlightTooth} userId={selectedUser} />
+        </div>
+
+        {/* Botón al final del todo que llama al formulario de usuario */}
+        <div style={{ textAlign: 'center', margin: '20px' }}>
+          <button onClick={handleFinalButtonClick} style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px' }}>
+            Crear Usuario
+          </button>
         </div>
       </div>
     </div>

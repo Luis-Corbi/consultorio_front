@@ -11,7 +11,8 @@ interface Nota {
 interface NotasProps {
   registros: { lado: string; color: string; fecha: string; accion: string }[];
   onRegister: (registro: { lado: string; color: string; fecha: string; accion: string }) => void;
-  onHighlightTooth: (toothNumber: number, color: string, lado: string) => void; // Actualizado para incluir lado
+  onHighlightTooth: (toothNumber: number, color: string, lado: string) => void; 
+  userId: number | null; // Recibe el ID del usuario seleccionado
 }
 
 const colorMapping: { [key: number]: string } = {
@@ -27,16 +28,18 @@ const colorMapping: { [key: number]: string } = {
   10: 'lightcyan',
 };
 
-const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth }) => {
+const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth, userId }) => {
   const [piezaSeleccionada, setPiezaSeleccionada] = useState('todas las piezas');
   const [notas, setNotas] = useState<Nota[]>([]);
   const [cargando, setCargando] = useState(false);
 
   const cargarNotas = async () => {
+    if (!userId) return; // Si no hay usuario seleccionado, no hacer la consulta
+
     setCargando(true);
     try {
       const respuesta = await axios.get('http://localhost:8000/api/notes/', {
-        params: { pieza: piezaSeleccionada === 'todas las piezas' ? '' : piezaSeleccionada }
+        params: { userId, pieza: piezaSeleccionada === 'todas las piezas' ? '' : piezaSeleccionada }
       });
       setNotas(respuesta.data);
     } catch (error) {
@@ -48,7 +51,7 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth }
 
   useEffect(() => {
     cargarNotas();
-  }, [piezaSeleccionada]);
+  }, [piezaSeleccionada, userId]); // Cargar notas cuando cambia el usuario o la pieza seleccionada
 
   const eliminarNota = async (id: number) => {
     try {
