@@ -39,9 +39,9 @@ const ToothGrid: React.FC<ToothGridProps> = ({ onRegister, onHighlightTooth, hig
   ];
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', marginLeft: '220px' }}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto', marginLeft: '190px' }}>
       {/* Dientes superiores */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16, 1fr)', gap: '5px', marginBottom: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16, 1fr)', gap: '5px', marginBottom: '20px', marginRight: '0px' }}>
         {upperTeeth.map(tooth => (
           <Tooth 
             key={tooth.id} 
@@ -55,7 +55,7 @@ const ToothGrid: React.FC<ToothGridProps> = ({ onRegister, onHighlightTooth, hig
       </div>
 
       {/* Dientes inferiores */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16, 1fr)', gap: '5px', marginBottom: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16, 1fr)', gap: '5px', marginBottom: '20px', marginRight: '60px' }}>
         {lowerRightAndLeft.map(tooth => (
           <Tooth 
             key={tooth.id} 
@@ -70,7 +70,7 @@ const ToothGrid: React.FC<ToothGridProps> = ({ onRegister, onHighlightTooth, hig
 
       {/* Dientes de leche superiores */}
       <div className='div-centrar-dientes'>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '5px', marginBottom: '20px', width: '44%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '5px', marginBottom: '20px', width: '44%', marginLeft: '40px' }}>
           {babyUpperTeeth.map(tooth => (
             <Tooth 
               key={tooth.id} 
@@ -86,7 +86,7 @@ const ToothGrid: React.FC<ToothGridProps> = ({ onRegister, onHighlightTooth, hig
 
       {/* Dientes de leche inferiores */}
       <div className='div-centrar-dientes'>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '5px', marginBottom: '20px', width: '44%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '5px', marginBottom: '20px', width: '44%', marginLeft: '40px' }}>
           {babyLowerTeeth.map(tooth => (
             <Tooth 
               key={tooth.id} 

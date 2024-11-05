@@ -82,6 +82,10 @@ const App = () => {
           <UserForm role="paciente" onClose={toggleUserForm} onRegister={handleUserRegister} />
         )}
 
+        {/* Div flotante sobre ToothGrid */}
+        <div style={{ position: 'absolute', top: '370px', left: '370px', right: '0px', backgroundColor: 'black', height: '2px', width: '1200px' }}></div> 
+        <div style={{ position: 'absolute', bottom: '300px', left: '965px', height: '480px', width: '2px', backgroundColor: 'black'}}></div>
+
         <div style={{ display: 'flex', flex: 1, alignItems: 'flex-start', width: '100%' }}>
           <div className="logo-y-div1" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <div className="logo-container">
