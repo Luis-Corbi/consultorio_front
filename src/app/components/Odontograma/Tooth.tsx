@@ -6,6 +6,8 @@ interface ToothProps {
   number: number;
   onRegister: (registro: { lado: string; color: string; fecha: string; accion: string }) => void; // Prop para registrar
   highlightedTooth: { number: number; color: string; lado: string } | null; // Prop para resaltar el diente
+  userId: number | null; // Prop para el ID del usuario
+  onHighlightTooth: (toothNumber: number, color: string, lado: string) => void; // Acepta la función para resaltar dientes
 }
 
 type ToothFace = 'top' | 'right' | 'bottom' | 'left' | 'center';
@@ -23,7 +25,7 @@ const colorMapping: { [key: number]: string } = {
   10: 'lightcyan',
 };
 
-const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth }) => {
+const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, userId, onHighlightTooth }) => {
   const [selectedFaces, setSelectedFaces] = useState<{ [key in ToothFace]?: string }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
@@ -46,29 +48,47 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth }) =
   };
 
   const handleApplyNumber = async () => {
-    if (selectedNumber !== null && selectedFace) {
-      const color = colorMapping[selectedNumber];
-      setSelectedFaces((prev) => ({
-        ...prev,
-        [selectedFace]: color,
-      }));
-
-      const fecha = new Date().toLocaleDateString();
-      const accion = `Aplicado color ${selectedNumber} al lado ${selectedFace} del diente ${number}`;
-
-      const newNota = {
-        tooth_number: number,
-        procedure: accion,
-        date: fecha,
-      };
-
-      try {
-        await axios.post('http://localhost:8000/api/notes/', newNota);
-        onRegister({ lado: selectedFace, color, fecha, accion });
-      } catch (error) {
-        console.error("Error al registrar la nota:", error);
-      }
+    if (!userId) {
+      alert("Por favor, selecciona un usuario antes de aplicar.");
+      return; // No permitir aplicar si no hay usuario seleccionado
     }
+
+    // Consultar si el usuario existe
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/`);
+      if (response.status === 200) {
+        // Usuario existe, proceder con el registro del diente
+        if (selectedNumber !== null && selectedFace) {
+          const color = colorMapping[selectedNumber];
+          setSelectedFaces((prev) => ({
+            ...prev,
+            [selectedFace]: color,
+          }));
+
+          const fecha = new Date().toLocaleDateString();
+          const accion = `Aplicado color ${selectedNumber} al lado ${selectedFace} del diente ${number}`;
+
+          const newNota = {
+            tooth_number: number,
+            procedure: accion,
+            date: fecha,
+            user: userId, // Incluir el ID del usuario al crear la nota
+            observations: observaciones // Almacenar las observaciones
+          };
+
+          try {
+            await axios.post('http://localhost:8000/api/notes/', newNota);
+            onRegister({ lado: selectedFace, color, fecha, accion });
+          } catch (error) {
+            console.error("Error al registrar la nota:", error);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("El usuario no existe:", error);
+      alert("El usuario seleccionado no existe. Por favor, verifica el usuario.");
+    }
+
     handleCloseModal();
   };
 

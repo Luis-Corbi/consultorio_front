@@ -1,19 +1,18 @@
-"use client"; // Esto marca el archivo como un componente de cliente
-
+"use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ToothGrid from '../components/Odontograma/ToothGrid';
 import Navbar from '../components/Odontograma/Navbar';
 import Notas from '../components/Odontograma/Notas';
-import UserForm from '../components/Odontograma/userform'; // Importación correcta
+import UserForm from '../components/Odontograma/userform'; 
 import './odonto.css';
 
 const App = () => {
   const [registros, setRegistros] = useState<{ lado: string; color: string; fecha: string; accion: string }[]>([]);
   const [highlightedTooth, setHighlightedTooth] = useState<{ number: number; color: string; lado: string } | null>(null);
-  const [showUserForm, setShowUserForm] = useState(false); // Estado para mostrar el formulario de usuario
+  const [showUserForm, setShowUserForm] = useState(false);
   const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
-  const [selectedUser, setSelectedUser] = useState<number | null>(null); // Estado para el usuario seleccionado
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
   // Función para cargar usuarios
   const fetchUsers = async () => {
@@ -26,18 +25,13 @@ const App = () => {
   };
 
   const handleUserRegister = async (username: string, password: string, role: 'paciente' | 'profesional') => {
-    const userData = {
-      username,
-      password,
-      role
-    };
+    const userData = { username, password, role };
 
     try {
       const response = await axios.post('http://localhost:8000/api/register/', userData);
       console.log('Usuario creado:', response.data);
-      // Limpiar el formulario después de crear el usuario
-      setShowUserForm(false); // Cerrar el formulario
-      fetchUsers(); // Recargar la lista de usuarios
+      setShowUserForm(false);
+      fetchUsers();
     } catch (error) {
       console.error('Error al crear el usuario:', error);
     }
@@ -56,10 +50,9 @@ const App = () => {
   };
 
   const handleFinalButtonClick = () => {
-    setShowUserForm(true); // Muestra el formulario al hacer clic en el botón final
+    setShowUserForm(true);
   };
 
-  // Cargar usuarios al montar el componente
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -104,12 +97,22 @@ const App = () => {
           </div>
 
           <div className='contenedor-odonto' style={{ flex: 1, backgroundColor: '#f8f9fa' }}>
-            <ToothGrid onRegister={handleRegister} onHighlightTooth={onHighlightTooth} highlightedTooth={highlightedTooth} />
+            <ToothGrid 
+              onRegister={handleRegister} 
+              onHighlightTooth={onHighlightTooth} 
+              highlightedTooth={highlightedTooth} 
+              userId={selectedUser} // Pasar el userId al componente ToothGrid
+            />
           </div>
         </div>
 
         <div className='notas-container'>
-          <Notas registros={registros} onRegister={handleRegister} onHighlightTooth={onHighlightTooth} userId={selectedUser} />
+          <Notas 
+            registros={registros} 
+            onRegister={handleRegister} 
+            onHighlightTooth={onHighlightTooth} 
+            userId={selectedUser} // Pasar el userId al componente Notas
+          />
         </div>
 
         {/* Botón al final del todo que llama al formulario de usuario */}

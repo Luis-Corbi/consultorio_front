@@ -1,11 +1,15 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "../../odontograma/odonto.css"; // Asegúrate de que el archivo de estilos esté correctamente referenciado
 
 interface Nota {
   id: number;
   tooth_number: number;
   procedure: string;
   date: string;
+  user: number; // Agrega el usuario asociado a la nota
+  observations?: string; // Agrega el campo para observaciones
 }
 
 interface NotasProps {
@@ -32,6 +36,11 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth, 
   const [piezaSeleccionada, setPiezaSeleccionada] = useState('todas las piezas');
   const [notas, setNotas] = useState<Nota[]>([]);
   const [cargando, setCargando] = useState(false);
+  const [nuevoProcedimiento, setNuevoProcedimiento] = useState('');
+  const [toothNumber, setToothNumber] = useState<number | null>(null); // Para el número del diente
+  const [observaciones, setObservaciones] = useState<string>(''); // Para las observaciones
+  const [showObservationsBox, setShowObservationsBox] = useState<boolean>(false); // Controlar visibilidad del recuadro
+  const [currentObservation, setCurrentObservation] = useState<string>(''); // Para almacenar la observación actual a mostrar
 
   const cargarNotas = async () => {
     if (!userId) return; // Si no hay usuario seleccionado, no hacer la consulta
@@ -39,7 +48,7 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth, 
     setCargando(true);
     try {
       const respuesta = await axios.get('http://localhost:8000/api/notes/', {
-        params: { userId, pieza: piezaSeleccionada === 'todas las piezas' ? '' : piezaSeleccionada }
+        params: { user_id: userId, pieza: piezaSeleccionada === 'todas las piezas' ? '' : piezaSeleccionada }
       });
       setNotas(respuesta.data);
     } catch (error) {
@@ -49,8 +58,31 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth, 
     }
   };
 
+  const agregarNota = async () => {
+    if (!userId || !toothNumber || !nuevoProcedimiento) return; // Asegúrate de que los campos estén completos
+
+    const nuevaNota = {
+      tooth_number: toothNumber,
+      procedure: nuevoProcedimiento,
+      user: userId, // Asocia la nota con el usuario seleccionado
+      observations: observaciones // Almacenar las observaciones
+    };
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/notes/', nuevaNota);
+      console.log('Nota creada:', response.data);
+      setNotas([...notas, response.data]); // Agrega la nueva nota al estado
+      setNuevoProcedimiento(''); // Limpiar el campo de procedimiento
+      setToothNumber(null); // Limpiar el número del diente
+      setObservaciones(''); // Limpiar las observaciones
+      cargarNotas(); // Recargar notas después de crear una
+    } catch (error) {
+      console.error('Error al crear la nota:', error);
+    }
+  };
+
   useEffect(() => {
-    cargarNotas();
+    cargarNotas(); // Cargar notas cada vez que cambia el usuario o la pieza seleccionada
   }, [piezaSeleccionada, userId]); // Cargar notas cuando cambia el usuario o la pieza seleccionada
 
   const eliminarNota = async (id: number) => {
@@ -73,31 +105,40 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth, 
     }
   };
 
+  const mostrarObservaciones = (observaciones: string) => {
+    setCurrentObservation(observaciones); // Establece la observación actual
+    setShowObservationsBox(true); // Muestra el recuadro
+  };
+
+  const cerrarObservacionesBox = () => {
+    setShowObservationsBox(false); // Cierra el recuadro
+  };
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-      <div className="notas-container" style={{ marginTop: '20px', padding: '20px', border: '1px solid #ccc', width: '80%', maxWidth: '800px' }}>
+      <div className="notas-container">
+        
         
         {/* Sección de Historial y Filtro */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <label htmlFor="select-notas">Historial</label>
-            <select id="select-notas" value={piezaSeleccionada} onChange={event => setPiezaSeleccionada(event.target.value)} style={{ marginLeft: '10px' }}>
-              <option value="todas las piezas">Filtro</option>
-              {[...Array(38)].map((_, i) => (
-                <option key={i + 11} value={i + 11}>{i + 11}</option>
-              ))}
-            </select>
-          </div>
+        <div>
+          <label htmlFor="select-notas">Historial</label>
+          <select id="select-notas" value={piezaSeleccionada} onChange={event => setPiezaSeleccionada(event.target.value)}>
+            <option value="todas las piezas">Filtro</option>
+            {[...Array(38)].map((_, i) => (
+              <option key={i + 11} value={i + 11}>{i + 11}</option>
+            ))}
+          </select>
         </div>
         
         {/* Encabezados de la tabla */}
-        <table className="notas-table" style={{ width: '100%', textAlign: 'center' }}>
+        <table className="notas-table">
           <thead>
             <tr>
               <th>Pieza</th>
               <th>Procedimiento</th>
               <th>Fecha</th>
-              <th>Observaciones</th>
+              <th style={{ display: 'none' }}>Usuario</th> {/* Ocultar columna de Usuario */}
+              <th>Observaciones</th> {/* Nueva columna de Observaciones */}
               <th>Acciones</th>
             </tr>
           </thead>
@@ -108,7 +149,15 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth, 
                   <td>{nota.tooth_number}</td>
                   <td>{nota.procedure}</td>
                   <td>{nota.date}</td>
-                  <td>Sin observaciones</td>
+                  <td style={{ display: 'none' }}>{nota.user}</td> {/* Ocultar datos de Usuario */}
+                  <td>
+                    <button 
+                        style={{ display: 'block', margin: '0 auto' }} 
+                        onClick={() => mostrarObservaciones(nota.observations)}
+                    >
+                        🔎
+                    </button> {/* Botón en la columna de Observaciones centrado */}
+                  </td>
                   <td>
                     <button onClick={() => verNota(nota)}>🔎</button>
                     <button onClick={() => eliminarNota(nota.id)}>🗑️</button>
@@ -117,18 +166,20 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth, 
               ))
             ) : (
               <tr>
-                <td style={{ textAlign: 'center' }}>-</td>
-                <td style={{ textAlign: 'center' }}>-</td>
-                <td style={{ textAlign: 'center' }}>-</td>
-                <td style={{ textAlign: 'center' }}>-</td>
-                <td>
-                  <button onClick={() => alert("Acción no disponible")}>🔎</button>
-                  <button onClick={() => alert("Acción no disponible")}>🗑️</button>
-                </td>
+                <td colSpan={6}>No hay notas disponibles.</td>
               </tr>
             )}
           </tbody>
         </table>
+        
+        {/* Recuadro de Observaciones */}
+        {showObservationsBox && (
+          <div className="observaciones-box">
+            <button className="close-button" onClick={cerrarObservacionesBox}>✖️</button>
+            <h4>Observaciones</h4>
+            <p>{currentObservation}</p>
+          </div>
+        )}
       </div>
     </div>
   );
