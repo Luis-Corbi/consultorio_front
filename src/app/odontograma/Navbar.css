@@ -1,21 +1,68 @@
-/* src/components/navbar.css */
-/* navbar.css */
 .navbar {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Centra los elementos horizontalmente */
-    background-color: #8bd7d2; /* Fondo de la barra de navegación */
-    padding: 10px 0; /* Espaciado vertical */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
 }
 
-.navbar-list {
-    list-style: none; /* Elimina los puntos de la lista */
-    padding: 0; /* Elimina el padding de la lista */
-    margin: 0; /* Elimina el margin de la lista */
-    display: flex; /* Muestra los elementos en línea */
+.navbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 100px;
 }
 
-.navbar-item {
-    margin: 0 15px; /* Espacio entre los elementos */
-    cursor: pointer; /* Cambia el cursor al pasar sobre los elementos */
+.user-section {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-name {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.user-role {
+  font-size: 12px;
+  color: gray;
+}
+
+.dropdown-arrow {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 2010;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.logo_usuario_datos {
+  width: 25%;
+  height: 25%;
 }

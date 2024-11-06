@@ -29,17 +29,19 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
   const [selectedFaces, setSelectedFaces] = useState<{ [key in ToothFace]?: string }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
-  const [selectedFace, setSelectedFace] = useState<ToothFace | null>(null);
   const [observaciones, setObservaciones] = useState<string>(''); // Estado para el input de observaciones
+  const [isExtraction, setIsExtraction] = useState(false); // Estado para extracción
+  const [protesisRight, setProtesisRight] = useState(false); // Estado para Protesis →
+  const [protesisLeft, setProtesisLeft] = useState(false); // Estado para Protesis ←
 
-  const handleClick = (face: ToothFace) => {
-    setSelectedFace(face);
+  const handleClick = () => {
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setObservaciones(''); // Limpiar el input al cerrar el modal
+    setSelectedNumber(null);
   };
 
   const handleNumberSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -53,32 +55,53 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
       return; // No permitir aplicar si no hay usuario seleccionado
     }
 
-    // Consultar si el usuario existe
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/`);
       if (response.status === 200) {
-        // Usuario existe, proceder con el registro del diente
-        if (selectedNumber !== null && selectedFace) {
-          const color = colorMapping[selectedNumber];
-          setSelectedFaces((prev) => ({
-            ...prev,
-            [selectedFace]: color,
-          }));
+        if (selectedNumber !== null) {
+          const isExtraccion = selectedNumber === 11;
+          const isProtesisRight = selectedNumber === 12;
+          const isProtesisLeft = selectedNumber === 13;
+
+          if (isExtraccion) {
+            setIsExtraction(true);
+            setProtesisRight(false);
+            setProtesisLeft(false);
+          } else if (isProtesisRight) {
+            setProtesisRight(true);
+            setProtesisLeft(false);
+            setIsExtraction(false);
+          } else if (isProtesisLeft) {
+            setProtesisLeft(true);
+            setProtesisRight(false);
+            setIsExtraction(false);
+          } else {
+            setIsExtraction(false);
+            setProtesisRight(false);
+            setProtesisLeft(false);
+          }
 
           const fecha = new Date().toLocaleDateString();
-          const accion = `Aplicado color ${selectedNumber} al lado ${selectedFace} del diente ${number}`;
+          const accion =
+            isExtraccion
+              ? `Extracción aplicada al diente ${number}`
+              : isProtesisRight
+              ? `Protesis → aplicada al diente ${number}`
+              : isProtesisLeft
+              ? `Protesis ← aplicada al diente ${number}`
+              : `Aplicado color ${selectedNumber} al diente ${number}`;
 
           const newNota = {
             tooth_number: number,
             procedure: accion,
             date: fecha,
-            user: userId, // Incluir el ID del usuario al crear la nota
-            observations: observaciones // Almacenar las observaciones
+            user: userId,
+            observations: observaciones,
           };
 
           try {
             await axios.post('http://localhost:8000/api/notes/', newNota);
-            onRegister({ lado: selectedFace, color, fecha, accion });
+            onRegister({ lado: 'center', color: '', fecha, accion });
           } catch (error) {
             console.error("Error al registrar la nota:", error);
           }
@@ -94,7 +117,7 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
 
   return (
     <div style={{ margin: '10px', textAlign: 'center' }}>
-      <svg width="50" height="50" viewBox="0 0 100 100" style={{ cursor: 'pointer' }}>
+      <svg width="50" height="50" viewBox="0 0 100 100" style={{ cursor: 'pointer' }} onClick={handleClick}>
         <rect x="10" y="10" width="80" height="80" stroke="black" strokeWidth="2" fill="none" />
         <rect x="35" y="35" width="30" height="30" stroke="black" strokeWidth="2" fill="none" />
         <line x1="10" y1="10" x2="35" y2="35" stroke="black" strokeWidth="2" />
@@ -102,25 +125,41 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
         <line x1="90" y1="90" x2="65" y2="65" stroke="black" strokeWidth="2" />
         <line x1="10" y1="90" x2="35" y2="65" stroke="black" strokeWidth="2" />
 
-        {/* Pintar solo el lado específico si es el diente resaltado */}
-        <polygon points="10,10 90,10 65,35 35,35" fill={highlightedTooth && highlightedTooth.number === number && highlightedTooth.lado === 'top' ? highlightedTooth.color : selectedFaces.top || 'transparent'} stroke="black" onClick={() => handleClick('top')} />
-        <polygon points="90,10 90,90 65,65 65,35" fill={highlightedTooth && highlightedTooth.number === number && highlightedTooth.lado === 'right' ? highlightedTooth.color : selectedFaces.right || 'transparent'} stroke="black" onClick={() => handleClick('right')} />
-        <polygon points="10,90 90,90 65,65 35,65" fill={highlightedTooth && highlightedTooth.number === number && highlightedTooth.lado === 'bottom' ? highlightedTooth.color : selectedFaces.bottom || 'transparent'} stroke="black" onClick={() => handleClick('bottom')} />
-        <polygon points="10,10 10,90 35,65 35,35" fill={highlightedTooth && highlightedTooth.number === number && highlightedTooth.lado === 'left' ? highlightedTooth.color : selectedFaces.left || 'transparent'} stroke="black" onClick={() => handleClick('left')} />
-        <rect x="35" y="35" width="30" height="30" fill={highlightedTooth && highlightedTooth.number === number && highlightedTooth.lado === 'center' ? highlightedTooth.color : selectedFaces.center || 'transparent'} stroke="black" onClick={() => handleClick('center')} />
+        {/* Renderizar "X" si es extracción */}
+        {isExtraction && (
+          <>
+            <line x1="20" y1="20" x2="80" y2="80" stroke="red" strokeWidth="2" />
+            <line x1="80" y1="20" x2="20" y2="80" stroke="red" strokeWidth="2" />
+          </>
+        )}
 
+        {/* Renderizar "[" si es Protesis → */}
+        {protesisRight && (
+          <text x="85" y="70" textAnchor="start" fontSize="80" fill="blue" style={{ fontWeight: 'normal' }}>
+            [
+          </text>
+        )}
+
+        {/* Renderizar "]" si es Protesis ← */}
+        {protesisLeft && (
+          <text x="15" y="70" textAnchor="end" fontSize="80" fill="blue" style={{ fontWeight: 'normal' }}>
+            ]
+          </text>
+        )}
       </svg>
       <div>Diente {number}</div>
 
       {isModalOpen && (
         <div className="modal" style={{ padding: '20px', borderRadius: '8px', backgroundColor: '#f8f9fa', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
-          <h3 style={{ textAlign: 'center' }}>Selecciona un número</h3>
+          <h3 style={{ textAlign: 'center' }}>Selecciona una opción</h3>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <label style={{ marginRight: '10px' }}>Patologías:</label>
+            <label style={{ marginRight: '10px' }}>Opciones:</label>
             <select onChange={handleNumberSelect} value={selectedNumber || ''} style={{ flex: 1, padding: '10px', borderRadius: '5px' }}>
-              <option value="">Selecciona un color</option>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                <option key={num} value={num}>{num}</option>
+              <option value="">Selecciona</option>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(num => (
+                <option key={num} value={num}>
+                  {num === 11 ? 'Extracción' : num === 12 ? 'Protesis →' : num === 13 ? 'Protesis ←' : num}
+                </option>
               ))}
             </select>
           </div>

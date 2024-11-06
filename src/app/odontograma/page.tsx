@@ -12,7 +12,8 @@ const App = () => {
   const [highlightedTooth, setHighlightedTooth] = useState<{ number: number; color: string; lado: string } | null>(null);
   const [showUserForm, setShowUserForm] = useState(false);
   const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
-  const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [selectedUser, setSelectedUser] = useState<number>(1); // Valor por defecto 1
+  const [userData, setUserData] = useState<{ user: number } | null>(null); // Cambiado a nuevo tipo
 
   // Función para cargar usuarios
   const fetchUsers = async () => {
@@ -57,14 +58,25 @@ const App = () => {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    setUserData({ user: selectedUser }); // Actualiza userData al cambiar selectedUser
+  }, [selectedUser]);
+
   return (
     <div>
       <div className="background">
-        <Navbar />
+        <Navbar userData={userData} /> {/* Pasando userData a Navbar */}
 
         {/* Desplegable de usuarios */}
         <div style={{ marginLeft: '500px' }}>
-          <select onChange={(e) => setSelectedUser(Number(e.target.value))} value={selectedUser || ''}>
+          <select 
+            onChange={(e) => {
+              const selectedId = Number(e.target.value);
+              setSelectedUser(selectedId ? selectedId : 1); // Si no se selecciona, por defecto será 1
+              setUserData(selectedId ? { user: selectedId } : { user: 1 }); // Actualiza userData
+            }} 
+            value={selectedUser}
+          >
             <option value="" disabled>Seleccione un usuario</option>
             {users.map(user => (
               <option key={user.id} value={user.id}>{user.username}</option>
@@ -83,7 +95,7 @@ const App = () => {
         )}
 
         {/* Div flotante sobre ToothGrid */}
-        <div style={{ position: 'absolute', top: '370px', left: '370px', right: '0px', backgroundColor: 'black', height: '2px', width: '1200px' }}></div> 
+        <div style={{ position: 'absolute', top: '385px', left: '370px', right: '0px', backgroundColor: 'black', height: '2px', width: '1190px' }}></div> 
         <div style={{ position: 'absolute', bottom: '300px', left: '965px', height: '480px', width: '2px', backgroundColor: 'black'}}></div>
 
         <div style={{ display: 'flex', flex: 1, alignItems: 'flex-start', width: '100%' }}>
