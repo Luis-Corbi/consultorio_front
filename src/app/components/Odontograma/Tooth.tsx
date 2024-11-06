@@ -29,12 +29,14 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
   const [selectedFaces, setSelectedFaces] = useState<{ [key in ToothFace]?: string }>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
+  const [selectedFace, setSelectedFace] = useState<ToothFace | null>(null);
   const [observaciones, setObservaciones] = useState<string>(''); // Estado para el input de observaciones
   const [isExtraction, setIsExtraction] = useState(false); // Estado para extracción
-  const [protesisRight, setProtesisRight] = useState(false); // Estado para Protesis →
-  const [protesisLeft, setProtesisLeft] = useState(false); // Estado para Protesis ←
+  const [protesisRight, setProtesisRight] = useState(false); // Estado para prótesis derecha
+  const [protesisLeft, setProtesisLeft] = useState(false); // Estado para prótesis izquierda
 
-  const handleClick = () => {
+  const handleClick = (face: ToothFace) => {
+    setSelectedFace(face);
     setIsModalOpen(true);
   };
 
@@ -58,7 +60,7 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/`);
       if (response.status === 200) {
-        if (selectedNumber !== null) {
+        if (selectedNumber !== null && selectedFace) {
           const isExtraccion = selectedNumber === 11;
           const isProtesisRight = selectedNumber === 12;
           const isProtesisLeft = selectedNumber === 13;
@@ -67,6 +69,7 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
             setIsExtraction(true);
             setProtesisRight(false);
             setProtesisLeft(false);
+            setSelectedFaces({}); // Limpiar colores al aplicar extracción
           } else if (isProtesisRight) {
             setProtesisRight(true);
             setProtesisLeft(false);
@@ -76,6 +79,11 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
             setProtesisRight(false);
             setIsExtraction(false);
           } else {
+            const color = colorMapping[selectedNumber];
+            setSelectedFaces((prev) => ({
+              ...prev,
+              [selectedFace]: color,
+            }));
             setIsExtraction(false);
             setProtesisRight(false);
             setProtesisLeft(false);
@@ -86,10 +94,10 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
             isExtraccion
               ? `Extracción aplicada al diente ${number}`
               : isProtesisRight
-              ? `Protesis → aplicada al diente ${number}`
+              ? `Prótesis → aplicada al diente ${number}`
               : isProtesisLeft
-              ? `Protesis ← aplicada al diente ${number}`
-              : `Aplicado color ${selectedNumber} al diente ${number}`;
+              ? `Prótesis ← aplicada al diente ${number}`
+              : `Aplicado color ${selectedNumber} al lado ${selectedFace} del diente ${number}`;
 
           const newNota = {
             tooth_number: number,
@@ -101,7 +109,7 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
 
           try {
             await axios.post('http://localhost:8000/api/notes/', newNota);
-            onRegister({ lado: 'center', color: '', fecha, accion });
+            onRegister({ lado: selectedFace, color: isExtraccion ? 'white' : colorMapping[selectedNumber], fecha, accion });
           } catch (error) {
             console.error("Error al registrar la nota:", error);
           }
@@ -117,13 +125,20 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
 
   return (
     <div style={{ margin: '10px', textAlign: 'center' }}>
-      <svg width="50" height="50" viewBox="0 0 100 100" style={{ cursor: 'pointer' }} onClick={handleClick}>
+      <svg width="50" height="50" viewBox="0 0 100 100" style={{ cursor: 'pointer' }}>
         <rect x="10" y="10" width="80" height="80" stroke="black" strokeWidth="2" fill="none" />
         <rect x="35" y="35" width="30" height="30" stroke="black" strokeWidth="2" fill="none" />
         <line x1="10" y1="10" x2="35" y2="35" stroke="black" strokeWidth="2" />
         <line x1="90" y1="10" x2="65" y2="35" stroke="black" strokeWidth="2" />
         <line x1="90" y1="90" x2="65" y2="65" stroke="black" strokeWidth="2" />
         <line x1="10" y1="90" x2="35" y2="65" stroke="black" strokeWidth="2" />
+
+        {/* Pintar lados del diente */}
+        <polygon points="10,10 90,10 65,35 35,35" fill={selectedFaces.top || 'transparent'} stroke="black" onClick={() => handleClick('top')} />
+        <polygon points="90,10 90,90 65,65 65,35" fill={selectedFaces.right || 'transparent'} stroke="black" onClick={() => handleClick('right')} />
+        <polygon points="10,90 90,90 65,65 35,65" fill={selectedFaces.bottom || 'transparent'} stroke="black" onClick={() => handleClick('bottom')} />
+        <polygon points="10,10 10,90 35,65 35,35" fill={selectedFaces.left || 'transparent'} stroke="black" onClick={() => handleClick('left')} />
+        <rect x="35" y="35" width="30" height="30" fill={selectedFaces.center || 'transparent'} stroke="black" onClick={() => handleClick('center')} />
 
         {/* Renderizar "X" si es extracción */}
         {isExtraction && (
@@ -133,14 +148,14 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
           </>
         )}
 
-        {/* Renderizar "[" si es Protesis → */}
+        {/* Renderizar "[" si es prótesis derecha */}
         {protesisRight && (
           <text x="85" y="70" textAnchor="start" fontSize="80" fill="blue" style={{ fontWeight: 'normal' }}>
             [
           </text>
         )}
 
-        {/* Renderizar "]" si es Protesis ← */}
+        {/* Renderizar "]" si es prótesis izquierda */}
         {protesisLeft && (
           <text x="15" y="70" textAnchor="end" fontSize="80" fill="blue" style={{ fontWeight: 'normal' }}>
             ]
@@ -158,7 +173,7 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
               <option value="">Selecciona</option>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(num => (
                 <option key={num} value={num}>
-                  {num === 11 ? 'Extracción' : num === 12 ? 'Protesis →' : num === 13 ? 'Protesis ←' : num}
+                  {num === 11 ? 'Extracción' : num === 12 ? 'Prótesis →' : num === 13 ? 'Prótesis ←' : num}
                 </option>
               ))}
             </select>
