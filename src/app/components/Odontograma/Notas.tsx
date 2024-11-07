@@ -143,43 +143,47 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth, 
             </tr>
           </thead>
           <tbody>
-            {notas.length > 0 ? (
-              notas.map(nota => (
-                <tr key={nota.id}>
-                  <td>{nota.tooth_number}</td>
-                  <td>{nota.procedure}</td>
-                  <td>{nota.date}</td>
-                  <td style={{ display: 'none' }}>{nota.user}</td> {/* Ocultar datos de Usuario */}
-                  <td>
-                    <button 
-                        style={{ display: 'block', margin: '0 auto' }} 
-                        onClick={() => mostrarObservaciones(nota.observations)}
-                    >
-                        🔎
-                    </button> {/* Botón en la columna de Observaciones centrado */}
-                  </td>
-                  <td>
-                    <button onClick={() => verNota(nota)}>🔎</button>
-                    <button onClick={() => eliminarNota(nota.id)}>🗑️</button>
-                  </td>
+              {notas.length > 0 ? (
+                notas
+                  .slice() // Crear una copia del array para no mutarlo
+                  .reverse() // Invertir el orden de las notas
+                  .map((nota) => ( // Mapear las notas desde la más reciente
+                    <tr key={nota.id}>
+                      <td>{nota.tooth_number}</td>
+                      <td>{nota.procedure}</td>
+                      <td>{nota.date}</td>
+                      <td style={{ display: 'none' }}>{nota.user}</td> {/* Ocultar datos de Usuario */}
+                      <td>
+                        <button 
+                            style={{ display: 'block', margin: '0 auto' }} 
+                            onClick={() => mostrarObservaciones(nota.observations)}
+                        >
+                            🔎
+                        </button> {/* Botón en la columna de Observaciones centrado */}
+                      </td>
+                      <td>
+                        <button onClick={() => eliminarNota(nota.id)}>🗑️</button>
+                      </td>
+                    </tr>
+                  ))
+              ) : (
+                <tr>
+                  <td colSpan={6}>No hay notas disponibles.</td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={6}>No hay notas disponibles.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
         
         {/* Recuadro de Observaciones */}
         {showObservationsBox && (
-          <div className="observaciones-box">
+          <div className={`observaciones-box ${showObservationsBox ? 'show' : 'hide'}`}>
             <button className="close-button" onClick={cerrarObservacionesBox}>✖️</button>
             <h4>Observaciones</h4>
-            <p>{currentObservation}</p>
-          </div>
-        )}
+              <div className="content">
+                <p>{currentObservation}</p>
+              </div>
+            </div>
+          )}
       </div>
     </div>
   );

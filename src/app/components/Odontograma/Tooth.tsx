@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 interface ToothProps {
   number: number;
@@ -10,19 +10,41 @@ interface ToothProps {
   onHighlightTooth: (toothNumber: number, color: string, lado: string) => void; // Acepta la función para resaltar dientes
 }
 
-type ToothFace = 'top' | 'right' | 'bottom' | 'left' | 'center';
+type ToothFace = "top" | "right" | "bottom" | "left" | "center";
 
+// Mapeo de colores para pintar los lados del diente. Puedes modificarlos aquí.
 const colorMapping: { [key: number]: string } = {
-  1: 'lightblue',
-  2: 'lightgreen',
-  3: 'lightyellow',
-  4: 'lightcoral',
-  5: 'lightpink',
-  6: 'lightgray',
-  7: 'lightgoldenrodyellow',
-  8: 'lightsalmon',
-  9: 'lightseagreen',
-  10: 'lightcyan',
+  1: "lightcoral",       // Rojo clarito
+  2: "lightblue",        // Azul clarito
+  3: "palegoldenrod",    // Amarillo clarito
+  4: "lightgreen",       // Verde clarito
+  5: "sandybrown",       // Marrón clarito
+  6: "lightsalmon",      // Naranja clarito
+  7: "plum",             // Violeta clarito
+};
+
+// Descripciones para las opciones del modal con tooltips.
+const tooltipMapping: { [key: number]: string } = {
+  1: "Patología activa o una condición que requiere tratamiento.",
+  2: "Tratamiento realizado/corregido.",
+  3: "Placa/Sarro.",
+  4: "Prevención/Protección.",
+  5: "Lesión/Desgaste.",
+  6: "Alteración anatómica.",
+  7: "Cirugía oral.",
+  11: "Extracción: Remoción del diente.",
+  12: "Prótesis →: Comienzo de una prótesis desde el lado derecho del diente.",
+  13: "Prótesis ←: Comienzo de una prótesis desde el lado izquierdo del diente.",
+};
+
+const colorLabels: { [key: number]: string } = {
+  1: "Rojo",
+  2: "Azul",
+  3: "Amarillo",
+  4: "Verde",
+  5: "Marrón",
+  6: "Naranja",
+  7: "Violeta",
 };
 
 const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, userId, onHighlightTooth }) => {
@@ -30,7 +52,7 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [selectedFace, setSelectedFace] = useState<ToothFace | null>(null);
-  const [observaciones, setObservaciones] = useState<string>(''); // Estado para el input de observaciones
+  const [observaciones, setObservaciones] = useState<string>(""); // Estado para observaciones
   const [isExtraction, setIsExtraction] = useState(false); // Estado para extracción
   const [protesisRight, setProtesisRight] = useState(false); // Estado para prótesis derecha
   const [protesisLeft, setProtesisLeft] = useState(false); // Estado para prótesis izquierda
@@ -42,7 +64,7 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setObservaciones(''); // Limpiar el input al cerrar el modal
+    setObservaciones("");
     setSelectedNumber(null);
   };
 
@@ -54,7 +76,7 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
   const handleApplyNumber = async () => {
     if (!userId) {
       alert("Por favor, selecciona un usuario antes de aplicar.");
-      return; // No permitir aplicar si no hay usuario seleccionado
+      return;
     }
 
     try {
@@ -90,14 +112,16 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
           }
 
           const fecha = new Date().toLocaleDateString();
+
+          // Determinar el procedimiento según el tooltipMapping
           const accion =
             isExtraccion
               ? `Extracción aplicada al diente ${number}`
               : isProtesisRight
-              ? `Prótesis → aplicada al diente ${number}`
+              ? `Prótesis lado derecho del diente ${number}`
               : isProtesisLeft
-              ? `Prótesis ← aplicada al diente ${number}`
-              : `Aplicado color ${selectedNumber} al lado ${selectedFace} del diente ${number}`;
+              ? `Prótesis lado izquierdo del diente ${number}`
+              : tooltipMapping[selectedNumber] || `Procedimiento desconocido (ID: ${selectedNumber})`;
 
           const newNota = {
             tooth_number: number,
@@ -108,8 +132,8 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
           };
 
           try {
-            await axios.post('http://localhost:8000/api/notes/', newNota);
-            onRegister({ lado: selectedFace, color: isExtraccion ? 'white' : colorMapping[selectedNumber], fecha, accion });
+            await axios.post("http://localhost:8000/api/notes/", newNota);
+            onRegister({ lado: selectedFace, color: isExtraccion ? "white" : colorMapping[selectedNumber], fecha, accion });
           } catch (error) {
             console.error("Error al registrar la nota:", error);
           }
@@ -124,8 +148,8 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
   };
 
   return (
-    <div style={{ margin: '10px', textAlign: 'center' }}>
-      <svg width="50" height="50" viewBox="0 0 100 100" style={{ cursor: 'pointer' }}>
+    <div style={{ margin: "10px", textAlign: "center" }}>
+      <svg width="50" height="50" viewBox="0 0 100 100" style={{ cursor: "pointer" }}>
         <rect x="10" y="10" width="80" height="80" stroke="black" strokeWidth="2" fill="none" />
         <rect x="35" y="35" width="30" height="30" stroke="black" strokeWidth="2" fill="none" />
         <line x1="10" y1="10" x2="35" y2="35" stroke="black" strokeWidth="2" />
@@ -133,12 +157,12 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
         <line x1="90" y1="90" x2="65" y2="65" stroke="black" strokeWidth="2" />
         <line x1="10" y1="90" x2="35" y2="65" stroke="black" strokeWidth="2" />
 
-        {/* Pintar lados del diente */}
-        <polygon points="10,10 90,10 65,35 35,35" fill={selectedFaces.top || 'transparent'} stroke="black" onClick={() => handleClick('top')} />
-        <polygon points="90,10 90,90 65,65 65,35" fill={selectedFaces.right || 'transparent'} stroke="black" onClick={() => handleClick('right')} />
-        <polygon points="10,90 90,90 65,65 35,65" fill={selectedFaces.bottom || 'transparent'} stroke="black" onClick={() => handleClick('bottom')} />
-        <polygon points="10,10 10,90 35,65 35,35" fill={selectedFaces.left || 'transparent'} stroke="black" onClick={() => handleClick('left')} />
-        <rect x="35" y="35" width="30" height="30" fill={selectedFaces.center || 'transparent'} stroke="black" onClick={() => handleClick('center')} />
+        {/* Pintar lados */}
+        <polygon points="10,10 90,10 65,35 35,35" fill={selectedFaces.top || "transparent"} stroke="black" onClick={() => handleClick("top")} />
+        <polygon points="90,10 90,90 65,65 65,35" fill={selectedFaces.right || "transparent"} stroke="black" onClick={() => handleClick("right")} />
+        <polygon points="10,90 90,90 65,65 35,65" fill={selectedFaces.bottom || "transparent"} stroke="black" onClick={() => handleClick("bottom")} />
+        <polygon points="10,10 10,90 35,65 35,35" fill={selectedFaces.left || "transparent"} stroke="black" onClick={() => handleClick("left")} />
+        <rect x="35" y="35" width="30" height="30" fill={selectedFaces.center || "transparent"} stroke="black" onClick={() => handleClick("center")} />
 
         {/* Renderizar "X" si es extracción */}
         {isExtraction && (
@@ -150,14 +174,14 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
 
         {/* Renderizar "[" si es prótesis derecha */}
         {protesisRight && (
-          <text x="85" y="70" textAnchor="start" fontSize="80" fill="blue" style={{ fontWeight: 'normal' }}>
+          <text x="85" y="70" textAnchor="start" fontSize="80" fill="blue" style={{ fontWeight: "normal" }}>
             [
           </text>
         )}
 
         {/* Renderizar "]" si es prótesis izquierda */}
         {protesisLeft && (
-          <text x="15" y="70" textAnchor="end" fontSize="80" fill="blue" style={{ fontWeight: 'normal' }}>
+          <text x="15" y="70" textAnchor="end" fontSize="80" fill="blue" style={{ fontWeight: "normal" }}>
             ]
           </text>
         )}
@@ -165,17 +189,24 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
       <div>Diente {number}</div>
 
       {isModalOpen && (
-        <div className="modal" style={{ padding: '20px', borderRadius: '8px', backgroundColor: '#f8f9fa', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
-          <h3 style={{ textAlign: 'center' }}>Selecciona una opción</h3>
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <label style={{ marginRight: '10px' }}>Opciones:</label>
-            <select onChange={handleNumberSelect} value={selectedNumber || ''} style={{ flex: 1, padding: '10px', borderRadius: '5px' }}>
-              <option value="">Selecciona</option>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(num => (
-                <option key={num} value={num}>
-                  {num === 11 ? 'Extracción' : num === 12 ? 'Prótesis →' : num === 13 ? 'Prótesis ←' : num}
+        <div className="modal" style={{ padding: "20px", borderRadius: "8px", backgroundColor: "#f8f9fa", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)" }}>
+          <h3 style={{ textAlign: "center" }}>Selecciona una opción</h3>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+            <label style={{ marginRight: "10px" }}>Opciones:</label>
+            <select
+              onChange={handleNumberSelect}
+              value={selectedNumber || ""}
+              style={{ flex: 1, padding: "10px", borderRadius: "5px" }}
+            >
+              <option value="" title="Selecciona una opción">Selecciona</option>
+              {Object.keys(colorMapping).map((key) => (
+                <option key={key} value={key} title={tooltipMapping[+key]}>
+                  {colorLabels[+key]}
                 </option>
               ))}
+              <option value="11" title={tooltipMapping[11]}>Extracción</option>
+              <option value="12" title={tooltipMapping[12]}>Prótesis →</option>
+              <option value="13" title={tooltipMapping[13]}>Prótesis ←</option>
             </select>
           </div>
           <input
@@ -183,10 +214,14 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
             placeholder="Observaciones"
             value={observaciones}
             onChange={(e) => setObservaciones(e.target.value)}
-            style={{ marginBottom: '10px', padding: '10px', borderRadius: '5px', width: '100%' }}
+            style={{ marginBottom: "10px", padding: "10px", borderRadius: "5px", width: "100%" }}
           />
-          <button onClick={handleApplyNumber} style={{ marginTop: '10px', width: '100%', padding: '10px', backgroundColor: '#000000', color: 'white', border: 'none', borderRadius: '5px' }}>Aplicar</button>
-          <button onClick={handleCloseModal} style={{ marginTop: '10px', width: '100%', padding: '10px', backgroundColor: '#5a5757', color: 'white', border: 'none', borderRadius: '5px' }}>Cerrar</button>
+          <button onClick={handleApplyNumber} style={{ marginTop: "10px", width: "100%", padding: "10px", backgroundColor: "#000000", color: "white", border: "none", borderRadius: "5px" }}>
+            Aplicar
+          </button>
+          <button onClick={handleCloseModal} style={{ marginTop: "10px", width: "100%", padding: "10px", backgroundColor: "#5a5757", color: "white", border: "none", borderRadius: "5px" }}>
+            Cerrar
+          </button>
         </div>
       )}
     </div>
@@ -194,3 +229,5 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
 };
 
 export default Tooth;
+
+
