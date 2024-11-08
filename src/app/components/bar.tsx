@@ -1,6 +1,6 @@
 // src/app/components/bar.tsx
 "use client";
-
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';

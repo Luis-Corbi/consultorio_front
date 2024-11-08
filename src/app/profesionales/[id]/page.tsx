@@ -3,7 +3,7 @@ import UserPageContainer from './ProfesionalEdit';
 import { User } from '@/app/types/types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import '../profesionales.css';
+
 
 interface Props {
   user: User | null;
@@ -31,7 +31,7 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
     return <div>Error al cargar los datos del usuario.</div>;
   }
 
-  return <UserPageContainer user={user} token={token} />; // No se pasa onUpdate
+  return <UserPageContainer user={user} token={token} />; 
 };
 
 export default UserPage;

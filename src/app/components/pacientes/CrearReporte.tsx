@@ -1,8 +1,8 @@
 'use client';
-import './medicalreport.css';
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import api from '../../lib/api';
+
 interface UploadReportProps {
   patientId: string;
   token: string;
@@ -11,22 +11,22 @@ interface UploadReportProps {
 const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
   const [file, setFile] = useState<File | null>(null);
   const [type, setType] = useState<string>('');
-  const [professionalId, setProfessionalId] = useState<string>(''); // Estado para el ID del profesional
+  const [professionalId, setProfessionalId] = useState<string>(''); 
   const [diagnosis, setDiagnosis] = useState<string>(''); 
   const [treatment, setTreatment] = useState<string>(''); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Obtener el ID del profesional desde el usuario autenticado
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await api.get('/user/profile/', {
+        const response = await axios.get('http://127.0.0.1:8000/api/user/profile/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setProfessionalId(response.data.id); // Asignar el ID del usuario
+        setProfessionalId(response.data.id);
       } catch (err) {
         console.error('Error fetching user profile:', err);
       }
@@ -46,7 +46,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
     if (name === 'type') setType(value);
     if (name === 'diagnosis') setDiagnosis(value);
     if (name === 'treatment') setTreatment(value);
-    // El ID del profesional se asigna automáticamente
+  
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -66,7 +66,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
 
     setLoading(true);
     try {
-        const response = await api.post('/medical_reports/', formData, {
+        const response = await axios.post('http://127.0.0.1:8000/api/medical_reports/', formData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',
@@ -95,9 +95,9 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
   return (
     <div>
       <h2>Agregar Reporte Médico</h2>
-      <form className='form-reporte' onSubmit={handleSubmit}>
+      <form className='flex flex-col gap-2' onSubmit={handleSubmit}>
         <input  
-          className='input-pacientes'
+          className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
           type="file" 
           accept=".pdf" 
           onChange={handleFileChange} 
@@ -105,7 +105,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
         />
         
         <input
-          className='input-pacientes'
+          className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
           type="text"
           name="type"
           value={type}
@@ -114,7 +114,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           disabled={loading}
         />
         <input
-          className='input-pacientes'
+          className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
           type="text"
           name="diagnosis"
           value={diagnosis}
@@ -123,7 +123,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           disabled={loading}
         />
         <input
-          className='input-pacientes'
+          className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
           type="text"
           name="treatment"
           value={treatment}
@@ -131,7 +131,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
           placeholder="Tratamiento"
           disabled={loading}
         />
-        <button className='button-subir-reporte' type="submit" disabled={loading}>
+        <button className='w-full no-underline text-white flex justify-center items-center bg-[#8EDAD5] border border-[#8EDAD5] rounded-[5px] cursor-pointer h-[38px]' type="submit" disabled={loading}>
           {loading ? 'Subiendo...' : 'Subir Reporte'}
         </button>
         {error && <p style={{ color: 'red' }}>{error}</p>}

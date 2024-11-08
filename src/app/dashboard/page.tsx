@@ -1,9 +1,8 @@
 
 import React from 'react';
-import '../sections.css';  
+
 import Bar from '../components/bar';
 import Sidebar from '../components/sidebar'
-import "../components/Calendario.css"; 
 import AppointmentsChart from '../components/grafico';
 import { cookies } from 'next/headers'; 
 import TurnosDelDia from '../components/home/Turnosdeldia';
@@ -19,24 +18,25 @@ const Panel= () => {
   }
 
   return (
-    <div className='container'>
+    <div className='w-full flex min-h-screen'>
         
-        <Sidebar/>
-        <div className='div-principal'>
+      <Sidebar/>
+      <div className='w-[100%] flex-grow flex flex-col bg-[#F1F1F1]'>
 
-        <Bar/>
-        <h1>Los turnos del dia</h1>
-        <div className='div-grapic'>
-        <AppointmentsChart token={token} /> 
-        <TurnosDelDia token={token}  />
+        <div className="w-full">
+          <Bar />
+
+        <h1>Los turnos del dia</h1> 
+        <div className="flex flex-col sm:flex-row justify-center gap-4 p-4">
+          <AppointmentsChart token={token} />
+          <TurnosDelDia token={token} />
         </div>
         </div>
+        
+      </div>
         
     </div>
   
-   
-      
-
   );
 };
 

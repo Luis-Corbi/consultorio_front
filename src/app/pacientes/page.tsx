@@ -1,11 +1,11 @@
 // src/app/pacientes/page.tsx
 "use client"
 import React from 'react';
-import '../sections.css';  
+
 import Sidebar from '../components/sidebar';
 import Bar from '../components/bar';
 import UsersTable from '../components/userstable';
-import "../pacientes/pacientes.css";
+
 import { User, Speciality, Role } from '../types/types';
 import { fetchUsersByRole } from '../lib/pacientes';
 
@@ -37,12 +37,16 @@ const Fetchtable: React.FC = () => {
 
 const Page: React.FC = () => {
   return (
-    <div className='container'>
+    <div className='w-full flex min-h-screen'>
+      
       <Sidebar/>
-      <div className='container'>
-        <div className='div-principal'>
-          <Bar/>
-          <h1>Pacientes</h1>
+      <div className='w-full flex-grow flex flex-col bg-[#F1F1F1]'>
+        
+        <div className="w-full">
+          <Bar />
+        </div>
+        
+        <div className='flex-grow p-4'>
           <Fetchtable />
         </div>
       </div>

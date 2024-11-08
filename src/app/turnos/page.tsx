@@ -8,22 +8,28 @@ import Bar from '../components/bar';
 
 import dynamic from 'next/dynamic';
 
-// Importa dinámicamente el componente del calendario para evitar problemas con SSR
+
 const Calendario = dynamic(() => import('../components/calendar'), { ssr: false });
 
 const Turnos: React.FC = () => {
     return (
        
-                <div className='container'>
+        <div className='w-full flex min-h-screen'>
                         
-                <Sidebar/>
-                <div className='div-principal'>
+            <Sidebar/>
+            <div className='W-[100%] flex-grow flex flex-col bg-[#F1F1F1]'>
 
-                <Bar/>
-                <Calendario defaultView="month" />
+                <div className="w-full">
+                    <Bar />
                 </div>
 
+                <div className='flex-grow p-4'>
+                    <Calendario defaultView="month" />
                 </div>
+
+            </div>
+
+        </div>
 );
 }
 export default Turnos;

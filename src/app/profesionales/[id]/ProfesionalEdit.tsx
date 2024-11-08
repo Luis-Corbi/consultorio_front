@@ -134,56 +134,59 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
   };
 
   return (
-    <div className='container'>
+    <div className="w-full flex min-h-screen">
       <Sidebar />
-      <div className='container'>
-        <div className='div-principal'>
+      
+      <div className="w-full flex-grow flex flex-col bg-[#F1F1F1]">
+        <div className="w-full">
           <Bar />
-          <div className='datos-pro'>
-            <div className='contenedor-datos-profesionales'>
-              <h1>Detalles del Profesional:</h1>
-              <div className='div-datos-flex'>
-                <div className='div-ch'>
-                  <p><strong>Nombre:</strong> {isEditing ? <input type='text' name='name' value={formData.name} onChange={handleInputChange} className='input-dato' /> : renderDato(user.name)}</p>
-                  <p><strong>Apellido:</strong> {isEditing ? <input type='text' name='lastname' value={formData.lastname} onChange={handleInputChange} className='input-dato' /> : renderDato(user.lastname)}</p>
-                  <p><strong>DNI:</strong> {isEditing ? <input type='text' name='DNI' value={formData.DNI} onChange={handleInputChange} className='input-dato' /> : renderDato(user.DNI)}</p>
-                  <p><strong>Teléfono:</strong> {isEditing ? <input type='text' name='telephone' value={formData.telephone} onChange={handleInputChange} className='input-dato' /> : renderDato(user.telephone)}</p>
-                  <p><strong>Email:</strong> {isEditing ? <input type='email' name='email' value={formData.email} onChange={handleInputChange} className='input-dato' /> : renderDato(user.email)}</p>
-                  <p><strong>Dirección:</strong> {isEditing ? <input type='text' name='address' value={formData.address} onChange={handleInputChange} className='input-dato' /> : renderDato(user.address)}</p>
-                  <p><strong>Género:</strong> {isEditing ? (
-                    <select name='gender' value={formData.gender} onChange={handleInputChange} className='input-dato'>
-                      <option value="M">Masculino</option>
-                      <option value="F">Femenino</option>
-                      <option value="O">No binario</option>
-                    </select>
-                  ) : renderDato(genderMap[user.gender] || 'No especificado')}</p>
-                </div>
-                <div className='div-ch'>
-                  <p><strong>Fecha de Nacimiento:</strong> {isEditing ? <input type='date' name='birth_date' value={formData.birth_date} onChange={handleInputChange} className='input-dato' /> : renderDato(user.birth_date)}</p>
-                  <p><strong>Seguro de Salud:</strong> {isEditing ? <input type='text' name='health_insurance' value={formData.health_insurance} onChange={handleInputChange} className='input-dato' /> : renderDato(user.health_insurance)}</p>
-                  <p><strong>Número de Seguro de Salud:</strong> {isEditing ? <input type='text' name='health_insurance_number' value={formData.health_insurance_number} onChange={handleInputChange} className='input-dato' /> : renderDato(user.health_insurance_number)}</p>
-                  <p><strong>Número de Licencia:</strong> {isEditing ? <input type='text' name='licence_number' value={formData.licence_number} onChange={handleInputChange} className='input-dato' /> : renderDato(user.licence_number)}</p>
-                  <p><strong>Notas:</strong> {isEditing ? <input type='text' name='notes' value={formData.notes} onChange={handleInputChange} className='input-dato' /> : renderDato(user.notes)}</p>
-                  <p><strong>Color:</strong></p>
-                  {isEditing ? (
-                    <input type='color' name='color' value={formData.color} onChange={handleColorChange} className='input-dato' />
-                  ) : (
-                    <div className="color-indicator" style={{ backgroundColor: user.color }} />
-                  )}
-
-                  {isEditing && (
-                    <p><strong>Contraseña:</strong> <input type='password' name='password' value={formData.password} onChange={handleInputChange} className='input-dato' placeholder='****' /></p>
-                  )}
-                </div>
+        </div>
+        
+        <div className="flex-grow p-4">
+          <div className="bg-white rounded-lg p-6 shadow-lg">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-4">Detalles del Profesional:</h1>
+            <div className="flex justify-around">
+              <div className="w-1/2 space-y-4">
+                <p><strong>Nombre:</strong> {isEditing ? <input type="text" name="name" value={formData.name} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.name)}</p>
+                <p><strong>Apellido:</strong> {isEditing ? <input type="text" name="lastname" value={formData.lastname} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.lastname)}</p>
+                <p><strong>DNI:</strong> {isEditing ? <input type="text" name="DNI" value={formData.DNI} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.DNI)}</p>
+                <p><strong>Teléfono:</strong> {isEditing ? <input type="text" name="telephone" value={formData.telephone} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.telephone)}</p>
+                <p><strong>Email:</strong> {isEditing ? <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.email)}</p>
+                <p><strong>Dirección:</strong> {isEditing ? <input type="text" name="address" value={formData.address} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.address)}</p>
+                <p><strong>Género:</strong> {isEditing ? (
+                  <select name="gender" value={formData.gender} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`}>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                    <option value="O">No binario</option>
+                  </select>
+                ) : renderDato(genderMap[user.gender] || 'No especificado')}</p>
               </div>
-
+              <div className="w-1/2 space-y-4">
+                <p><strong>Fecha de Nacimiento:</strong> {isEditing ? <input type="date" name="birth_date" value={formData.birth_date} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.birth_date)}</p>
+                <p><strong>Seguro de Salud:</strong> {isEditing ? <input type="text" name="health_insurance" value={formData.health_insurance} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.health_insurance)}</p>
+                <p><strong>Número de Seguro de Salud:</strong> {isEditing ? <input type="text" name="health_insurance_number" value={formData.health_insurance_number} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.health_insurance_number)}</p>
+                <p><strong>Número de Licencia:</strong> {isEditing ? <input type="text" name="licence_number" value={formData.licence_number} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.licence_number)}</p>
+                <p><strong>Notas:</strong> {isEditing ? <input type="text" name="notes" value={formData.notes} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.notes)}</p>
+                <p><strong>Color:</strong></p>
+                {isEditing ? (
+                  <input type="color" name="color" value={formData.color} onChange={handleColorChange}  />
+                ) : (
+                  <div className="w-5 h-5 rounded-full border border-gray-300" style={{ backgroundColor: user.color }} />
+                )}
+                {isEditing && (
+                  <p><strong>Contraseña:</strong> <input type="password" name="password" value={formData.password} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} placeholder="****" /></p>
+                )}
+              </div>
+            </div>
+            
+            <div className="flex justify-center mt-6 space-x-4">
               {!isEditing ? (
-                <button className='btn-edit-pro' onClick={startEditing}>Editar</button>
+                <button className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 transition" onClick={startEditing}>Editar</button>
               ) : (
-                <div className="edit-form">
-                  <button className='btn-edit-pro'  onClick={handleEdit}>Guardar</button>
-                  <button  className='btn-edit-pro'  onClick={cancelEditing}>Cancelar</button>
-                </div>
+                <>
+                  <button className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 transition" onClick={handleEdit}>Guardar</button>
+                  <button className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition" onClick={cancelEditing}>Cancelar</button>
+                </>
               )}
             </div>
           </div>
@@ -191,6 +194,7 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
       </div>
     </div>
   );
+  
 };
-
 export default ProfesionalPageContainer;
+  

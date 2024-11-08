@@ -1,8 +1,5 @@
-// TurnosDelDia.tsx"
+
 "use client"
-// components/TurnosDelDia.tsx
-// components/TurnosDelDia.tsx
-// components/TurnosDelDia.tsx
 import "../../pacientes/pacientes.css"
 import React, { useEffect, useState } from 'react';
 import api from '../../lib/api';
@@ -20,7 +17,7 @@ interface User {
   id: number;
   name: string;
   lastname: string;
-  // Agrega otros campos de usuario si es necesario
+ 
 }
 
 interface TurnosDelDiaProps {
@@ -34,7 +31,7 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch the logged-in user's ID
+
   const fetchLoggedInUserId = async () => {
     try {
       const response = await await api.get('/user/profile/', {
@@ -51,7 +48,7 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
     }
   };
 
-  // Fetch today's appointments for the logged-in user
+
   const fetchTodayAppointments = async (professionalId: number) => {
     try {
       const response = await await api.get(`/today-appointments/${professionalId}/`, {
@@ -60,12 +57,12 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
         },
       });
 
-      console.log(response.data); // Imprimir respuesta para verificar formato
+      console.log(response.data);
 
       if (response.status === 200) {
         const appointmentsData = response.data;
 
-        // Verificar si appointmentsData es un array
+
         if (Array.isArray(appointmentsData)) {
           setTurnos(appointmentsData);
         } else {
@@ -82,7 +79,6 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
     }
   };
 
-  // Fetch patients by role
   const fetchPatientsByRole = async (roleId: number) => {
     try {
       const response = await api.get(`/users/?role=${roleId}`, {
@@ -97,12 +93,11 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
     }
   };
 
-  // Load professionals and patients on component mount
   useEffect(() => {
-    fetchLoggedInUserId(); // Fetch user ID on component mount
+    fetchLoggedInUserId(); 
     const loadUsers = async () => {
       try {
-        const fetchedPatients = await fetchPatientsByRole(3); // Rol de paciente
+        const fetchedPatients = await fetchPatientsByRole(3);
         setPatients(fetchedPatients);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -113,7 +108,7 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
 
   useEffect(() => {
     if (loggedInUserId !== null) {
-      fetchTodayAppointments(loggedInUserId); // Fetch appointments once user ID is available
+      fetchTodayAppointments(loggedInUserId); 
     }
   }, [loggedInUserId]);
 
@@ -129,28 +124,29 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
   if (error) {
     return <p>{error}</p>;
   }
-
   return (
     <div>
-      <h2>Turnos del Día</h2>
-      {turnos.length === 0 ? (
-        <p>No hay turnos para hoy.</p>
-      ) : (
-        <ul className="ul-lista-pacientes">
-          {turnos.map((turno) => (
-            <li 
-            key={turno.id}
-            className="lista-pacientes"
-          >
-            <p className="p-lista-pacientes">  <strong>Paciente:</strong> {getPatientName(turno.patient)} - </p>
-            <p className="p-lista-pacientes"> <strong> Hora:</strong> {turno.hour}</p>
-            -
-          </li>
-          
-          ))}
-        </ul>
-      )}
-    </div>
+  <h2 className="px-2">Turnos del Día</h2>
+  {turnos.length === 0 ? (
+    <p className="px-2">No hay turnos para hoy.</p>
+  ) : (
+    <ul className="w-full list-none mr-[5%] rounded-r-[10px] rounded-l-none ml-[2%]">
+      {turnos.map((turno) => (
+        <li
+        key={turno.id}
+        className="bg-white rounded-r-[10px] rounded-l-none w-full border-l-4 border-[#037171] mt-[5%] flex pl-5 bg-gray-100">
+        <p className="flex ml-[5%]">  
+          <strong>Paciente:</strong> {getPatientName(turno.patient)} - 
+        </p>
+        <p className="flex ml-[5%]"> 
+          <strong>Hora:</strong> {turno.hour}
+        </p>
+        -
+      </li>
+      ))}
+    </ul>
+  )}
+</div>
   );
 };
 

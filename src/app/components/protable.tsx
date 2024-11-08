@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { User } from '../types/types';
 import CrearProfesionalForm from './CrearProf';
-import "../pacientes/pacientes.css";
+import Image from 'next/image';
 
 interface UsersTableProps {
   users: User[];
@@ -19,7 +19,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
   const closeModal = () => setIsModalOpen(false);
 
   const handleCreate = () => {
-    // Recarga la lista de usuarios o actualiza el estado de la lista
+
     closeModal();
   };
 
@@ -36,12 +36,10 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
     }
   });
 
-  // Calcula los usuarios actuales para mostrar
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-  // Cambia la página
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   // Total de páginas
@@ -52,27 +50,17 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
     F: 'Femenino',
     O: 'No binario'
   };
-  return (
-    <>
-      <div className='botones-table'>
-        <div className='div-filtro'>
-        <input className='input-filtro '
-          type="text" 
-          placeholder={`Escribir ${filterCriteria}`} 
-          value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)} 
-        />
-      <select className='select-filtro ' value={filterCriteria} onChange={(e) => setFilterCriteria(e.target.value as 'nombre' | 'apellido' | 'dni')}>
-          <option value="nombre">Filtrar por Nombre</option>
-          <option value="apellido">Filtrar por Apellido</option>
-          <option value="dni">Filtrar por DNI</option>
-        </select>
 
-        </div>
-       
-        <div className='crear-pac' onClick={openModal}>
-          <img className='plus-icon' src="/assets/plus.png" alt="" />
-          <button className='btn-pacientes'>Crear Profesional</button>
+  return (
+    <div className='block'>
+      <h1>Profesionales</h1>
+      <div className='h-[6%] w-[100%] flex items-center justify-between w-full gap-[10%] mr-[2%]'>
+      
+        <input className='h-[30px] p-1 border border-gray-300 rounded transition duration-300 ease-in-out' type="text" />
+        <div className='flex bg-[#269c95] text-white px-2 py-2 border-none rounded-full cursor-pointer w-1/10 gap-0.5 justify-around items-center sm:rounded md:rounded lg:rounded xl:rounded 2xl:rounded' onClick={openModal}>
+          
+          <Image src="/assets/plus.png" alt="email Icon" width={20} height={20} className='h-6 items-center' />
+          <button className='hidden bg-none text-white cursor-pointer sm:block md:block lg:block xl:block 2xl:block'>Crear Profesional</button>
         </div>
       </div>
 
@@ -83,19 +71,19 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
         
       )}
 
-      <table className='tabla-prof'>
+      <table className='bg-white w-[100%] border-collapse'>
         <thead>
           <tr>
-            <th>Color</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>DNI</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-            <th>Dirección</th>
-            <th>Género</th>
-            <th>Fecha de Nac.</th>
-            <th>Acciones</th>
+            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Color</th>
+            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Nombre</th>
+            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Apellido</th>
+            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>DNI</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Teléfono</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden lg:hidden xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Email</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Dirección</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Género</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Fecha de Nac.</th>
+            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -118,18 +106,18 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
                   'No color'
                 )}
               </td>
-              <td className='td-bold'>{user.name}</td>
-              <td className='td-bold'>{user.lastname}</td>
+              <td className='font-bold'>{user.name}</td>
+              <td className='font-bold'>{user.lastname}</td>
               <td>{user.DNI}</td>
-              <td>{user.telephone}</td>
-              <td>{user.email}</td>
-              <td>{user.address}</td>
-              <td>{genderMap[user.gender] || 'No especificado'}</td>
-              <td>{user.birth_date}</td>
-              <td className='ver-paciente'>
-                <Link className='button-ver-p' href={`/profesionales/${user.id}`}>
-                <img className='logo-paciente' src="../assets/doctor.png" alt="" />
-                  Ver
+              <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.telephone}</td>
+              <td className='hidden sm:hidden md:hidden lg:hidden xl:table-cell 2xl:table-cell'>{user.email}</td>
+              <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.address}</td>
+              <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.gender}</td>
+              <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.birth_date}</td>
+              <td className='cursor-pointer'>
+                <Link className='button-ver-p w-[40px] p-1 flex sm:w-[70px]' href={`/profesionales/${user.id}`}>
+                  <Image className='h-6' src="/assets/doctor.png" alt="doctoaar" width={25} height={20} />
+                  <span className='white hidden sm:block md:block lg:block xl:block 2xl:block'>Ver</span>
                 </Link>
               </td>
             </tr>
@@ -148,7 +136,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
           </button>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -9,7 +9,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { createAppointment, fetchAllAppointments, fetchAppointmentsByProfessional, fetchProfessionals, softDeleteAppointment } from '../lib/turnos';
 import { fetchUsersByRole } from '../lib/pacientes';
 import { Appointment, User } from '../types/types';
-import './Calendario.css'; 
+
 import ModalAlert from './modalAlert';
 
 moment.locale('es');
@@ -286,11 +286,12 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     };
   };
 
+  
   return (
-    <div className='div-calendar' style={{ height: '80vh' }}>
+    <div style={{ height: '80vh' }}>
       <ModalAlert isOpen={isConfirmDeleteOpen} onClose={closeConfirmDeleteModal} onConfirm={confirmDeleteAppointment} />
 
-      <label className='filtro-prof'>
+      <label className='mb-[5px]'>
         Filtrar por profesional:
         <select value={selectedProfessional ?? ''} onChange={handleProfessionalChange}>
           <option value="">Todos</option>
@@ -328,22 +329,22 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
       />
 
       {modalIsOpen && isViewingAppointment && selectedAppointment && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={handleCloseModal}>&times;</span>
-            <h2>Detalles del Turno</h2>
-            <div className='div-modal'>
+        <div className="flex items-center justify-center fixed z-[1000] left-0 top-0 w-full h-full overflow-auto bg-black bg-opacity-70">
+          <div className="bg-white p-5 rounded-lg text-center w-[280px] z-[1010]">
+            <span className="text-[#aaa] float-right text-[28px] font-bold hover:text-black focus:text-black focus:outline-none cursor-pointer" onClick={handleCloseModal}>&times;</span>
+            <h2 className='mt-0 text-md text-center text-green-200 sm:text-2xl md:text-2xl lg:text-2xl xl:text-2xl 2xl:text-2xl'>Detalles del Turno</h2>
+            <div className='flex flex-col gap-[20px] mt-[10px]'>
               <p><strong>Profesional:</strong> {getProfessionalName(selectedAppointment.professional)}</p>
               <p><strong>Paciente:</strong> {getPatientName(selectedAppointment.patient)}</p>
               <p><strong>Fecha:</strong> {selectedAppointment.date}</p>
               <p><strong>Hora:</strong> {selectedAppointment.hour}</p>
               <p><strong>Notas:</strong> {selectedAppointment.notes}</p>
             </div>
-            <div className='botones-modal'>
-              <button type="button" onClick={handleCloseModal}>Cerrar</button>
+            <div>
+              <button className='bg-green-200 text-white px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]' type="button" onClick={handleCloseModal}>Cerrar</button>
               {/* Mostrar el botón de eliminar solo si la fecha del turno no ha pasado */}
               {new Date(selectedAppointment.date) >= new Date() && (
-                <button type="button" onClick={handleDeleteAppointment} className="delete-button">Eliminar Turno</button>
+                <button type="button" onClick={handleDeleteAppointment} className="bg-red-200 text-white px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]">Eliminar Turno</button>
               )}
             </div>
           </div>
@@ -351,12 +352,12 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
       )}
 
       {modalIsOpen && !isViewingAppointment && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Nuevo Turno</h2>
-            <form onSubmit={handleSubmit}>
+        <div className="flex items-center justify-center fixed z-[1000] left-0 top-0 w-full h-full overflow-auto bg-black bg-opacity-70">
+          <div className="bg-white p-5 rounded-lg text-center w-[280px] z-[1010]">
+            <h2 className='mt-0 text-md text-center text-green-200 sm:text-2xl md:text-2xl lg:text-2xl xl:text-2xl 2xl:text-2xl'>Nuevo Turno</h2>
+            <form className='w-full flex flex-col items-start pt-[5%] gap-[10px]' onSubmit={handleSubmit}>
 
-            <label>
+              <label>
                 Profesional:
                 <select name="professional" value={newAppointment.professional} onChange={handleInputChange}>
                   {professionals.map(professional => (
@@ -368,7 +369,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
                 </select>
               </label>
 
-               <label>
+              <label>
                 Paciente:
                 <select name="patient" value={newAppointment.patient} onChange={handleInputChange}>
                   {patients.map(patient => (
@@ -380,24 +381,25 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
               </label>
               <label>
                 Fecha:
-                <input className='input-calendar' type="date" name="date" value={newAppointment.date} onChange={handleInputChange} />
+                <input className='bg-[#f3efef] p-[2px] border border-[#8EDAD5] rounded-[5px] ml-[10px]' type="date" name="date" value={newAppointment.date} onChange={handleInputChange} />
               </label>
               <label>
                 Hora:
-                <input className='input-calendar' type="time" name="hour" value={newAppointment.hour} onChange={handleInputChange} />
+                <input className='bg-[#f3efef] p-[2px] border border-[#8EDAD5] rounded-[5px] ml-[10px]' type="time" name="hour" value={newAppointment.hour} onChange={handleInputChange} />
               </label>
-              <label>
-                Notas:
+              <label className='flex'>
+                <span className='flex items-center'>Notas:</span>
                 <textarea
                   name="notes"
                   value={newAppointment.notes}
                   onChange={handleInputChange}
                 />
               </label>
-              <button type="submit">Guardar Turno</button>
-              <button type="button" onClick={handleCloseModal}>
-                Cancelar
-              </button>
+              <div className="w-[100%] flex justify-center space-x-4 mt-2">
+                <button className="bg-green-200 text-white px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]" type="submit">Guardar Turno</button>
+                <button className="bg-gray-300 text-white px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]" type="button" onClick={handleCloseModal}>Cancelar</button>
+              </div>
+              
             </form>
           </div>
         </div>

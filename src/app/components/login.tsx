@@ -1,10 +1,7 @@
-// src/app/components/login.tsx
 "use client";
-
 import React, { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import './login.css';
 import api from '../lib/api';
 
 interface UserData {
@@ -105,17 +102,18 @@ const LoginForm: React.FC = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className='div-login'>
-      <div className='div1'>
-        <img src="/assets/logo.png" alt="Logo" />
+    <div className='flex flex-row h-screen'>
+      <div className='w-[30%] bg-gradient-to-t from-[#317974] to-[#8EDAD5] flex flex-col justify-center'>
+        <img className='rotate-90 sm:rotate-0' src="/assets/logo.png" alt="Logo" />
       </div>
-      <div className='div2'>
-        <h2 className='h2-login'>Bienvenido!</h2>
-        <img src="/assets/user.png" alt="logouser" className='user-logo' />
-        <form onSubmit={handleLogin}>
-          <div className="inputGroup">
-            <img src="/assets/mail.png" alt="email Icon" className="icon" />
+      <div className='w-full flex flex-col justify-center items-center'>
+        <h2 className='text-[#8EDAD5] text-2xl md:text-3xl'>Bienvenido!</h2>
+        <img src="/assets/user.png" alt="logouser" className='w-14 h-18 py-[15px] sm:w-24 sm:h-28 md:w-24 md:h-28' />
+        <form className='w-[100%] pt-2 flex flex-col justify-center item-center' onSubmit={handleLogin}>
+          <div className="w-[100%] mb-[15px] flex justify-center">
+            <img src="/assets/mail.png" alt="email Icon" className="relative left-[30px] top-1/2 translate-y-[-50%] h-[20px] w-[20px] hidden sm:block md:block"/>
             <input
+              className='pl-6 pr-0 pt-1 pb-1 bg-[#f0eeee] rounded-[4px] border border-[#ccc] sm:pl-9 md:pt-2 md:pb-2'
               type="email"
               id="email"
               value={email}
@@ -124,9 +122,10 @@ const LoginForm: React.FC = () => {
               required
             />
           </div>
-          <div className="inputGroup">
-            <img src="/assets/lock.png" alt="lock Icon" className="icon" />
+          <div className="w-[100%] mb-[15px] flex justify-center">
+            <img src="/assets/lock.png" alt="lock Icon" className="relative left-[30px] top-1/2 translate-y-[-50%] h-[20px] w-[20px] hidden sm:block md:block" />
             <input
+              className='pl-6 pr-1 pt-1 pb-1 bg-[#f0eeee] rounded-[4px] border border-[#ccc] sm:pl-9 md:pt-2 md:pb-2'
               type="password"
               id="password"
               value={password}
@@ -135,10 +134,13 @@ const LoginForm: React.FC = () => {
               required
             />
           </div>
-          {error && <p className="error">{error}</p>}
-          <button type="submit" className='btn-ingresar'>
-            Ingresar
-          </button>
+          {error && <p className="flex justify-center item-center text-red-500">{error}</p>}
+          <div className='flex justify-center item-center'>
+            <button type="submit" className='py-1 px-4 mt-2 bg-[#8EDAD5] rounded-[5px] text-white uppercase font-bold no-underline sm:py-2 sm:px-6 md:py-3 md:px-8'>
+              Ingresar
+            </button>
+          </div>
+          
         </form>
       </div>
     </div>

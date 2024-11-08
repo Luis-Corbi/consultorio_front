@@ -8,7 +8,7 @@ interface User {
   name: string;
   lastname: string;
   role: string;
-  // Agrega otros campos necesarios
+ 
 }
 
 interface UserContextProps {

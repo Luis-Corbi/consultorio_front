@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { User } from '../types/types';
 import CrearPacienteForm from './CrearPacienteForm'; 
-import "../pacientes/pacientes.css";
+
 
 interface UsersTableProps {
   users: User[];
@@ -53,24 +53,28 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   };
 
   return (
-    <>
-      <div className='botones-table'>
-        <div className='div-filtro'>
-        <input  className='input-filtro'
-          type="text" 
-          placeholder={`Escribir ${filterCriteria}`} 
-          value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)} 
-        />
-        <select className='select-filtro' value={filterCriteria} onChange={(e) => setFilterCriteria(e.target.value as 'nombre' | 'apellido' | 'dni')}>
-          <option value="nombre">Filtrar por Nombre</option>
-          <option value="apellido">Filtrar por Apellido</option>
-          <option value="dni">Filtrar por DNI</option>
-        </select>
-        </div>
-        <div className='crear-pac' onClick={openModal}>
-          <img className='plus-icon' src="/assets/plus.png" alt="" />
-          <button className='btn-pacientes'>Crear Paciente</button>
+    <div className='block'>
+      <h1>Pacientes</h1>
+      <div className='h-[6%] w-[100%] w-full gap-[10%]'>
+        <div>
+          <div className='flex justify-between gap-[5%]'>
+            <input  className='min-w-[100px] p-1 h-8 text-sm border-2 border-[rgb(179,179,179)] rounded-[5px]'
+              type="text" 
+              placeholder={`Escribir ${filterCriteria}`} 
+              value={filterValue}
+              onChange={(e) => setFilterValue(e.target.value)} 
+            />
+
+            <select className='min-w[80px] p-1 h-8 text-sm border-2 border-[#5BB5B0] rounded-[5px]' value={filterCriteria} onChange={(e) => setFilterCriteria(e.target.value as 'nombre' | 'apellido' | 'dni')}>
+              <option value="nombre">Filtrar por Nombre</option>
+              <option value="apellido">Filtrar por Apellido</option>
+              <option value="dni">Filtrar por DNI</option>
+            </select>
+
+            <div className='flex bg-[#269c95] text-white text-sm px-1.5 py-1.5 border-none rounded-full cursor-pointer w-1/10 gap-0.5 justify-around items-center sm:rounded md:rounded lg:rounded xl:rounded 2xl:rounded' onClick={openModal}>
+              <img className='h-6 items-center' src="/assets/plus.png" alt="" />
+              <button className='hidden bg-none text-white cursor-pointer sm:block md:block lg:block xl:block 2xl:block'>Crear Paciente</button>
+            </div>
         </div>
       </div>
 
@@ -80,35 +84,35 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
         </div>
       )}
 
-      <table className='tabla-usuarios'>
+      <table className='bg-white w-[100%] border-collapse'>
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>DNI</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-            <th>Dirección</th>
-            <th>Género</th>
-            <th>Fecha de Nac.</th>
-            <th>Acciones</th>
+            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Nombre</th>
+            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Apellido</th>
+            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>DNI</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Teléfono</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Email</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Dirección</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Género</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Fecha de Nac.</th>
+            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {currentUsers.map((user) => (
             <tr key={user.id}>
-              <td className='td-bold'>{user.name}</td>
-              <td className='td-bold'>{user.lastname}</td>
+              <td className='font-bold'>{user.name}</td>
+              <td className='font-bold'>{user.lastname}</td>
               <td>{user.DNI}</td>
-              <td>{user.telephone}</td>
-              <td>{user.email}</td>
-              <td>{user.address}</td>
-              <td>{genderMap[user.gender] || 'No especificado'}</td>
-              <td>{user.birth_date}</td>
-              <td className='ver-paciente'>
-                <Link className='button-ver-p' href={`/pacientes/${user.id}`} >
-                  <img className='logo-paciente' src="../assets/ver-paciente.png" alt="" />
-                  Ver 
+              <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.telephone}</td>
+              <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.email}</td>
+              <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.address}</td>
+              <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.gender}</td>
+              <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.birth_date}</td>
+              <td className='cursor-pointer'>
+                <Link  className='button-ver-p w-[40px] p-1 flex sm:w-[70px]' href={`/pacientes/${user.id}`} >
+                  <img className='h-6' src="../assets/ver-paciente.png" alt="" />
+                  <span className='white hidden sm:block md:block lg:block xl:block 2xl:block'>Ver</span>
                 </Link>
               </td>
             </tr>
@@ -127,8 +131,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
           </button>
         ))}
       </div>
-    </>
-  );
-};
-
+    </div>
+  </div>
+)};
 export default UsersTable;

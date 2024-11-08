@@ -6,7 +6,8 @@ import UserPageContainer from './UserProfile';
 import { User } from '@/app/types/types';
 import api from '../lib/api';
 import Cookies from 'js-cookie';
-import '../profesionales/profesionales.css';
+import Sidebar from '@/app/components/sidebar';
+import Bar from '@/app/components/bar';
 const UserPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,7 @@ const UserPage = () => {
           return;
         }
 
-        // Obtener los datos del usuario almacenados en localStorage
+
         const storedUserData = localStorage.getItem('userData');
         if (!storedUserData) {
           throw new Error('No se encontraron datos de usuario en localStorage');
@@ -31,7 +32,7 @@ const UserPage = () => {
 
         const userData = JSON.parse(storedUserData);
 
-        // Obtener los datos actualizados del usuario usando su ID
+
         const response = await api.get(`/users/${userData.id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -68,6 +69,7 @@ const UserPage = () => {
   }
 
   return <UserPageContainer user={user} token={Cookies.get('access_token') || ''} />;
-};
+  
 
+};
 export default UserPage;

@@ -123,54 +123,56 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
   };
 
   return (
-    <div className='container'>
+    <div  className="w-full flex min-h-screen">
       <Sidebar />
-      <div className='container'>
-        <div className='div-principal'>
+      <div className="w-full flex-grow flex flex-col bg-[#F1F1F1]">
+        <div className="w-full" >
           <Bar />
-          <div className='datos-pro'>
-            <div className='contenedor-datos-profesionales'>
-              <h1>Detalles del Profesional:</h1>
-              <div className='div-datos-flex'>
-                <div className='div-ch'>
-                  <p><strong>Nombre:</strong> {isEditing ? <input type='text' name='name' value={formData.name} onChange={handleInputChange} className='input-dato' data-cy="input-name" /> : renderDato(user.name)}</p>
-                  <p><strong>Apellido:</strong> {isEditing ? <input type='text' name='lastname' value={formData.lastname} onChange={handleInputChange} className='input-dato' data-cy="input-lastname" /> : renderDato(user.lastname)}</p>
-                  <p><strong>DNI:</strong> {isEditing ? <input type='text' name='DNI' value={formData.DNI} onChange={handleInputChange} className='input-dato' data-cy="input-dni" /> : renderDato(user.DNI)}</p>
-                  <p><strong>Teléfono:</strong> {isEditing ? <input type='text' name='telephone' value={formData.telephone} onChange={handleInputChange} className='input-dato' data-cy="input-telephone" /> : renderDato(user.telephone)}</p>
-                  <p><strong>Email:</strong> {isEditing ? <input type='email' name='email' value={formData.email} onChange={handleInputChange} className='input-dato' data-cy="input-email" /> : renderDato(user.email)}</p>
-                  <p><strong>Dirección:</strong> {isEditing ? <input type='text' name='address' value={formData.address} onChange={handleInputChange} className='input-dato' data-cy="input-address" /> : renderDato(user.address)}</p>
-                  <p><strong>Género:</strong> {isEditing ? (
-                    <select name='gender' value={formData.gender} onChange={handleInputChange} className='input-dato' data-cy="input-gender">
-                      <option value="M">Masculino</option>
-                      <option value="F">Femenino</option>
-                      <option value="O">No binario</option>
-                    </select>
-                  ) : renderDato(genderMap[user.gender] || 'No especificado')}</p>
-                </div>
-                <div className='div-ch'>
-                  <p><strong>Fecha de Nacimiento:</strong> {isEditing ? <input type='date' name='birth_date' value={formData.birth_date} onChange={handleInputChange} className='input-dato' data-cy="input-birth-date" /> : renderDato(user.birth_date)}</p>
-                  <p><strong>Seguro de Salud:</strong> {isEditing ? <input type='text' name='health_insurance' value={formData.health_insurance} onChange={handleInputChange} className='input-dato' data-cy="input-health-insurance" /> : renderDato(user.health_insurance)}</p>
-                  <p><strong>Número de Seguro de Salud:</strong> {isEditing ? <input type='text' name='health_insurance_number' value={formData.health_insurance_number} onChange={handleInputChange} className='input-dato' data-cy="input-health-insurance-number" /> : renderDato(user.health_insurance_number)}</p>
-                  <p><strong>Número de Licencia:</strong> {isEditing ? <input type='text' name='licence_number' value={formData.licence_number} onChange={handleInputChange} className='input-dato' data-cy="input-licence-number" /> : renderDato(user.licence_number)}</p>
-                  <p><strong>Notas:</strong> {isEditing ? <input type='text' name='notes' value={formData.notes} onChange={handleInputChange} className='input-dato' data-cy="input-notes" /> : renderDato(user.notes)}</p>
-                  <p><strong>Color:</strong></p>
-                  {isEditing ? (
-                    <input type='color' name='color' value={formData.color} onChange={handleColorChange} className='input-dato' data-cy="input-color" />
-                  ) : (
-                    <div className="color-indicator" style={{ backgroundColor: user.color }} data-cy="color-indicator" />
-                  )}
-                  {isEditing && (
-                    <p><strong>Contraseña:</strong> <input type='password' name='password' value={formData.password} onChange={handleInputChange} className='input-dato' data-cy="input-password" placeholder='****' /></p>
-                  )}
-                </div>
-              </div>
+        </div>
+        <div className="flex justify-center ">
+          <div className="bg-white rounded-lg p-6 shadow-lg w-full max-w-3xl">
+            <h1 className="text-[#269c95] text-2xl font-semibold mb-4">Detalles del Profesional:</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <p className="text-lg"><strong className="text-gray-500">Nombre:</strong> {isEditing ? <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.name)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Apellido:</strong> {isEditing ? <input type="text" name="lastname" value={formData.lastname} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.lastname)}</p>
+              <p className="text-lg"><strong className="text-gray-500">DNI:</strong> {isEditing ? <input type="text" name="DNI" value={formData.DNI} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.DNI)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Teléfono:</strong> {isEditing ? <input type="text" name="telephone" value={formData.telephone} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.telephone)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Email:</strong> {isEditing ? <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.email)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Dirección:</strong> {isEditing ? <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.address)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Género:</strong> {isEditing ? (
+                <select name="gender" value={formData.gender} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1">
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                  <option value="O">No binario</option>
+                </select>
+              ) : renderDato(genderMap[user.gender] || 'No especificado')}</p>
+              
+              <p className="text-lg"><strong className="text-gray-500">Fecha de Nacimiento:</strong> {isEditing ? <input type="date" name="birth_date" value={formData.birth_date} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.birth_date)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Seguro de Salud:</strong> {isEditing ? <input type="text" name="health_insurance" value={formData.health_insurance} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.health_insurance)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Número de Seguro de Salud:</strong> {isEditing ? <input type="text" name="health_insurance_number" value={formData.health_insurance_number} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.health_insurance_number)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Número de Licencia:</strong> {isEditing ? <input type="text" name="licence_number" value={formData.licence_number} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.licence_number)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Notas:</strong> {isEditing ? <input type="text" name="notes" value={formData.notes} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.notes)}</p>
+              <p className="text-lg"><strong className="text-gray-500">Color:</strong>{isEditing ? (
+                <input type="color" name="color" value={formData.color} onChange={handleColorChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" />
+              ) : (
+                <div className="color-indicator w-8 h-8 rounded-full border border-gray-400 mt-1" style={{ backgroundColor: user.color }} />
+              )}</p>
+              
+              {isEditing && (
+                <p className="text-lg"><strong className="text-gray-500">Contraseña:</strong> <input type="password" name="password" value={formData.password} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" placeholder="****" /></p>
+              )}
+              
+            </div>
+            
+            <div className="flex justify-end space-x-4 mt-6">
               {!isEditing && (
-                <button className='btn-edit-pro' onClick={startEditing} data-cy="button-edit">Editar</button>
+                <button className="btn-edit-pro px-4 py-2 rounded bg-[#269c95] text-white font-semibold hover:bg-[#1d7e78]" onClick={() => setIsEditing(true)}>Editar</button>
               )}
               {isEditing && (
-                <div className="edit-form">
-                  <button className='btn-edit-pro' onClick={handleEdit} data-cy="button-save">Guardar</button>
-                  <button  className='btn-edit-pro' onClick={cancelEditing} data-cy="button-cancel">Cancelar</button>
+                <div className="flex space-x-4">
+                  <button className="btn-edit-pro px-4 py-2 rounded bg-[#269c95] text-white font-semibold hover:bg-[#1d7e78]" onClick={handleEdit}>Guardar</button>
+                  <button className="btn-edit-pro px-4 py-2 rounded bg-gray-400 text-white font-semibold hover:bg-gray-500" onClick={() => setIsEditing(false)}>Cancelar</button>
                 </div>
               )}
             </div>
@@ -180,5 +182,4 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
     </div>
   );
 };
-
 export default UserPageContainer;
