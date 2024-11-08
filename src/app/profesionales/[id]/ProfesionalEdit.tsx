@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import React, { useState } from 'react';
 import Sidebar from '@/app/components/sidebar';
@@ -24,15 +24,16 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
     licence_number: user.licence_number,
     notes: user.notes,
     color: user.color || '#ffffff',
-    password: '', 
-    speciality: user.speciality?.id.toString() || '', 
+    password: '',
+    speciality: user.speciality?.id.toString() || '',
     roles: user.roles.map((role: any) => role.id),
-
   });
+
+  const [originalData, setOriginalData] = useState<EditableUser>(formData);
 
   const fetchUserData = async () => {
     try {
-      const response = await api.put(`/users/${user.id}/`, {
+      const response = await api.get(`/users/${user.id}/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -40,7 +41,7 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
 
       if (response.status === 200) {
         const updatedUser = await response.data;
-        setFormData({
+        const newData = {
           id: updatedUser.id.toString(),
           username: updatedUser.username,
           name: updatedUser.name,
@@ -56,12 +57,12 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
           licence_number: updatedUser.licence_number,
           notes: updatedUser.notes,
           color: updatedUser.color || '#ffffff',
-          password: '', 
+          password: '',
           speciality: updatedUser.speciality?.id.toString() || '',
           roles: updatedUser.roles.map((role: any) => role.id),
-
-
-        });
+        };
+        setFormData(newData);
+        setOriginalData(newData);
       } else {
         console.error('Error al obtener los datos del usuario');
       }
@@ -80,38 +81,43 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
   };
 
   const handleEdit = async () => {
-
     const updatedData = { ...formData };
-  
-    
+
     if (!updatedData.password) {
-      delete updatedData.password; 
+      delete updatedData.password;
     }
-  
+
     try {
-      const response = await api.put(`/users/${user.id}/`, {
+      const response = await api.put(`/users/${user.id}/`, updatedData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(updatedData), 
       });
-  
+
       if (response.status === 200) {
         await fetchUserData();
         setIsEditing(false);
         console.log('Usuario actualizado');
         window.location.reload();
       } else {
-        const errorResponse = await response.data;
-        console.error('Error al actualizar los datos:', errorResponse);
+        console.error('Error al actualizar los datos:', response.data);
         throw new Error('Error al actualizar los datos');
       }
     } catch (error) {
       console.error('Error updating user:', error);
     }
   };
-  
+
+  const startEditing = () => {
+    setOriginalData(formData);
+    setIsEditing(true);
+  };
+
+  const cancelEditing = () => {
+    setFormData(originalData);
+    setIsEditing(false);
+  };
 
   const genderMap: { [key: string]: string } = {
     M: 'Masculino',
@@ -164,20 +170,19 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
                   ) : (
                     <div className="color-indicator" style={{ backgroundColor: user.color }} />
                   )}
-                 
+
                   {isEditing && (
                     <p><strong>Contraseña:</strong> <input type='password' name='password' value={formData.password} onChange={handleInputChange} className='input-dato' placeholder='****' /></p>
                   )}
                 </div>
               </div>
-             
-              {!isEditing && (
-                <button className='btn-edit-pro' onClick={() => setIsEditing(true)}>Editar</button>
-              )}
-              {isEditing && (
+
+              {!isEditing ? (
+                <button className='btn-edit-pro' onClick={startEditing}>Editar</button>
+              ) : (
                 <div className="edit-form">
                   <button className='btn-edit-pro'  onClick={handleEdit}>Guardar</button>
-                  <button  className='btn-edit-pro'  onClick={() => setIsEditing(false)}>Cancelar</button>
+                  <button  className='btn-edit-pro'  onClick={cancelEditing}>Cancelar</button>
                 </div>
               )}
             </div>
