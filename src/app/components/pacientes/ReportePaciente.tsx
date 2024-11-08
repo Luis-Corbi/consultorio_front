@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import './medicalreport.css';
 import { fetchUsersByRole } from '@/app/lib/pacientes';
+import api from '../../lib/api';
 
 interface MedicalReport {
   id: number;
@@ -37,7 +37,7 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
   const fetchReports = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/medical_reports/by_patient/?patient=${patientId}`, {
+      const response = await api.get(`/medical_reports/by_patient/?patient=${patientId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -113,7 +113,7 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
                   <p><strong>Diagnóstico:</strong> {report.diagnosis}</p>
                   <p><strong>Tratamiento:</strong> {report.treatment}</p>
                   {report.file && (
-                    <a href={`http://127.0.0.1:8000${report.file}`} target="_blank" rel="noopener noreferrer">
+                    <a href={`http://127.0.0.1:8000/${report.file}`} target="_blank" rel="noopener noreferrer">
                       {report.file.split('/').pop()}
                     </a>
                   )}

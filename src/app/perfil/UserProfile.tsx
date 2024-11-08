@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Sidebar from '@/app/components/sidebar';
 import Bar from '@/app/components/bar';
 import { User, EditableUser } from '@/app/types/types';
+import api from '../lib/api';
 
 const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,19 +27,14 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
     password: '', 
     speciality: user.speciality?.id.toString() || '', 
     roles: user.roles.map((role: any) => role.id),
-
   });
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const updatedUser = await response.json();
+      const response = await api.get(`/users/${user.id}`);
+      
+      if (response.status === 200) {
+        const updatedUser = response.data;
         setFormData({
           id: updatedUser.id.toString(),
           username: updatedUser.username,
@@ -58,8 +54,6 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
           password: '', 
           speciality: updatedUser.speciality?.id.toString() || '',
           roles: updatedUser.roles.map((role: any) => role.id),
-
-
         });
       } else {
         console.error('Error al obtener los datos del usuario');
@@ -68,7 +62,7 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
       console.error('Error fetching user data:', error);
     }
   };
-
+  const [originalData, setOriginalData] = useState<EditableUser>(formData);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -88,23 +82,15 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
     }
   
     try {
-      const response = await fetch(`http://localhost:8000/api/users/${user.id}/`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(updatedData), 
-      });
-  
-      if (response.ok) {
-        await fetchUserData();
-        setIsEditing(false);
+      const response = await api.put(`/users/${user.id}/`, updatedData);
+
+      if (response.status === 200) {
+        await fetchUserData(); 
+        setIsEditing(false); 
         console.log('Usuario actualizado');
-        window.location.reload();
+        window.location.reload(); 
       } else {
-        const errorResponse = await response.json();
-        console.error('Error al actualizar los datos:', errorResponse);
+        console.error('Error al actualizar los datos:', response.data);
         throw new Error('Error al actualizar los datos');
       }
     } catch (error) {
@@ -112,6 +98,15 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
     }
   };
   
+  const startEditing = () => {
+    setOriginalData(formData);
+    setIsEditing(true);
+  };
+
+  const cancelEditing = () => {
+    setFormData(originalData);
+    setIsEditing(false);
+  };
 
   const genderMap: { [key: string]: string } = {
     M: 'Masculino',
@@ -138,14 +133,14 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
               <h1>Detalles del Profesional:</h1>
               <div className='div-datos-flex'>
                 <div className='div-ch'>
-                  <p><strong>Nombre:</strong> {isEditing ? <input type='text' name='name' value={formData.name} onChange={handleInputChange} className='input-dato' /> : renderDato(user.name)}</p>
-                  <p><strong>Apellido:</strong> {isEditing ? <input type='text' name='lastname' value={formData.lastname} onChange={handleInputChange} className='input-dato' /> : renderDato(user.lastname)}</p>
-                  <p><strong>DNI:</strong> {isEditing ? <input type='text' name='DNI' value={formData.DNI} onChange={handleInputChange} className='input-dato' /> : renderDato(user.DNI)}</p>
-                  <p><strong>Teléfono:</strong> {isEditing ? <input type='text' name='telephone' value={formData.telephone} onChange={handleInputChange} className='input-dato' /> : renderDato(user.telephone)}</p>
-                  <p><strong>Email:</strong> {isEditing ? <input type='email' name='email' value={formData.email} onChange={handleInputChange} className='input-dato' /> : renderDato(user.email)}</p>
-                  <p><strong>Dirección:</strong> {isEditing ? <input type='text' name='address' value={formData.address} onChange={handleInputChange} className='input-dato' /> : renderDato(user.address)}</p>
+                  <p><strong>Nombre:</strong> {isEditing ? <input type='text' name='name' value={formData.name} onChange={handleInputChange} className='input-dato' data-cy="input-name" /> : renderDato(user.name)}</p>
+                  <p><strong>Apellido:</strong> {isEditing ? <input type='text' name='lastname' value={formData.lastname} onChange={handleInputChange} className='input-dato' data-cy="input-lastname" /> : renderDato(user.lastname)}</p>
+                  <p><strong>DNI:</strong> {isEditing ? <input type='text' name='DNI' value={formData.DNI} onChange={handleInputChange} className='input-dato' data-cy="input-dni" /> : renderDato(user.DNI)}</p>
+                  <p><strong>Teléfono:</strong> {isEditing ? <input type='text' name='telephone' value={formData.telephone} onChange={handleInputChange} className='input-dato' data-cy="input-telephone" /> : renderDato(user.telephone)}</p>
+                  <p><strong>Email:</strong> {isEditing ? <input type='email' name='email' value={formData.email} onChange={handleInputChange} className='input-dato' data-cy="input-email" /> : renderDato(user.email)}</p>
+                  <p><strong>Dirección:</strong> {isEditing ? <input type='text' name='address' value={formData.address} onChange={handleInputChange} className='input-dato' data-cy="input-address" /> : renderDato(user.address)}</p>
                   <p><strong>Género:</strong> {isEditing ? (
-                    <select name='gender' value={formData.gender} onChange={handleInputChange} className='input-dato'>
+                    <select name='gender' value={formData.gender} onChange={handleInputChange} className='input-dato' data-cy="input-gender">
                       <option value="M">Masculino</option>
                       <option value="F">Femenino</option>
                       <option value="O">No binario</option>
@@ -153,31 +148,29 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
                   ) : renderDato(genderMap[user.gender] || 'No especificado')}</p>
                 </div>
                 <div className='div-ch'>
-                  <p><strong>Fecha de Nacimiento:</strong> {isEditing ? <input type='date' name='birth_date' value={formData.birth_date} onChange={handleInputChange} className='input-dato' /> : renderDato(user.birth_date)}</p>
-                  <p><strong>Seguro de Salud:</strong> {isEditing ? <input type='text' name='health_insurance' value={formData.health_insurance} onChange={handleInputChange} className='input-dato' /> : renderDato(user.health_insurance)}</p>
-                  <p><strong>Número de Seguro de Salud:</strong> {isEditing ? <input type='text' name='health_insurance_number' value={formData.health_insurance_number} onChange={handleInputChange} className='input-dato' /> : renderDato(user.health_insurance_number)}</p>
-                  <p><strong>Número de Licencia:</strong> {isEditing ? <input type='text' name='licence_number' value={formData.licence_number} onChange={handleInputChange} className='input-dato' /> : renderDato(user.licence_number)}</p>
-                  <p><strong>Notas:</strong> {isEditing ? <input type='text' name='notes' value={formData.notes} onChange={handleInputChange} className='input-dato' /> : renderDato(user.notes)}</p>
+                  <p><strong>Fecha de Nacimiento:</strong> {isEditing ? <input type='date' name='birth_date' value={formData.birth_date} onChange={handleInputChange} className='input-dato' data-cy="input-birth-date" /> : renderDato(user.birth_date)}</p>
+                  <p><strong>Seguro de Salud:</strong> {isEditing ? <input type='text' name='health_insurance' value={formData.health_insurance} onChange={handleInputChange} className='input-dato' data-cy="input-health-insurance" /> : renderDato(user.health_insurance)}</p>
+                  <p><strong>Número de Seguro de Salud:</strong> {isEditing ? <input type='text' name='health_insurance_number' value={formData.health_insurance_number} onChange={handleInputChange} className='input-dato' data-cy="input-health-insurance-number" /> : renderDato(user.health_insurance_number)}</p>
+                  <p><strong>Número de Licencia:</strong> {isEditing ? <input type='text' name='licence_number' value={formData.licence_number} onChange={handleInputChange} className='input-dato' data-cy="input-licence-number" /> : renderDato(user.licence_number)}</p>
+                  <p><strong>Notas:</strong> {isEditing ? <input type='text' name='notes' value={formData.notes} onChange={handleInputChange} className='input-dato' data-cy="input-notes" /> : renderDato(user.notes)}</p>
                   <p><strong>Color:</strong></p>
                   {isEditing ? (
-                    <input type='color' name='color' value={formData.color} onChange={handleColorChange} className='input-dato' />
+                    <input type='color' name='color' value={formData.color} onChange={handleColorChange} className='input-dato' data-cy="input-color" />
                   ) : (
-                    <div className="color-indicator" style={{ backgroundColor: user.color }} />
+                    <div className="color-indicator" style={{ backgroundColor: user.color }} data-cy="color-indicator" />
                   )}
-                 
                   {isEditing && (
-                    <p><strong>Contraseña:</strong> <input type='password' name='password' value={formData.password} onChange={handleInputChange} className='input-dato' placeholder='****' /></p>
+                    <p><strong>Contraseña:</strong> <input type='password' name='password' value={formData.password} onChange={handleInputChange} className='input-dato' data-cy="input-password" placeholder='****' /></p>
                   )}
                 </div>
               </div>
-             
               {!isEditing && (
-                <button className='btn-edit-pro' onClick={() => setIsEditing(true)}>Editar</button>
+                <button className='btn-edit-pro' onClick={startEditing} data-cy="button-edit">Editar</button>
               )}
               {isEditing && (
                 <div className="edit-form">
-                  <button className='btn-edit-pro'  onClick={handleEdit}>Guardar</button>
-                  <button  className='btn-edit-pro'  onClick={() => setIsEditing(false)}>Cancelar</button>
+                  <button className='btn-edit-pro' onClick={handleEdit} data-cy="button-save">Guardar</button>
+                  <button  className='btn-edit-pro' onClick={cancelEditing} data-cy="button-cancel">Cancelar</button>
                 </div>
               )}
             </div>

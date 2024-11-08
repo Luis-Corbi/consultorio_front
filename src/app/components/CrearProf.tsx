@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createUser, getSpecialities } from '../lib/pacientes'; 
 import { User, Speciality } from '../types/types';
 import "../pacientes/pacientes.css";
-import axios from 'axios'; // Importa axios para las solicitudes
-
+import api from '../lib/api';
 interface CrearPacienteFormProps {
     onClose: () => void;
     onCreate: () => void;
@@ -65,14 +64,14 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
       
           console.log('Submitting user:', newUser);
 
-          await axios.post('http://127.0.0.1:8000/api/users/', newUser, {
+          await api.post('users/', newUser, {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${getAuthToken()}`, // Agregar el token de autenticación
+              'Authorization': `Bearer ${getAuthToken()}`,
             },
           });
-          onCreate(); // Recarga la lista de usuarios o realiza acciones posteriores
-          onClose(); // Cierra el modal
+          onCreate();
+          onClose();
         } catch (error) {
           console.error('Error creating user:', error);
         }

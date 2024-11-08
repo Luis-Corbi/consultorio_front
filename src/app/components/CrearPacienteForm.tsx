@@ -5,6 +5,7 @@ import axios from 'axios'; // Asegúrate de importar axios
 import { getSpecialities } from '../lib/pacientes'; 
 import { Speciality } from '../types/types';
 import "../pacientes/pacientes.css";
+import api from '../lib/api';
 
 interface CrearPacienteFormProps {
   onClose: () => void;
@@ -24,7 +25,7 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
   const [healthInsurance, setHealthInsurance] = useState('');
   const [healthInsuranceNumber, setHealthInsuranceNumber] = useState('');
   const [licenceNumber, setLicenceNumber] = useState('');
-  const [speciality, setSpeciality] = useState<string>('4'); // Default ID for speciality
+  const [speciality, setSpeciality] = useState<string>('4');
   const [notes, setNotes] = useState('');
   const [specialities, setSpecialities] = useState<Speciality[]>([]);
 
@@ -59,27 +60,25 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
         health_insurance: healthInsurance,
         health_insurance_number: healthInsuranceNumber,
         licence_number: licenceNumber,
-        speciality: parseInt(speciality), // Enviar el ID de especialidad como número
+        speciality: parseInt(speciality),
         notes,
-        roles: [3], // Asegúrate de que este ID corresponda al rol de paciente en tu backend
+        roles: [3],
       };
   
       console.log('Submitting user:', newUser);
   
-      await axios.post(
-        'http://127.0.0.1:8000/api/users/',
+      await api.post('users/',
         newUser,
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${getAuthToken()}`, // Agregar el token aquí
+            'Authorization': `Bearer ${getAuthToken()}`,
           },
         }
       );
   
       onClose();
     } catch (error) {
-      // Asegúrate de que el error es de tipo AxiosError
       if (axios.isAxiosError(error)) {
         console.error('Failed to create user:', error.response ? error.response.data : error.message);
       } else {
@@ -89,7 +88,6 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
   };
   
 
-  // Función para obtener el token JWT
   const getAuthToken = () => {
     return document.cookie.split('; ').find(row => row.startsWith('access_token='))
       ?.split('=')[1] || '';
