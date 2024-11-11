@@ -1,11 +1,22 @@
 "use client"
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 
 
 const Sidebar: React.FC = () => {
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  useEffect(() => {
+   
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    
+
+    if (userData.roles && userData.roles.some((role: { name: string }) => role.name === "admin")) {
+      setIsAdmin(true);
+    }
+  }, []);
   return (
     <div className='navbar min-w-[14%] min-h-[100%] sm:min-w-[100px] lg:min-w-[150px] xl:min-w-[170px] 2xl:min-w-[170px]'>
       <div>
@@ -63,6 +74,18 @@ const Sidebar: React.FC = () => {
           />
           <span className='hidden sm:block text-sm md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg'>Profesionales</span>
         </Link>
+        {isAdmin && (
+        <Link className='a-navbar justify-center sm:flex-col md:flex-col lg:flex-row lg:ml-[10%]' href="/administracion">
+          <Image
+            src="/assets/registro.png"
+            alt="registro"
+            className='calendar-logo h-10 w-10'
+            width={60}
+            height={60}
+          />
+          <span className='hidden sm:block text-sm md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg'>Administracion</span>
+        </Link>
+         )}
       </div>
     </div>
   );

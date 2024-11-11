@@ -64,7 +64,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   const loadProfessionals = async () => {
     try {
       const fetchedProfessionals = await fetchProfessionals();
-      console.log('Fetched professionals:', fetchedProfessionals); // Log para verificar los datos
+      console.log('Fetched professionals:', fetchedProfessionals); 
       setProfessionals(fetchedProfessionals);
     } catch (error) {
       console.error('Error fetching professionals:', error);
@@ -72,7 +72,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
   };
   
 
-  // Cargar turnos
+
   const loadAppointments = async () => {
     try {
       let appointments: Appointment[] = [];
@@ -103,7 +103,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     loadProfessionals();
     const loadUsers = async () => {
       try {
-        const fetchedPatients = await fetchUsersByRole(3); // Rol de paciente
+        const fetchedPatients = await fetchUsersByRole(3); 
         setPatients(fetchedPatients);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -230,7 +230,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
     const currentDate = new Date();
     const appointmentDate = new Date(event.appointment.date);
   
-    // Establece el turno seleccionado y abre el modal para verlo
+  
     setSelectedAppointment(event.appointment);
     setIsViewingAppointment(true);
     setModalIsOpen(true);
@@ -342,7 +342,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
             </div>
             <div>
               <button className='bg-green-200 text-white px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]' type="button" onClick={handleCloseModal}>Cerrar</button>
-              {/* Mostrar el botón de eliminar solo si la fecha del turno no ha pasado */}
+ 
               {new Date(selectedAppointment.date) >= new Date() && (
                 <button type="button" onClick={handleDeleteAppointment} className="bg-red-200 text-white px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]">Eliminar Turno</button>
               )}
