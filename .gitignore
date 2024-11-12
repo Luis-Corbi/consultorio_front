@@ -6,29 +6,29 @@
 .pnp.js
 .yarn/install-state.gz
 
-# testing
+testing
 /coverage
 
-# next.js
+next.js
 /.next/
 /out/
 
-# production
+production
 /build
 
-# misc
+misc
 .DS_Store
-*.pem
+.pem
 
-# debug
-npm-debug.log*
+debug
+npm-debug.log
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
+local env files
 .env*.local
 
-# Environments
+Environments
 .env
 .venv
 env/
@@ -37,9 +37,18 @@ ENV/
 env.bak/
 venv.bak/
 
+<<<<<<< HEAD
+vercel
+.vercel
+
+typescript
+*.tsbuildinfo
+next-env.d.ts
+=======
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+>>>>>>> 2f99b91aefb6c19e0a86fc8b69e14e74f0bc2627
