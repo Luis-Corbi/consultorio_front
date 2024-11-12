@@ -1,0 +1,399 @@
+/* Fondo oscuro que cubre toda la pantalla cuando el modal está abierto */
+.modal-overlay {
+  position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    justify-content: center; /* Asegúrate de que esté encima de todo */
+}
+
+
+/* Estilo para el contenedor del modal */
+.modal-container {
+  position: relative;
+  max-width: 50%;
+  height: 85%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 1001;/* Más alto que el overlay para que sea clicable */
+}
+
+/* Estilo para el contenido del modal */
+.modal-content {
+  background-color: #fef9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; /* Permite desplazarse si el contenido es muy grande */
+}
+
+/* Título del modal */
+.modal-title {
+  margin-top: 3%;
+  font-size: 24px;
+  text-align: center;
+}
+
+/* Estilo para el formulario dentro del modal */
+.modal-form {
+    display: flex;
+    flex-direction: row;
+    gap: 13px;
+    flex-wrap: wrap;
+    height: 98%;
+}
+
+.modal-form label {
+  width: 48%;
+  height: 7%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.modal-form ,
+.input-table-paciente,
+.modal-form textarea {
+  width: calc(100% - 10px);
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Botones del modal */
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-buttons button[type="submit"] {
+  background-color: #269c95;
+  color: white;
+}
+
+.modal-buttons button[type="button"] {
+  background-color: #6c757d;
+  color: white;
+}
+
+
+  .crear-pac{
+    
+  
+    display: flex;
+    background-color: #269c95;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 10%;
+    gap: 2px;
+    justify-content: space-around;
+    align-items: center;
+    
+  }
+.btn-pacientes{
+  background: none;
+    color: white;
+    cursor: pointer;
+}
+
+.botones-table{
+  height: 6%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10%;
+  margin-right: 2%;
+}
+
+table{
+  width: 100%;
+}
+
+
+tr{
+  height: 50px;
+}
+
+.td-bold{
+  font-weight: bold;
+}
+
+.plus-icon{
+  height: 25px;
+}
+.pagination button.active{
+
+  background: #269c95;
+      border-radius: 5px;
+      color: white;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+    background:none; 
+    color: #000;
+    border: none;
+    padding: 10px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+.ver-paciente{
+  cursor: pointer;
+}
+
+Link{
+  cursor: pointer;
+}
+th{
+
+  text-align: start;
+}
+
+.button-ver-p{
+  width: 75%;
+  display: flex;
+  text-decoration: none;
+  color: white;
+  align-items: center;
+  gap: 5%;
+  display: flex;
+  margin-right: 10px;
+  background-color: #8EDAD5;
+  padding: 1px;
+  border: 1px solid #8EDAD5;
+  border-radius: 5px;
+  cursor: pointer;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.logo-paciente{
+  height: 24px;
+}
+
+.color-prof{
+  width: '20px';
+  height: '20px';
+  
+  border: '1px solid #ccc';
+  border-radius: '50%';
+  display: 'inline-block';
+}
+
+.select-form{
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Estilo para la tabla */
+.tabla-usuarios , .tabla-prof {
+  background-color: white;
+    margin-left: 3%;
+    width: 94%;
+    border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+/* Estilo para cada fila de la tabla */
+tbody tr {
+  border-bottom: 1px solid #ccc; /* Borde gris */
+  transition: background-color 0.3s ease;
+}
+
+/* Cambiar color de fondo al hacer hover */
+tbody tr:hover {
+  background-color: #91d7d237; /* Verde claro */
+}
+
+/* Estilo para la cabecera de la tabla */
+thead th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  border-bottom: 2px solid #ccc;
+}
+
+.div-datos-paciente{
+  overflow-x: scroll;
+  height: 87vh;
+  padding: 0px 8%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.form-reporte{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.button-subir-reporte{
+  width: 100%;
+  text-decoration: none;
+  color: white;
+  align-items: center;
+  background-color: #8EDAD5;
+  border: 1px solid #8EDAD5;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 38px;
+
+}
+
+.datos{
+  width: 40%;
+  margin-top: 2%;
+  background-color: white;
+  margin-right: 2%;
+  padding: 3%;
+  border-radius: 5%;
+  height: 50%;
+}
+
+.reportes{
+  width: 60%;
+  margin-top: 2%;
+}
+
+.logo-usuario-datos{
+  width: 30%;
+  height: 30%;
+}
+
+.div-identificacion{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link-odontograma{
+  width: 35%;
+
+  text-decoration: none;
+ 
+  
+  gap: 5%;
+}
+
+.div-odonto{
+    gap: 3%;
+    display: flex;
+    color: white;
+    align-items: center;
+    background-color: #5BB5B0;
+    border-radius: 6%;
+    padding: 2%;
+}
+
+.div-contenedor{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.logo-odonto{
+  margin-left: 2%;
+}
+
+.linea{
+  background-color: #A19F9F;
+  height: 2px;
+  margin-top: 3%;
+  
+}
+.contenedor-datos{
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60%;
+}
+
+
+.div-datos{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.p-datos{
+  width: 50%;
+}
+
+.select-filtro {
+  padding: 1%;
+  height: 78%;
+  border: 2PX SOLID #5BB5B0;
+  border-radius: 5px;
+}
+.input-filtro {
+  padding-left: 1%;
+  height: 70%;
+  border: 2PX SOLID rgb(179, 179, 179);
+  border-radius: 5px;
+}
+
+.div-filtro{
+  display: flex;
+  gap: 5%;
+}
+
+.lista-pacientes{
+  background-color: white;
+    border-radius: 0 10px 10px 0;
+    width: 100%;
+border-left: 4px solid;
+    border-left-color: #037171;
+    margin-top: 5%;
+    display: flex;
+}
+
+.ul-lista-pacientes{
+  width: 100%;
+  list-style: none;
+  margin-right: 5%;
+  border-radius: 0 10px 10px 0;
+  margin-left: 2%;
+}
+
+.p-lista-pacientes{
+  margin-left: 5%;
+  display: flex;
+}
