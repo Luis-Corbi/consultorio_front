@@ -78,9 +78,7 @@ export const fetchUsersByRole = async (roleId: number): Promise<User[]> => {
     }
 
     const users: User[] = res.data;
-
-    // Asegúrate de que roles sea un arreglo de objetos con una propiedad id
-    return users.filter(user => user.roles && user.roles.some(role => role.id === roleId));
+    return users.filter(user => user.roles.some(role => role.id === roleId));
   } catch (error) {
     console.error('Error fetching users:', error);
     throw error;

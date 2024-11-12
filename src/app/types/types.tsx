@@ -9,9 +9,8 @@ export interface Speciality {
   }
   
   export interface User {
-    id: number; // asumiendo que tienes un campo id
+    id: number;
     username: string;
-    password: string;
     name: string;
     lastname: string;
     DNI: string;
@@ -23,11 +22,11 @@ export interface Speciality {
     health_insurance: string;
     health_insurance_number: string;
     licence_number: string;
-    speciality: { id: number; name: string } | undefined; // O el tipo que sea adecuado
+    speciality: { id: number; name: string };
     notes: string;
-    roles: Role[]; // Aquí aseguramos que roles es un arreglo de objetos Role
-    color: string;
-}
+    roles: { id: number; name: string }[];
+    color?: string;
+  }
 
   export interface EditableUser {
     id: string;
