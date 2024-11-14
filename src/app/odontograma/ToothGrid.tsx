@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import Tooth from './Tooth';
-import "../../odontograma/odonto.css";
+import "./odonto.css";
 
 // Define el tipo de registro
 interface Registro {
