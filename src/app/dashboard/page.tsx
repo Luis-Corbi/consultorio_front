@@ -27,7 +27,7 @@ const Panel= () => {
           <Bar />
 
         <h1>Los turnos del dia</h1> 
-        <div className="flex flex-col sm:flex-row justify-center gap-4 p-4">
+        <div className="flex flex-col sm:flex-row lg:justify-around gap-10 p-4">
           <AppointmentsChart token={token} />
           <TurnosDelDia token={token} />
         </div>

@@ -125,29 +125,33 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
     return <p>{error}</p>;
   }
   return (
-    <div>
-  <h2 className="px-2">Turnos del Día</h2>
-  {turnos.length === 0 ? (
-    <p className="px-2">No hay turnos para hoy.</p>
-  ) : (
-    <ul className="w-full list-none mr-[5%] rounded-r-[10px] rounded-l-none ml-[2%]">
-      {turnos.map((turno) => (
-        <li
-        key={turno.id}
-        className="bg-white rounded-r-[10px] rounded-l-none w-full border-l-4 border-[#037171] mt-[5%] flex pl-5 bg-gray-100">
-        <p className="flex ml-[5%]">  
-          <strong>Paciente:</strong> {getPatientName(turno.patient)} - 
-        </p>
-        <p className="flex ml-[5%]"> 
-          <strong>Hora:</strong> {turno.hour}
-        </p>
-        -
-      </li>
-      ))}
-    </ul>
-  )}
-</div>
+    <div className="p-4 bg-gray-50 rounded-lg shadow-md w-full lg:w-[30%]">
+      <h2 className="text-xl font-semibold text-teal-600 mb-4">Turnos del Día</h2>
+      {turnos.length === 0 ? (
+        <p className="text-gray-500">No hay turnos para hoy.</p>
+      ) : (
+        <ul className="w-full list-none">
+          {turnos.map((turno) => (
+            <li
+              key={turno.id}
+              className="bg-white rounded-lg shadow-sm mb-4 flex items-center p-4 border-l-4 border-teal-500 hover:bg-teal-50 transition duration-300 ease-in-out"
+            >
+              <div className="flex flex-col ml-4">
+                <p className="text-sm text-gray-700">
+                  <strong className="text-teal-600">Paciente:</strong> {getPatientName(turno.patient)}
+                </p>
+                <p className="text-sm text-gray-700">
+                  <strong className="text-teal-600">Hora:</strong> {turno.hour}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
+  
+
 };
 
 export default TurnosDelDia;

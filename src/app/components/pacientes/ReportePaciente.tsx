@@ -88,7 +88,8 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
     return (
-    <div className="max-w-lg mx-auto p-5">
+      <div className="max-w-lg p-2 lg:max-h-[70vh] lg:overflow-y-scroll">
+
       <h2 className="text-xl font-semibold mb-4 text-center">Reportes Médicos</h2>
       <div className="mb-6">
         <label htmlFor="professional-select" className="block mb-2 font-medium">Filtrar por Profesional:</label>

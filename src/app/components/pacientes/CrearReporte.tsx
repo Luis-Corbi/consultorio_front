@@ -16,7 +16,15 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
   const [treatment, setTreatment] = useState<string>(''); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+  
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    if (userData.roles && userData.roles.some((role: { name: string }) => role.name === "admin")) {
+      setIsAdmin(true);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -95,47 +103,55 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
   return (
     <div>
       <h2>Agregar Reporte Médico</h2>
-      <form className='flex flex-col gap-2' onSubmit={handleSubmit}>
-        <input  
-          className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
-          type="file" 
-          accept=".pdf" 
-          onChange={handleFileChange} 
-          disabled={loading} 
-        />
-        
-        <input
-          className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
-          type="text"
-          name="type"
-          value={type}
-          onChange={handleChange}
-          placeholder="Tipo de Reporte"
-          disabled={loading}
-        />
-        <input
-          className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
-          type="text"
-          name="diagnosis"
-          value={diagnosis}
-          onChange={handleChange}
-          placeholder="Diagnóstico"
-          disabled={loading}
-        />
-        <input
-          className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
-          type="text"
-          name="treatment"
-          value={treatment}
-          onChange={handleChange}
-          placeholder="Tratamiento"
-          disabled={loading}
-        />
-        <button className='w-full no-underline text-white flex justify-center items-center bg-[#8EDAD5] border border-[#8EDAD5] rounded-[5px] cursor-pointer h-[38px]' type="submit" disabled={loading}>
-          {loading ? 'Subiendo...' : 'Subir Reporte'}
-        </button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-      </form>
+
+     
+      {isAdmin ? (
+        <div className="bg-gray-200 p-4 rounded-md">
+          <p className="text-gray-500">No tienes permiso para modificar los reportes médicos.</p>
+        </div>
+      ) : (
+        <form className='flex flex-col gap-2' onSubmit={handleSubmit}>
+          <input  
+            className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
+            type="file" 
+            accept=".pdf" 
+            onChange={handleFileChange} 
+            disabled={loading} 
+          />
+          
+          <input
+            className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
+            type="text"
+            name="type"
+            value={type}
+            onChange={handleChange}
+            placeholder="Tipo de Reporte"
+            disabled={loading}
+          />
+          <input
+            className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
+            type="text"
+            name="diagnosis"
+            value={diagnosis}
+            onChange={handleChange}
+            placeholder="Diagnóstico"
+            disabled={loading}
+          />
+          <input
+            className='p-[10px] border border-gray-500 rounded-[4px] transition-all duration-300 ease-in-out w-[100%]'
+            type="text"
+            name="treatment"
+            value={treatment}
+            onChange={handleChange}
+            placeholder="Tratamiento"
+            disabled={loading}
+          />
+          <button className='w-full no-underline text-white flex justify-center items-center bg-[#8EDAD5] border border-[#8EDAD5] rounded-[5px] cursor-pointer h-[38px]' type="submit" disabled={loading}>
+            {loading ? 'Subiendo...' : 'Subir Reporte'}
+          </button>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+        </form>
+      )}
     </div>
   );
 };
