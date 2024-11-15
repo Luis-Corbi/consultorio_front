@@ -83,7 +83,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
       };
 
     return (
-        <div className="relative bg-white rounded-lg p-5 z-[1001] w-[60%] max-w-4xl mx-auto justify-center items-center">
+        <div className="relative bg-white rounded-lg p-5 z-[1001] w-[60%] max-w-4xl mx-auto justify-center items-center overflow-y-auto max-h-[60%]">
                 <h2 className="mt-0 text-md text-center text-green-200 sm:text-2xl md:text-2xl lg:text-2xl xl:text-2xl 2xl:text-2xl">Crear Profesional</h2>
                 <form onSubmit={handleSubmit} className='justify-center items-center'>
                     <div className="w-[100%] justify-center items-center grid grid-cols-1 md:grid-cols-2 md:gap-4">

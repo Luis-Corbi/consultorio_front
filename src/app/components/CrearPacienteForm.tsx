@@ -92,7 +92,7 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="relative bg-white rounded-lg p-5 z-[1001] w-[60%] max-w-4xl mx-auto justify-center items-center">
+    <div className="relative bg-white rounded-lg p-5 z-[1001] w-[60%] max-w-4xl mx-auto justify-center items-center overflow-y-auto max-h-[60%]">
         <h2 className="mt-0 text-md text-center text-green-200 sm:text-2xl md:text-2xl lg:text-2xl xl:text-2xl 2xl:text-2xl">Crear Paciente</h2>
         <form onSubmit={handleSubmit} className='justify-center items-center'>
           <div className="w-[95%] grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -154,8 +154,8 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
               <textarea className='bg-gray-100 p-1 text-sm w-[95%] h-[30px]' value={notes} onChange={(e) => setNotes(e.target.value)} />
             </div>
             <div className="flex items-center justify-around mt-2">
-              <button className="bg-gray-300 text-white w-[40%] px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]" type="button" onClick={onClose}>Cancelar</button>
-              <button className="bg-green-300 text-white w-[40%] px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]" type="submit">Crear</button>
+              <button className="bg-green-200 text-white w-auto px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]" type="submit">Crear</button>
+              <button className="bg-gray-300 text-white w-auto px-3 py-1 mt-2 border border-[#8EDAD5] rounded-[5px] cursor-pointer hover:bg-[#a6dad6]" type="button" onClick={onClose}>Cancelar</button>
             </div>
           </div>
         </form>
