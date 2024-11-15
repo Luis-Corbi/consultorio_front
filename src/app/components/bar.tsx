@@ -63,7 +63,7 @@ const Bar: React.FC = () => {
           <FaBars />
         </button>
         {isMobileMenuOpen && (
-          <div className="absolute top-12 right-0 w-auto bg-white shadow-lg p-4 rounded-lg">
+          <div className="absolute top-28 right-0 w-auto bg-white shadow-lg p-4 rounded-lg">
             <div className="flex items-center space-x-3">
               <img className={styles.logo_usuario_datos} src="/assets/usuario.png" alt="Logo-usuario" />
               <div>

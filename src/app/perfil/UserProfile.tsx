@@ -123,25 +123,24 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
   };
 
   return (
-    <div  className="w-full flex min-h-screen">
+    <div className='h-full w-full flex'>
       <Sidebar />
-      <div className="w-full flex-grow flex flex-col bg-[#F1F1F1]">
-        <div className="w-full" >
-          <Bar />
-        </div>
-        <div className="flex justify-center ">
-          <div className="bg-white rounded-lg p-6 shadow-lg w-full max-w-3xl">
-            <h1 className="text-[#269c95] text-2xl font-semibold mb-4">Detalles del Profesional:</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              
-              <p className="text-lg"><strong className="text-gray-500">Nombre:</strong> {isEditing ? <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.name)}</p>
-              <p className="text-lg"><strong className="text-gray-500">Apellido:</strong> {isEditing ? <input type="text" name="lastname" value={formData.lastname} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.lastname)}</p>
-              <p className="text-lg"><strong className="text-gray-500">DNI:</strong> {isEditing ? <input type="text" name="DNI" value={formData.DNI} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.DNI)}</p>
-              <p className="text-lg"><strong className="text-gray-500">Teléfono:</strong> {isEditing ? <input type="text" name="telephone" value={formData.telephone} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.telephone)}</p>
-              <p className="text-lg"><strong className="text-gray-500">Email:</strong> {isEditing ? <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.email)}</p>
-              <p className="text-lg"><strong className="text-gray-500">Dirección:</strong> {isEditing ? <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1" /> : renderDato(user.address)}</p>
-              <p className="text-lg"><strong className="text-gray-500">Género:</strong> {isEditing ? (
-                <select name="gender" value={formData.gender} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1">
+      <div className='h-screen w-full mt-16 bg-gray-100 md:mt-0 md:p-1'>
+        
+        <Bar />
+        <div className='h-[85%]'>
+          <div className='contenedor-datos-profesionales bg-white rounded-lg px-4 py-1 shadow-lg h-auto md:p-4 lg:p-6 xl:p-6 2xl:p-6'>
+            <h1 className=' text-[#269c95] text-md sm:text-md md:text-lg lg:text-xl xl:text-xl 2xl:text-xl'>Detalles del Profesional:</h1>
+            <div className='grid grid-cols-1 flex justify-center items-center md:grid-cols-2'>
+                
+              <p className='text-sm mt-1 sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg'><strong className='text-gray-400'>Nombre:</strong> {isEditing ? <input type='text' name='name' value={formData.name} onChange={handleInputChange} className='input-dato px-2 py-1 text-sm text-black block w-[98%] sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg' /> : renderDato(user.name)}</p>
+              <p className='text-sm mt-1 sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg'><strong className='text-gray-400'>Apellido:</strong> {isEditing ? <input type='text' name='lastname' value={formData.lastname} onChange={handleInputChange} className='input-dato px-2 py-1 text-sm text-black block w-[98%] sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg' /> : renderDato(user.lastname)}</p>
+              <p className='text-sm mt-1 sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg'><strong className='text-gray-400'>DNI:</strong> {isEditing ? <input type='text' name='DNI' value={formData.DNI} onChange={handleInputChange} className='input-dato px-2 py-1 text-sm text-black block w-[98%] sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg' /> : renderDato(user.DNI)}</p>
+              <p className='text-sm mt-1 sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg'><strong className='text-gray-400'>Teléfono:</strong> {isEditing ? <input type='text' name='telephone' value={formData.telephone} onChange={handleInputChange} className='input-dato px-2 py-1 text-sm text-black block w-[98%] sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg' /> : renderDato(user.telephone)}</p>
+              <p className='text-sm mt-1 sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg'><strong className='text-gray-400'>Email:</strong> {isEditing ? <input type='email' name='email' value={formData.email} onChange={handleInputChange} className='input-dato px-2 py-1 text-sm text-black block w-[98%] sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg' /> : renderDato(user.email)}</p>
+              <p className='text-sm mt-1 sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg'><strong className='text-gray-400'>Dirección:</strong> {isEditing ? <input type='text' name='address' value={formData.address} onChange={handleInputChange} className='input-dato px-2 py-1 text-sm text-black block w-[98%] sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg' /> : renderDato(user.address)}</p>
+              <p className='text-sm mt-1 sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg'><strong className='text-gray-400'>Género:</strong> {isEditing ? (
+                <select name='gender' value={formData.gender} onChange={handleInputChange} className='input-dato px-2 py-1 text-sm text-black block w-[98%] sm:text-sm md:text-md lg:text-md xl:text-lg 2xl:text-lg'>
                   <option value="M">Masculino</option>
                   <option value="F">Femenino</option>
                   <option value="O">No binario</option>
