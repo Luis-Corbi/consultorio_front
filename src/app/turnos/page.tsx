@@ -14,15 +14,13 @@ const Calendario = dynamic(() => import('../components/calendar'), { ssr: false 
 const Turnos: React.FC = () => {
     return (
        
-        <div className='w-full flex min-h-screen'>
+        <div className='h-full w-full flex'>
                         
             <Sidebar/>
-            <div className='W-[100%] flex-grow flex flex-col bg-[#F1F1F1]'>
+            <div className='h-screen w-full mt-16 bg-gray-100 md:mt-0 md:p-1'>
 
-                <div className="w-full">
-                    <Bar />
-                </div>
-
+                <Bar />
+                
                 <div className='flex-grow p-4'>
                     <Calendario defaultView="month" />
                 </div>
