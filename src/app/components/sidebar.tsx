@@ -9,71 +9,80 @@ const Sidebar: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
-   
+    
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
     
-
+    
     if (userData.roles && userData.roles.some((role: { name: string }) => role.name === "admin")) {
       setIsAdmin(true);
     }
   }, []);
   return (
-    <div className='navbar min-w-[14%] min-h-[100%] sm:min-w-[100px] lg:min-w-[150px] xl:min-w-[170px] 2xl:min-w-[170px]'>
-      <div>
-        <Link className='a-navbar flex items-center justify-center' href="/dashboard">
-          <Image
-            className='logo h-8 w-[100%] md:h-10 lg:h-14 xl:h-14 2xl:h-14'
-            src="/assets/logo.png"
-            alt="Logo"
-            width={100}
-            height={100}
-          />
-        </Link>
+  
+    <div>
+      
+      {/* Vista Movil */}
+      <div className="navbar fixed top-0 left-0 w-full h-16 flex items-center py-2 px-4 md:hidden">
+        
+        <div className="flex justify-around items-center w-full">
+          {/* Logo Home o Dashboard */}
+          <Link href="/dashboard">
+            <img src="/assets/hoy.png" alt="logohoy" className="hoy-logo h-8 w-8" />
+          </Link>
+
+          {/* Logo Pacientes */}
+          <Link href="/pacientes">
+            <img src="/assets/people.png" alt="logopacientes" className="pacientes-logo h-8 w-8" />
+          </Link>
+
+          {/* Logo Turnos */}
+          <Link href="/turnos">
+            <img src="/assets/calendar.png" alt="logocalendar" className="calendar-logo h-14 w-10 object-contain" />
+          </Link>
+
+          {/* Logo Profesionales */}
+          <Link href="/profesionales">
+            <img src="/assets/doctor.png" alt="logodoctor" className="calendar-logo h-8 w-8" />
+          </Link>
+        </div>
       </div>
-      <div className='div-links lg:items-start'>
-        <Link className='a-navbar justify-center sm:flex-col md:flex-col lg:flex-row lg:ml-[10%]' href="/dashboard">
-          <Image
-            src="/assets/hoy.png"
-            alt="logohoy"
-            className='hoy-logo h-10 w-10'
-            width={100 }
-            height={100}
-          />
-          <span className='hidden sm:block text-sm md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg'>Home</span>
-        </Link>
 
-        <Link className='a-navbar justify-center sm:flex-col md:flex-col lg:flex-row lg:ml-[10%]' href="/pacientes">
-          <Image
-            src="/assets/people.png"
-            alt="logopacientes"
-            className='pacientes-logo h-10 w-10'
-            width={60}
-            height={60}
-          />
-          <span className='hidden sm:block text-sm md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg'>Pacientes</span>
-        </Link>
+      {/* Vistas Tablet y desktop */}
+      <div className="navbar hidden md:flex flex-col justify-between h-full py-4 px-1 min-w-[14%] lg:min-w-[150px] xl:min-w-[170px] 2xl:min-w-[170px]">
+        {/* Logo Denthos */}
+        <div className="flex items-center justify-center w-full py-4">
+          <Link href="/dashboard">
+            <img className="logo h-10 w-auto" src="/assets/logo.png" alt="Logo" />
+          </Link>
+        </div>
 
-        <Link className='a-navbar justify-center sm:flex-col md:flex-col lg:flex-row lg:ml-[10%]' href="/turnos">
-          <Image
-            src="/assets/calendar.png"
-            alt="logocalendar"
-            className='calendar-logo h-16 w-10'
-            width={64}
-            height={64}
-          />
-          <span className='hidden sm:block text-sm md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg'>Turnos</span>
-        </Link>
+        {/* Links */}
+        <div className="flex flex-col justify-around items-left h-full">
 
-        <Link className='a-navbar justify-center sm:flex-col md:flex-col lg:flex-row lg:ml-[10%]' href="/profesionales">
-          <Image
-            src="/assets/doctor.png"
-            alt="logocalendar"
-            className='calendar-logo h-10 w-10'
-            width={60}
-            height={60}
-          />
-          <span className='hidden sm:block text-sm md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg'>Profesionales</span>
-        </Link>
+          {/* Link Dashboard */}
+          <Link href="/dashboard" className="a-navbar flex flex-col items-center lg:ml-2 lg:flex-row">
+            <img src="/assets/hoy.png" alt="logohoy" className="h-10 w-10" />
+            <span className="hidden sm:block text-sm md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg">Home</span>
+          </Link>
+
+          {/* Link Pacientes */}
+          <Link href="/pacientes" className="a-navbar flex flex-col items-center lg:ml-2 lg:flex-row">
+            <img src="/assets/people.png" alt="logopacientes" className="pacientes-logo h-10 w-10" />
+            <span className="md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg">Pacientes</span>
+          </Link>
+
+          {/* Link Turnos */}
+          <Link href="/turnos" className="a-navbar flex flex-col items-center lg:ml-2 lg:flex-row">
+            <img src="/assets/calendar.png" alt="logocalendar" className="calendar-logo h-16 w-10" />
+            <span className="md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg">Turnos</span>
+          </Link>
+
+          {/* Link Profesionales */}
+          <Link href="/profesionales" className="a-navbar flex flex-col items-center lg:ml-1 lg:flex-row">
+            <img src="/assets/doctor.png" alt="logodoctor" className="calendar-logo h-10 w-10" />
+            <span className="md:text-sm lg:text-md lg:justify-center xl:text-lg 2xl:text-lg">Profesionales</span>
+          </Link>
+        </div>
         {isAdmin && (
         <Link className='a-navbar justify-center sm:flex-col md:flex-col lg:flex-row lg:ml-[10%]' href="/administracion">
           <Image
@@ -92,3 +101,4 @@ const Sidebar: React.FC = () => {
 };
 
 export default Sidebar;
+

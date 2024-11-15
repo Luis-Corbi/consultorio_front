@@ -38,28 +38,28 @@ const TableProfesionales: React.FC = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className='w-full flex min-h-screen'>
-      <Sidebar />
-      
-      <div className='w-[100%] flex-grow flex flex-col bg-[#F1F1F1]'>
-        
-      <div className="w-full">
+
+    <div className='h-full w-full flex'>
+
+      <Sidebar/>
+      <div className='w-full h-screen mt-16 bg-gray-100 md:mt-0'>
         <Bar />
-      </div>
-         
+
         {showCreateForm && (
-          <CrearProfesionalForm 
-            onClose={() => setShowCreateForm(false)} 
-            onCreate={handleCreate} 
-          />
-        )}
+           <CrearProfesionalForm 
+             onClose={() => setShowCreateForm(false)} 
+             onCreate={handleCreate} 
+           />
+         )}
 
-        <div className='flex-grow p-4'>
-          <ProTable users={users} />
+        <div className='w-full bg-gray-100 px-1'>
+          <div className='flex-grow p-4'>
+            <ProTable users={users} />
+          </div>
         </div>
-
+        
       </div>
-      
+
     </div>
   );
 };

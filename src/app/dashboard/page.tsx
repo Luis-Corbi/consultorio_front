@@ -7,8 +7,6 @@ import AppointmentsChart from '../components/grafico';
 import { cookies } from 'next/headers'; 
 import TurnosDelDia from '../components/home/Turnosdeldia';
 
-
-
 const Panel= () => {
   const cookieStore = cookies();
   const token = cookieStore.get('access_token')?.value || '';
@@ -18,25 +16,21 @@ const Panel= () => {
   }
 
   return (
-    <div className='w-full flex min-h-screen'>
-        
+
+    <div className='h-full w-full flex'>
+
       <Sidebar/>
-      <div className='w-[100%] flex-grow flex flex-col bg-[#F1F1F1]'>
-
-        <div className="w-full">
-          <Bar />
-
-        <h1>Los turnos del dia</h1> 
-        <div className="flex flex-col sm:flex-row lg:justify-around gap-10 p-4">
-          <AppointmentsChart token={token} />
-          <TurnosDelDia token={token} />
-        </div>
+      <div className='h-screen w-full mt-16 bg-gray-100 md:mt-0 md:p-1'>
+        <Bar />
+        <div className='bg-gray-100 gap-64 px-1 md:flex md:ml-6'>
+          <AppointmentsChart token={token} /> 
+          <TurnosDelDia token={token}  />  
         </div>
         
       </div>
-        
+
     </div>
-  
+
   );
 };
 

@@ -37,20 +37,23 @@ const Fetchtable: React.FC = () => {
 
 const Page: React.FC = () => {
   return (
-    <div className='w-full flex min-h-screen'>
-      
+    
+    <div className='h-full w-full flex'>
+
       <Sidebar/>
-      <div className='w-full flex-grow flex flex-col bg-[#F1F1F1]'>
-        
-        <div className="w-full">
-          <Bar />
+      <div className='w-full h-screen mt-16 bg-gray-100 md:mt-0'>
+        <Bar />
+        <div className='w-full bg-gray-100 px-1'>
+          <div className='flex-grow px-2 py-1'>
+            <Fetchtable />
+          </div>
         </div>
         
-        <div className='flex-grow p-4'>
-          <Fetchtable />
-        </div>
       </div>
+
     </div>
+        
+     
   );
 };
 

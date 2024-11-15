@@ -109,7 +109,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
               <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.address}</td>
               <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.gender}</td>
               <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.birth_date}</td>
-              <td className='cursor-pointer'>
+              <td className='cursor-pointer flex justify-center items-center'>
                 <Link  className='button-ver-p w-[40px] p-1 flex sm:w-[70px]' href={`/pacientes/${user.id}`} >
                   <img className='h-6' src="../assets/ver-paciente.png" alt="" />
                   <span className='white hidden sm:block md:block lg:block xl:block 2xl:block'>Ver</span>

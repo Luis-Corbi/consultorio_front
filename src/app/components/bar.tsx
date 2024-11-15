@@ -1,6 +1,5 @@
 // src/app/components/bar.tsx
 "use client";
-import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
@@ -53,9 +52,9 @@ const Bar: React.FC = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.welcome}>
-        <span>Bienvenido, <span className={styles.username}>{userData.name}!</span></span>
+    <div className="w-full flex items-center justify-between bg-gray-100 p-3 mb-2">
+      <div>
+        <span className="text-md sm:text-md md:text-lg lg:text-xl xl:text-xl 2xl:text-xl">Bienvenido,</span> <span className="font-bold text-teal-500 text-md sm:text-md md:text-lg lg:text-xl xl:text-xl 2xl:text-xl">{userData.name}!</span>
       </div>
       
       {/* Mobile Menu */}

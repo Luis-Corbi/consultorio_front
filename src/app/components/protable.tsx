@@ -74,10 +74,10 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
       <table className='bg-white w-[100%] border-collapse'>
         <thead>
           <tr>
-            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Color</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Color</th>
             <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Nombre</th>
             <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Apellido</th>
-            <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>DNI</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>DNI</th>
             <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Teléfono</th>
             <th className='text-sm hidden sm:text-sm sm:hidden md:hidden lg:hidden xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Email</th>
             <th className='text-sm hidden sm:text-sm sm:hidden md:hidden lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Dirección</th>
@@ -89,7 +89,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
         <tbody>
           {currentUsers.map((user) => (
             <tr key={user.id}>
-              <td>
+              <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>
                 {user.color ? (
                   <div
                     style={{
@@ -108,13 +108,13 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
               </td>
               <td className='font-bold'>{user.name}</td>
               <td className='font-bold'>{user.lastname}</td>
-              <td>{user.DNI}</td>
+              <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.DNI}</td>
               <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.telephone}</td>
               <td className='hidden sm:hidden md:hidden lg:hidden xl:table-cell 2xl:table-cell'>{user.email}</td>
               <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.address}</td>
               <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.gender}</td>
               <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.birth_date}</td>
-              <td className='cursor-pointer'>
+              <td className='cursor-pointer flex justify-center items-center'>
                 <Link className='button-ver-p w-[40px] p-1 flex sm:w-[70px]' href={`/profesionales/${user.id}`}>
                   <Image className='h-6' src="/assets/doctor.png" alt="doctoaar" width={25} height={20} />
                   <span className='white hidden sm:block md:block lg:block xl:block 2xl:block'>Ver</span>

@@ -17,9 +17,9 @@
 .navbar{
     width: 15%;
     background: linear-gradient(0deg, rgba(49, 121, 116, 1) 10%, rgba(142, 218, 213, 1) 100%);
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-between; */
     color: white;
     
     height: 100vh;
