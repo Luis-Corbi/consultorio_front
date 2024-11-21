@@ -1,44 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+"use client";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./odonto.css";
 
 interface Nota {
   id: number;
   tooth_number: number;
   procedure: string;
   date: string;
+  user: number;
+  observations?: string;
+  is_active: boolean;
 }
 
 interface NotasProps {
   registros: { lado: string; color: string; fecha: string; accion: string }[];
   onRegister: (registro: { lado: string; color: string; fecha: string; accion: string }) => void;
-  onHighlightTooth: (toothNumber: number, color: string, lado: string) => void; // Actualizado para incluir lado
+  onHighlightTooth: (toothNumber: number, color: string, lado: string) => void;
+  userId: number | null;
 }
 
-const colorMapping: { [key: number]: string } = {
-  1: 'lightblue',
-  2: 'lightgreen',
-  3: 'lightyellow',
-  4: 'lightcoral',
-  5: 'lightpink',
-  6: 'lightgray',
-  7: 'lightgoldenrodyellow',
-  8: 'lightsalmon',
-  9: 'lightseagreen',
-  10: 'lightcyan',
-};
-
-const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth }) => {
-  const [piezaSeleccionada, setPiezaSeleccionada] = useState('todas las piezas');
+const Notas: React.FC<NotasProps> = ({
+  registros,
+  onRegister,
+  onHighlightTooth,
+  userId,
+}) => {
+  const [piezaSeleccionada, setPiezaSeleccionada] = useState("todas las piezas");
   const [notas, setNotas] = useState<Nota[]>([]);
+  const [borradasNotas, setBorradasNotas] = useState<Nota[]>([]);
+  const [mostrarModalBorradas, setMostrarModalBorradas] = useState(false);
   const [cargando, setCargando] = useState(false);
 
   const cargarNotas = async () => {
+    if (!userId) return;
+
     setCargando(true);
     try {
-      const respuesta = await axios.get('http://localhost:8000/api/notes/', {
-        params: { pieza: piezaSeleccionada === 'todas las piezas' ? '' : piezaSeleccionada }
+      const response = await axios.get("http://localhost:8000/api/notes/", {
+        params: {
+          user_id: userId,
+          pieza: piezaSeleccionada === "todas las piezas" ? "" : piezaSeleccionada,
+        },
       });
-      setNotas(respuesta.data);
+      setNotas(response.data.filter((nota: Nota) => nota.is_active));
+      setBorradasNotas(response.data.filter((nota: Nota) => !nota.is_active));
     } catch (error) {
       console.error("Error al cargar las notas:", error);
     } finally {
@@ -46,49 +52,60 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth }
     }
   };
 
-  useEffect(() => {
-    cargarNotas();
-  }, [piezaSeleccionada]);
-
   const eliminarNota = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8000/api/notes/${id}/`);
-      setNotas(notas.filter(nota => nota.id !== id));
+      await axios.patch(`http://localhost:8000/api/notes/${id}/`, {
+        is_active: false,
+      });
+      cargarNotas();
     } catch (error) {
       console.error("Error al eliminar la nota:", error);
     }
   };
 
-  const verNota = (nota: Nota) => {
-    const match = nota.procedure.match(/\d+/);
-    const colorIndex = match ? parseInt(match[0], 10) : 1;
-    const color = colorMapping[colorIndex];
-    
-    const lado = nota.procedure.split(' ').find(part => ['top', 'right', 'bottom', 'left', 'center'].includes(part)) || 'top';
-    if (color) {
-      onHighlightTooth(nota.tooth_number, color, lado);
+  const restaurarNota = async (id: number) => {
+    try {
+      await axios.patch(`http://localhost:8000/api/notes/${id}/restore/`);
+      cargarNotas();
+    } catch (error) {
+      console.error("Error al restaurar la nota:", error);
     }
   };
 
+  const eliminarDefinitivamente = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/notes/${id}/delete-permanently/`);
+      cargarNotas();
+    } catch (error) {
+      console.error("Error al eliminar la nota definitivamente:", error);
+    }
+  };
+
+  useEffect(() => {
+    cargarNotas();
+  }, [piezaSeleccionada, userId]);
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-      <div className="notas-container" style={{ marginTop: '20px', padding: '20px', border: '1px solid #ccc', width: '80%', maxWidth: '800px' }}>
-        
-        {/* Sección de Historial y Filtro */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <label htmlFor="select-notas">Historial</label>
-            <select id="select-notas" value={piezaSeleccionada} onChange={event => setPiezaSeleccionada(event.target.value)} style={{ marginLeft: '10px' }}>
-              <option value="todas las piezas">Filtro</option>
-              {[...Array(38)].map((_, i) => (
-                <option key={i + 11} value={i + 11}>{i + 11}</option>
-              ))}
-            </select>
-          </div>
+    <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+      <div className="notas-container">
+        <div>
+          <label htmlFor="select-notas">Historial</label>
+          <select
+            id="select-notas"
+            value={piezaSeleccionada}
+            onChange={(event) => setPiezaSeleccionada(event.target.value)}
+          >
+            <option value="todas las piezas">Filtro</option>
+            {[...Array(38)].map((_, i) => (
+              <option key={i + 11} value={i + 11}>
+                {i + 11}
+              </option>
+            ))}
+          </select>
         </div>
-        
-        {/* Encabezados de la tabla */}
-        <table className="notas-table" style={{ width: '100%', textAlign: 'center' }}>
+
+        {/* Tabla de Notas Activas */}
+        <table className="notas-table">
           <thead>
             <tr>
               <th>Pieza</th>
@@ -100,32 +117,109 @@ const Notas: React.FC<NotasProps> = ({ registros, onRegister, onHighlightTooth }
           </thead>
           <tbody>
             {notas.length > 0 ? (
-              notas.map(nota => (
+              notas.map((nota) => (
                 <tr key={nota.id}>
                   <td>{nota.tooth_number}</td>
                   <td>{nota.procedure}</td>
                   <td>{nota.date}</td>
-                  <td>Sin observaciones</td>
-                  <td>
-                    <button onClick={() => verNota(nota)}>🔎</button>
-                    <button onClick={() => eliminarNota(nota.id)}>🗑️</button>
-                  </td>
+                  <td>{nota.observations || "-"}</td>
+                  <td style={{ textAlign: "center" }}>
+                        <button
+                          onClick={() => eliminarNota(nota.id)}
+                          style={{
+                            display: "inline-block",
+                            margin: "0 auto",
+                            padding: "5px 10px",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          🗑️
+                        </button>
+                    </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td style={{ textAlign: 'center' }}>-</td>
-                <td style={{ textAlign: 'center' }}>-</td>
-                <td style={{ textAlign: 'center' }}>-</td>
-                <td style={{ textAlign: 'center' }}>-</td>
-                <td>
-                  <button onClick={() => alert("Acción no disponible")}>🔎</button>
-                  <button onClick={() => alert("Acción no disponible")}>🗑️</button>
-                </td>
+                <td colSpan={5}>No hay notas disponibles.</td>
               </tr>
             )}
           </tbody>
         </table>
+
+        {/* Botón para Ver Notas Borradas */}
+        <button
+          onClick={() => setMostrarModalBorradas(true)}
+          style={{ marginTop: "10px", marginLeft: "5px" }}
+        >
+          ♻
+        </button>
+
+        {/* Modal para Ver Notas Borradas */}
+        {mostrarModalBorradas && (
+          <div
+            className="modal"
+            style={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "#fff",
+              padding: "20px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+              borderRadius: "8px",
+              zIndex: 1000,
+            }}
+          >
+            <h3>Notas Borradas</h3>
+            <table className="notas-table">
+              <thead>
+                <tr>
+                  <th>Pieza</th>
+                  <th>Procedimiento</th>
+                  <th>Fecha</th>
+                  <th>Observaciones</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {borradasNotas.length > 0 ? (
+                  borradasNotas.map((nota) => (
+                    <tr key={nota.id}>
+                      <td>{nota.tooth_number}</td>
+                      <td>{nota.procedure}</td>
+                      <td>{nota.date}</td>
+                      <td>{nota.observations || "-"}</td>
+                      <td>
+                        <button onClick={() => restaurarNota(nota.id)}>🔄 Restaurar</button>
+                        <button onClick={() => eliminarDefinitivamente(nota.id)}>❌ Borrar</button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5}>No hay notas borradas disponibles.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+            <button
+              onClick={() => setMostrarModalBorradas(false)}
+              style={{
+                marginTop: "10px",
+                padding: "10px",
+                backgroundColor: "#000",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            >
+              Cerrar
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
