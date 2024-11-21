@@ -1,9 +1,8 @@
 "use client";
 import React from 'react';
 import Tooth from './Tooth';
-import "./odonto.css";
+import './odonto.css';
 
-// Define el tipo de registro
 interface Registro {
   lado: string;
   color: string;
@@ -11,14 +10,14 @@ interface Registro {
   accion: string;
 }
 
-// Agrega las props a ToothGrid
 interface ToothGridProps {
   onRegister: (registro: Registro) => void; // Acepta la función onRegister
   onHighlightTooth: (toothNumber: number, color: string, lado: string) => void; // Acepta la función para resaltar dientes
   highlightedTooth: { number: number; color: string; lado: string } | null; // Prop para el diente resaltado
+  userId: number | null; // Acepta el userId del usuario seleccionado
 }
 
-const ToothGrid: React.FC<ToothGridProps> = ({ onRegister, onHighlightTooth, highlightedTooth }) => {
+const ToothGrid: React.FC<ToothGridProps> = ({ onRegister, onHighlightTooth, highlightedTooth, userId }) => {
   const upperTeeth = [
     { id: 18 }, { id: 17 }, { id: 16 }, { id: 15 }, { id: 14 }, { id: 13 }, { id: 12 }, { id: 11 },
     { id: 21 }, { id: 22 }, { id: 23 }, { id: 24 }, { id: 25 }, { id: 26 }, { id: 27 }, { id: 28 }
@@ -40,54 +39,87 @@ const ToothGrid: React.FC<ToothGridProps> = ({ onRegister, onHighlightTooth, hig
   ];
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', marginLeft: '220px' }}>
-      {/* Primera fila: Dientes superiores combinados (derecha + izquierda) */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16, 1fr)', gap: '5px', marginBottom: '20px' }}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto', marginLeft: '100px', position: 'relative' }}>
+      {/* Div flotante sobre ToothGrid */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '210px',
+          left: '100px',
+          right: '0px',
+          backgroundColor: 'black',
+          height: '2px',
+          width: '1200px',
+          zIndex: 1000,
+        }}
+      ></div>      
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '30px',
+          left: '705px',
+          height: '420px',
+          width: '2px',
+          backgroundColor: 'black',
+          zIndex: 1000,
+        }}
+      ></div>
+
+      {/* Dientes superiores */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16, 1fr)', gap: '5px', marginBottom: '20px', marginLeft: '110px' }}>
         {upperTeeth.map(tooth => (
           <Tooth 
             key={tooth.id} 
             number={tooth.id} 
             onRegister={onRegister} 
-            highlightedTooth={highlightedTooth} // Prop para el diente resaltado
+            highlightedTooth={highlightedTooth} 
+            userId={userId} // Pasa el userId al componente Tooth
+            onHighlightTooth={onHighlightTooth} // Pasa la función para resaltar dientes
           />
         ))}
       </div>
 
-      {/* Segunda fila: Dientes inferiores combinados */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16, 1fr)', gap: '5px', marginBottom: '20px' }}>
+      {/* Dientes inferiores */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16, 1fr)', gap: '5px', marginBottom: '20px', marginLeft: '110px' }}>
         {lowerRightAndLeft.map(tooth => (
           <Tooth 
             key={tooth.id} 
             number={tooth.id} 
             onRegister={onRegister} 
-            highlightedTooth={highlightedTooth} // Prop para el diente resaltado
+            highlightedTooth={highlightedTooth} 
+            userId={userId} // Pasa el userId al componente Tooth
+            onHighlightTooth={onHighlightTooth} // Pasa la función para resaltar dientes
           />
         ))}
       </div>
 
-      {/* Tercera fila: Dientes de leche superiores (55-51 y 61-65) */}
+      {/* Dientes de leche superiores */}
       <div className='div-centrar-dientes'>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '5px', marginBottom: '20px', width: '44%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '5px', marginBottom: '20px', width: '44%', marginLeft: '0px', zIndex: 1000 }}>
           {babyUpperTeeth.map(tooth => (
             <Tooth 
               key={tooth.id} 
               number={tooth.id} 
               onRegister={onRegister} 
-              highlightedTooth={highlightedTooth} // Prop para el diente resaltado
+              highlightedTooth={highlightedTooth} 
+              userId={userId} // Pasa el userId al componente Tooth
+              onHighlightTooth={onHighlightTooth} // Pasa la función para resaltar dientes
             />
           ))}
         </div>
       </div>
 
-      {/* Cuarta fila: Dientes de leche inferiores (85-81 y 71-75) */}
+      {/* Dientes de leche inferiores */}
       <div className='div-centrar-dientes'>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '5px', marginBottom: '20px', width: '44%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '5px', marginBottom: '20px', width: '44%', marginLeft: '0px' }}>
           {babyLowerTeeth.map(tooth => (
             <Tooth 
               key={tooth.id} 
               number={tooth.id} 
               onRegister={onRegister} 
-              highlightedTooth={highlightedTooth} // Prop para el diente resaltado
+              highlightedTooth={highlightedTooth} 
+              userId={userId} // Pasa el userId al componente Tooth
+              onHighlightTooth={onHighlightTooth} // Pasa la función para resaltar dientes
             />
           ))}
         </div>

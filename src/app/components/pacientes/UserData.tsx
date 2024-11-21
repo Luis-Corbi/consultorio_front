@@ -4,6 +4,7 @@ import { User } from '@/app/types/types';
 import api from "@/app/lib/api"; 
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import Link from 'next/link';
 
 interface UserDataProps {
   id: string;
@@ -163,12 +164,12 @@ const UserData = ({ id, token }: UserDataProps) => {
           </h2>
         </div>
         {!isAdmin && (
-        <a
-          href="#odontograma" 
+        <Link
+          href={`/pacientes/${id}/odontograma`}
           className="text-teal-500 text-sm font-medium bg-transparent border-2 border-teal-500 hover:bg-teal-500 hover:text-white rounded-full px-4 py-2 ml-auto"
         >
           Odontograma
-        </a>
+        </Link>
     )}
       </div>
   
