@@ -55,7 +55,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   return (
     <div className='block'>
       <h1>Pacientes</h1>
-      <div className='h-[6%] w-[100%] w-full gap-[10%]'>
+      <div className='h-[6%] w-full gap-[10%]'>
         <div>
           <div className='flex justify-between gap-[5%]'>
             <input  className='min-w-[100px] p-1 h-8 text-sm border-2 border-[rgb(179,179,179)] rounded-[5px]'
@@ -91,10 +91,10 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
             <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Apellido</th>
             <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>DNI</th>
             <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Teléfono</th>
-            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Email</th>
-            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Dirección</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Email</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Dirección</th>
             <th className='text-sm hidden sm:text-sm sm:hidden md:text-md md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Género</th>
-            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden md:table-cell lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Fecha de Nac.</th>
+            <th className='text-sm hidden sm:text-sm sm:hidden md:hidden lg:text-lg lg:table-cell xl:text-lg xl:table-cell 2xl:text-lg 2xl:table-cell'>Fecha de Nac.</th>
             <th className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg 2xl:text-lg'>Acciones</th>
           </tr>
         </thead>

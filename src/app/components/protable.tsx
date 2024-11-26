@@ -54,7 +54,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
   return (
     <div className='block'>
       <h1>Profesionales</h1>
-      <div className='h-[6%] w-[100%] flex items-center justify-between w-full gap-[10%] mr-[2%]'>
+      <div className='h-[6%] flex items-center justify-between w-full gap-[10%] mr-[2%]'>
       
         <input className='h-[30px] p-1 border border-gray-300 rounded transition duration-300 ease-in-out' type="text" />
         <div className='flex bg-[#269c95] text-white px-2 py-2 border-none rounded-full cursor-pointer w-1/10 gap-0.5 justify-around items-center sm:rounded md:rounded lg:rounded xl:rounded 2xl:rounded' onClick={openModal}>

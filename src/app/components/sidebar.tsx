@@ -48,7 +48,7 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Vistas Tablet y desktop */}
-      <div className="navbar hidden md:flex flex-col justify-between h-full py-4 px-1 min-w-[14%] lg:min-w-[150px] xl:min-w-[170px] 2xl:min-w-[170px]">
+      <div className="navbar hidden md:flex flex-col justify-between h-full py-4 px-1 min-w-[14%] lg:min-w-[150px] lg:navbar xl:min-w-[170px] xl:navbar 2xl:min-w-[170px] 2xl:navbar">
         {/* Logo Denthos */}
         <div className="flex items-center justify-center w-full py-4">
           <Link href="/dashboard">
