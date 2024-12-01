@@ -23,26 +23,26 @@ const Sidebar: React.FC = () => {
   return (
     <div className={`bg-custom-gradient ${pathname === "/" ? "hidden" : ""}`}>
       {/* Vista Movil */}
-      <div className="navbar fixed top-0 left-0 w-full h-16 flex items-center py-2 px-4 md:hidden">
+      <div className=" bg-custom-gradient navbar fixed top-0 left-0 w-full h-16 flex items-center py-2 px-4 md:hidden">
         <div className="flex justify-around items-center w-full">
           {/* Logo Home o Dashboard */}
           <Link href="/dashboard" className={isActiveLink('/dashboard')}>
-            <img src="/assets/dashboard.svg" alt="logohoy" className=" h-8 w-8 object-contain" />
+            <img src="/assets/dashboard.svg" alt="logohoy" className=" h-8 w-8 p-1 object-contain" />
           </Link>
 
           {/* Logo Pacientes */}
           <Link href="/pacientes" className={isActiveLink('/pacientes')}>
-            <img src="/assets/users.svg" alt="logopacientes" className="h-8 w-8 object-contain" />
+            <img src="/assets/users.svg" alt="logopacientes" className="h-8 w-8  p-1 object-contain" />
           </Link>
 
           {/* Logo Turnos */}
           <Link href="/turnos" className={isActiveLink('/turnos')}>
-            <img src="/assets/calendar.svg" alt="logocalendar" className=" h-14 w-10 object-contain" />
+            <img src="/assets/calendar.svg" alt="logocalendar" className=" h-8 w-8  p-1 object-contain" />
           </Link>
 
           {/* Logo Profesionales */}
           <Link href="/profesionales" className={isActiveLink('/profesionales')}>
-            <img src="/assets/profesional.svg" alt="logodoctor" className=" h-8 w-8 object-contain" />
+            <img src="/assets/profesional.svg" alt="logodoctor" className=" h-8 w-8  p-1 object-contain" />
           </Link>
         </div>
       </div>
