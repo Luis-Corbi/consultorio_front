@@ -25,7 +25,7 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
 
     return (
       <div className='w-full flex min-h-screen'>
-        <Sidebar />
+   
         <div className='w-full flex-grow flex flex-col bg-[#F1F1F1]'>
           <Bar />
           <div className='overflow-x-scroll h-full px-[3%] flex flex-col items-start lg:flex lg:flex-row lg:justify-between'>

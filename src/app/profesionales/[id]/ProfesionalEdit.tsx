@@ -135,8 +135,7 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
 
   return (
     <div className="w-full flex min-h-screen">
-      <Sidebar />
-      
+   
       <div className="w-full flex-grow flex flex-col bg-[#F1F1F1]">
         <div className="w-full">
           <Bar />

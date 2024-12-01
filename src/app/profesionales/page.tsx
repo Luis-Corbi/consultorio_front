@@ -41,7 +41,7 @@ const TableProfesionales: React.FC = () => {
 
     <div className='h-full w-full flex'>
 
-      <Sidebar/>
+    
       <div className='w-full h-screen mt-16 bg-gray-100 md:mt-0'>
         <Bar />
 

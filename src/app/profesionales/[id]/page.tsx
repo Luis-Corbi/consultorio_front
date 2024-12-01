@@ -3,7 +3,7 @@ import UserPageContainer from './ProfesionalEdit';
 import { User } from '@/app/types/types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-
+import Sidebar from '@/app/components/sidebar';
 
 interface Props {
   user: User | null;
@@ -31,7 +31,16 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
     return <div>Error al cargar los datos del usuario.</div>;
   }
 
-  return <UserPageContainer user={user} token={token} />; 
+  return (
+    <div className="w-full flex min-h-screen bg-[#F9FAFB]">
+   
+      <div className="w-full flex-grow flex flex-col">
+        <UserPageContainer user={user} token={token} /> {/* Contenido dinámico */}
+      </div>
+    </div>
+  );
 };
+
+
 
 export default UserPage;
