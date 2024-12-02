@@ -59,7 +59,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
             licence_number: licenceNumber,
             speciality: parseInt(speciality), 
             notes,
-            roles: [5], 
+            roles: [1], 
             color
           };
       
