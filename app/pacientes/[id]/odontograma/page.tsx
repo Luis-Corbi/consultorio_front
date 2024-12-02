@@ -40,7 +40,7 @@ const App = () => {
 
   return (
     <div className="w-full flex min-h-screen z" style={{ position: 'relative', zIndex: 1000 }}>
-      <Sidebar />
+  
       <div className="flex-grow flex flex-col" style={{ position: 'relative', zIndex: -1 }}>
         <Bar />
         <div className="flex flex-col sm:flex-row justify-center gap-4 p-4">

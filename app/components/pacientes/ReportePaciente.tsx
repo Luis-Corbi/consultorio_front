@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import { fetchUsersByRole } from '@/app/lib/pacientes';
+import { fetchUsersByRole } from '../../lib/pacientes';
 
 interface MedicalReport {
   id: number;

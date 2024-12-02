@@ -11,8 +11,8 @@ import { fetchUsersByRole } from '../lib/pacientes';
 import { Appointment, User } from '../types/types';
 
 import ModalAlert from './modalAlert';
-import Sidebar from '../components/sidebar';
-import Bar from '../components/bar';
+import Sidebar from './sidebar';
+import Bar from './bar';
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);

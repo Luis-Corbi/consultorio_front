@@ -11,14 +11,9 @@
 .container-navbar{
     height: 100vh;
 }
-.navbar{
-    background: linear-gradient(0deg, rgba(49, 121, 116, 1) 10%, rgba(142, 218, 213, 1) 100%);
-    color: white;
-}
 
-.logo{
-    width: 100%;
-}
+
+
 
 .div-links{
     display: flex;

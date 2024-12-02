@@ -1,12 +1,12 @@
 // src/app/pacientes/[id]/page.tsx
-import { fetchUser } from '@/app/lib/pacientes';
-import Sidebar from '@/app/components/sidebar';
-import Bar from '@/app/components/bar';
+import { fetchUser } from '../../lib/pacientes';
+import Sidebar from '../../components/sidebar';
+import Bar from '../../components/bar';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import UserData from '@/app/components/pacientes/UserData';  // Importamos el componente UserData
-import UploadReport from '@/app/components/pacientes/CrearReporte';
-import MedicalReports from '@/app/components/pacientes/ReportePaciente';
+import UserData from '../../components/pacientes/UserData';  // Importamos el componente UserData
+import UploadReport from '../../components/pacientes/CrearReporte';
+import MedicalReports from '../../components/pacientes/ReportePaciente';
 
 const UserPage = async ({ params }: { params: { id: string } }) => {
   const cookieStore = cookies();
@@ -25,7 +25,7 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
 
     return (
       <div className='w-full flex min-h-screen'>
-        <Sidebar />
+   
         <div className='w-full flex-grow flex flex-col bg-[#F1F1F1]'>
           <Bar />
           <div className='overflow-x-scroll h-full px-[3%] flex flex-col items-start lg:flex lg:flex-row lg:justify-between'>

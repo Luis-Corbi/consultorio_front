@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import UserPageContainer from './UserProfile';
-import { User } from '@/app/types/types';
+import { User } from '../types/types';
 import api from '../lib/api';
 import Cookies from 'js-cookie';
-import Sidebar from '@/app/components/sidebar';
-import Bar from '@/app/components/bar';
+import Sidebar from '../components/sidebar';
+import Bar from '../components/bar';
 const UserPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);

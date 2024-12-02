@@ -19,7 +19,7 @@ const Panel= () => {
 
     <div className='h-full w-full flex'>
 
-      <Sidebar/>
+  
       <div className='h-screen w-full mt-16 bg-gray-100 md:mt-0 md:p-1'>
         <Bar />
         <div className='bg-gray-100 gap-64 px-1 md:flex md:ml-6'>

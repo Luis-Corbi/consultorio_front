@@ -1,7 +1,7 @@
 "use client";
 
-import { User } from '@/app/types/types';
-import api from "@/app/lib/api"; 
+import { User } from '../../types/types';
+import api from "../../lib/api"; 
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import Link from 'next/link';

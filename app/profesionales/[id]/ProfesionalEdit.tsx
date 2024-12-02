@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import Sidebar from '@/app/components/sidebar';
-import Bar from '@/app/components/bar';
-import { User, EditableUser } from '@/app/types/types';
+import Sidebar from '../../components/sidebar';
+import Bar from '../../components/bar';
+import { User, EditableUser } from '../../types/types';
 import api from '../../lib/api';
 
 const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }) => {
@@ -135,8 +135,7 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
 
   return (
     <div className="w-full flex min-h-screen">
-      <Sidebar />
-      
+   
       <div className="w-full flex-grow flex flex-col bg-[#F1F1F1]">
         <div className="w-full">
           <Bar />

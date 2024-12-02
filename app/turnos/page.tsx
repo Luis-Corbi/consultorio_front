@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import '../sections.css';  
-import Sidebar from '../components/sidebar'
+
 import Bar from '../components/bar';
 
 
@@ -16,7 +16,7 @@ const Turnos: React.FC = () => {
        
         <div className='h-full w-full flex'>
                         
-            <Sidebar/>
+          
             <div className='h-screen w-full mt-16 bg-gray-100 md:mt-0 md:p-1'>
 
                 <Bar />

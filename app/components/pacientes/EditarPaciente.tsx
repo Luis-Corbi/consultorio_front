@@ -1,7 +1,7 @@
 // src/app/components/EditPatientForm.tsx
 "use client";
 import React, { useState } from "react";
-import { User } from "@/app/types/types";
+import { User } from "../../types/types";
 import api from "../../lib/api";
 
 interface EditPatientFormProps {
