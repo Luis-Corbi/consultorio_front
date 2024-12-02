@@ -142,37 +142,37 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
               <div className="space-y-4">
                 <p className="text-sm">
                   <strong className="text-black">Nombre:</strong> {isEditing ? (
-                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="input-dato px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
+                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.name)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Apellido:</strong> {isEditing ? (
-                    <input type="text" name="lastname" value={formData.lastname} onChange={handleInputChange} className="input-dato px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
+                    <input type="text" name="lastname" value={formData.lastname} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2  py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.lastname)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">DNI:</strong> {isEditing ? (
-                    <input type="text" name="DNI" value={formData.DNI} onChange={handleInputChange} className="input-dato px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
+                    <input type="text" name="DNI" value={formData.DNI} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2  py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.DNI)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Teléfono:</strong> {isEditing ? (
-                    <input type="text" name="telephone" value={formData.telephone} onChange={handleInputChange} className="input-dato px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
+                    <input type="text" name="telephone" value={formData.telephone} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2  py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.telephone)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Email:</strong> {isEditing ? (
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="input-dato px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2  py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.email)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Dirección:</strong> {isEditing ? (
-                    <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input-dato px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
+                    <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded  px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.address)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Género:</strong> {isEditing ? (
-                    <select name="gender" value={formData.gender} onChange={handleInputChange} className="input-dato px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg">
+                    <select name="gender" value={formData.gender} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg">
                       <option value="M">Masculino</option>
                       <option value="F">Femenino</option>
                       <option value="O">No binario</option>
@@ -185,32 +185,32 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
               <div className="space-y-4">
                 <p className="text-sm">
                   <strong className="text-black">Fecha de Nacimiento:</strong> {isEditing ? (
-                    <input type="date" name="birth_date" value={formData.birth_date} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1 text-gray-700" />
+                    <input type="date" name="birth_date" value={formData.birth_date} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(formatDateForDisplay(user.birth_date))}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Seguro de Salud:</strong> {isEditing ? (
-                    <input type="text" name="health_insurance" value={formData.health_insurance} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1 text-gray-700" />
+                    <input type="text" name="health_insurance" value={formData.health_insurance} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.health_insurance)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Número de Seguro de Salud:</strong> {isEditing ? (
-                    <input type="text" name="health_insurance_number" value={formData.health_insurance_number} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1 text-gray-700" />
+                    <input type="text" name="health_insurance_number" value={formData.health_insurance_number} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.health_insurance_number)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Número de Licencia:</strong> {isEditing ? (
-                    <input type="text" name="licence_number" value={formData.licence_number} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1 text-gray-700" />
+                    <input type="text" name="licence_number" value={formData.licence_number} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.licence_number)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Notas:</strong> {isEditing ? (
-                    <input type="text" name="notes" value={formData.notes} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1 text-gray-700" />
+                    <input type="text" name="notes" value={formData.notes} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : renderDato(user.notes)}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Color:</strong>{isEditing ? (
-                    <input type="color" name="color" value={formData.color} onChange={handleColorChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1 text-gray-700" />
+                    <input type="color" name="color" value={formData.color} onChange={handleColorChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-700 block w-full sm:text-sm md:text-md lg:text-md xl:text-lg" />
                   ) : (
                     <div className="w-8 h-8 rounded-full border border-gray-400 mt-1" style={{ backgroundColor: user.color }} />
                   )}

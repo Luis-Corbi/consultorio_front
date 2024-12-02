@@ -60,7 +60,7 @@ const CrearPacienteForm: React.FC<CrearPacienteFormProps> = ({ onClose }) => {
         licence_number: licenceNumber,
         speciality: parseInt(speciality),
         notes,
-        roles: [3],
+        roles: [7],
       };
   
       console.log('Submitting user:', newUser);
