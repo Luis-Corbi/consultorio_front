@@ -331,7 +331,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
       />
 
       {modalIsOpen && isViewingAppointment && selectedAppointment && (
-        <div className="flex items-center justify-center fixed z-[1000] left-0 top-0 w-full h-full overflow-auto bg-black bg-opacity-70">
+        <div className="absolute z-[4] flex items-center justify-center left-0 top-0 w-full h-full overflow-auto bg-black bg-opacity-70">
           <div className="bg-white p-5 rounded-lg text-center w-[280px] z-[1010]">
             <span className="text-[#aaa] float-right text-[28px] font-bold hover:text-black focus:text-black focus:outline-none cursor-pointer" onClick={handleCloseModal}>&times;</span>
             <h2 className='mt-0 text-md text-center text-green-200 sm:text-2xl md:text-2xl lg:text-2xl xl:text-2xl 2xl:text-2xl'>Detalles del Turno</h2>
