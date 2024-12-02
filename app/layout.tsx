@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import './globals.css';
-import { UserProvider } from './components/UserContext';
+import { UserProvider } from './context/UserContext';
 import Sidebar from './components/sidebar'; // Importa el componente Sidebar
+import { LoadingProvider } from "./context/LoadingContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <LoadingProvider>
         <UserProvider>
           <div className="flex min-h-screen">
             {/* Sidebar siempre visible */}
@@ -33,6 +35,7 @@ export default function RootLayout({
             <div className="flex-grow">{children}</div>
           </div>
         </UserProvider>
+        </LoadingProvider>
       </body>
     </html>
   );

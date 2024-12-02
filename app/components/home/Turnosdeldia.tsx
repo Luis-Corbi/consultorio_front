@@ -3,6 +3,7 @@
 import "../../pacientes/pacientes.css"
 import React, { useEffect, useState } from 'react';
 import api from '@/lib/api';
+import Loading from "@/loading";
 interface Appointment {
   id: number;
   professional: number;
@@ -118,7 +119,7 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
   };
 
   if (loading) {
-    return <p>Cargando...</p>;
+    return <Loading />;
   }
 
   if (error) {

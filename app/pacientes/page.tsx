@@ -8,6 +8,7 @@ import UsersTable from '../components/userstable';
 
 import { User, Speciality, Role } from '../types/types';
 import { fetchUsersByRole } from '../lib/pacientes';
+import Loading from '@/loading';
 
 const Fetchtable: React.FC = () => {
   const [users, setUsers] = React.useState<User[]>([]);
@@ -29,7 +30,7 @@ const Fetchtable: React.FC = () => {
     getUsers();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div>Error: {error}</div>;
 
   return <UsersTable users={users} />;

@@ -7,6 +7,7 @@ import Sidebar from '../../../components/sidebar';
 import Bar from '../../../components/bar';
 import Link from 'next/link'; // Import para el botón
 import '../../../odontograma/odonto.css';
+import Loading from '@/loading';
 
 const App = () => {
   const [registros, setRegistros] = useState<{ lado: string; color: string; fecha: string; accion: string }[]>([]);
@@ -34,8 +35,7 @@ const App = () => {
   };
 
   if (!userData || id === null) {
-    // Muestra un indicador de carga si los datos del usuario no están disponibles o el ID no es válido
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

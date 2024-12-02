@@ -6,8 +6,8 @@ import UserPageContainer from './UserProfile';
 import { User } from '../types/types';
 import api from '../lib/api';
 import Cookies from 'js-cookie';
-import Sidebar from '../components/sidebar';
-import Bar from '../components/bar';
+import Loading from '@/loading';
+
 const UserPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,7 +57,7 @@ const UserPage = () => {
   }, [router]);
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return <Loading />;
   }
 
   if (error) {

@@ -1,10 +1,11 @@
 "use client";
 
 import { User } from '../../types/types';
-import api from "../../lib/api"; 
+import api from "@/lib/api"; 
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import Link from 'next/link';
+import Loading from '@/loading';
 
 interface UserDataProps {
   id: string;
@@ -86,22 +87,20 @@ const UserData = ({ id, token }: UserDataProps) => {
         roles: formData.roles?.map(role => role.id) || formData.roles,  
       };
 
-      const response = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
-        method: "PUT",
+      const response = await api.put(`/users/${id}/`, dataToSend, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(dataToSend), 
       });
       
 
-      if (response.ok) {
+      if (response.status === 200) {
         alert("Usuario actualizado");
         setIsEditing(false);
         setUser(formData); 
       } else {
-        const errorData = await response.json();
+        const errorData = await response.data;
         console.error("Error al guardar los cambios:", errorData);
         alert("Error al guardar los cambios: " + JSON.stringify(errorData));
       }
@@ -128,7 +127,7 @@ const UserData = ({ id, token }: UserDataProps) => {
   };
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return <Loading />;
   }
 
   if (!user) {

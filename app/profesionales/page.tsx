@@ -7,6 +7,7 @@ import ProTable from '../components/protable';
 import CrearProfesionalForm from '../components/CrearProf'; 
 import { User } from '../types/types';
 import { fetchUsersByRole } from '../lib/pacientes';
+import Loading from '@/loading';
 
 const TableProfesionales: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -34,7 +35,7 @@ const TableProfesionales: React.FC = () => {
     setShowCreateForm(false); 
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div>Error: {error}</div>;
 
   return (

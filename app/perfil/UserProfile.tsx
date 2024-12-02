@@ -1,9 +1,9 @@
 "use client"; 
 
 import React, { useState } from 'react';
-import Sidebar from '../components/sidebar';
-import Bar from '../components/bar';
-import { User, EditableUser } from '../types/types';
+
+import Bar from '@/components/bar';
+import { User, EditableUser } from '@/types/types';
 import api from '../lib/api';
 
 const UserPageContainer = ({ user, token }: { user: User; token: string }) => {

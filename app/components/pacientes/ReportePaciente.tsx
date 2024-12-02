@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { fetchUsersByRole } from '../../lib/pacientes';
+import api from '@/lib/api';
+import Loading from '@/loading';
 
 interface MedicalReport {
   id: number;
@@ -37,7 +39,7 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
   const fetchReports = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/medical_reports/by_patient/?patient=${patientId}`, {
+      const response = await api.get(`/medical_reports/by_patient/?patient=${patientId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -84,7 +86,7 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
     ? reports.filter(report => report.professional === selectedProfessional)
     : reports;
 
-  if (loading) return <p>Cargando reportes...</p>;
+  if (loading) return <Loading />;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
     return (

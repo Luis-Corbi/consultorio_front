@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import styles from '../components/dropdown.module.css';
 import { FaBars, FaChevronDown } from 'react-icons/fa';
+import Loading from '@/loading';
 
 
 interface Speciality {
@@ -48,7 +49,7 @@ const Bar: React.FC = () => {
   };
 
   if (!userData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

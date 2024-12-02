@@ -127,7 +127,7 @@ const AppointmentsChart: React.FC<{ token: string }> = ({ token }) => {
 
   return (
     <div className='grafico'>
-      {loading && <p>Cargando datos...</p>}
+      {loading}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {!loading && <Line data={data} options={options} />}
     </div>

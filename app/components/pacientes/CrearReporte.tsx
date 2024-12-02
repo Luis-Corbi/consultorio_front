@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '@/lib/api';
 
 interface UploadReportProps {
   patientId: string;
@@ -29,7 +30,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user/profile/', {
+        const response = await api.get('/user/profile/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -74,7 +75,7 @@ const UploadReport: React.FC<UploadReportProps> = ({ patientId, token }) => {
 
     setLoading(true);
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/medical_reports/', formData, {
+        const response = await api.post('/medical_reports/', formData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',

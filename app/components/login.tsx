@@ -3,6 +3,7 @@ import React, { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import api from '../lib/api';
+import Loading from '@/loading';
 
 interface UserData {
   id: number;
@@ -99,7 +100,7 @@ const LoginForm: React.FC = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
 
   return (
     <div className='flex flex-row h-screen'>
