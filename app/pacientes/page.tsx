@@ -18,7 +18,7 @@ const Fetchtable: React.FC = () => {
   React.useEffect(() => {
     const getUsers = async () => {
       try {
-        const data = await fetchUsersByRole(7);
+        const data = await fetchUsersByRole(3);
         setUsers(data);
       } catch (err) {
         setError((err as Error).message);

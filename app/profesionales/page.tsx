@@ -17,7 +17,7 @@ const TableProfesionales: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const data = await fetchUsersByRole(5);
+      const data = await fetchUsersByRole(1);
       setUsers(data);
     } catch (err) {
       setError((err as Error).message);
