@@ -1,0 +1,109 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: "Lato", sans-serif;
+}
+
+.container-navbar{
+    height: 100vh;
+}
+
+
+
+
+.div-links{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    margin-left: 5%;
+}
+
+.a-navbar{
+    color: white;
+    text-decoration: none;
+    
+    display: flex;
+    align-items: center;
+    gap: 5%;
+}
+
+.div-principal {
+    width: 100%;
+    background-color: #F1F1F1;
+}
+
+.bar{
+    height: 10%;
+    border-bottom: #e3e1e1 solid 2px;
+    
+}
+
+.hoy-logo, .pacientes-logo , .calendar-logo{
+    height: 70%;
+}
+
+
+.div-section-turnos{
+   display: flex;
+   flex-direction: row;
+
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropbtn {
+    background-color: #3498db;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropbtn:hover,
+  .dropbtn:focus {
+    background-color: #2980b9;
+  }
+  
+  .dropdownContent {
+    display: block;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .dropdownContent a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdownContent a:hover {
+    background-color: #f1f1f1;
+  }
+
+Link{
+    cursor: pointer;
+}
+
+.div-grapic {
+    display: flex;
+    margin-left: 10%;
+    margin-top: 5%;
+}
+
+.grafico {
+    height: 300px;
+    width: 600px;
+}
