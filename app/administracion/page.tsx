@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import Sidebar from '../components/sidebar';
 import Bar from '../components/bar';
 import Image from 'next/image';
+import api from '@/lib/api';
 
 
 export interface Speciality {
@@ -29,7 +30,7 @@ const SpecialityPage = () => {
           return;
         }
 
-        const response = await axios.get('http://127.0.0.1:8000/api/specialities/', {
+        const response = await api.get(`/specialities/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -53,8 +54,7 @@ const SpecialityPage = () => {
         return;
       }
 
-      const response = await axios.post(
-        'http://127.0.0.1:8000/api/specialities/',
+      const response = await api.post(`/specialities/`,
         { name: newSpeciality },
         {
           headers: {
@@ -79,7 +79,7 @@ const SpecialityPage = () => {
         return;
       }
 
-      await axios.delete(`http://127.0.0.1:8000/api/specialities/${specialityId}/`, {
+      await api.delete(`/specialities/${specialityId}/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -101,8 +101,7 @@ const SpecialityPage = () => {
           return;
         }
 
-        const response = await axios.put(
-          `http://127.0.0.1:8000/api/specialities/${editingSpeciality.id}/`,
+        const response = await api.put(`/specialities/${editingSpeciality.id}/`,
           { name: editSpecialityName },
           {
             headers: {
@@ -112,8 +111,8 @@ const SpecialityPage = () => {
         );
 
         setSpecialities(specialities.map(speciality => (speciality.id === editingSpeciality.id ? response.data : speciality)));
-        setEditingSpeciality(null); // Limpiar el estado de edición
-        setEditSpecialityName(''); // Limpiar el campo de entrada
+        setEditingSpeciality(null);
+        setEditSpecialityName(''); 
       } catch (error) {
         console.error('Error editing speciality:', error);
       }

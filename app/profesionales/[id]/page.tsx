@@ -3,7 +3,6 @@ import UserPageContainer from './ProfesionalEdit';
 import { User } from '../../types/types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import Sidebar from '../../components/sidebar';
 
 interface Props {
   user: User | null;

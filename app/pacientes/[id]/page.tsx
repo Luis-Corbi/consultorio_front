@@ -1,10 +1,10 @@
-// src/app/pacientes/[id]/page.tsx
+// app/pacientes/[id]/page.tsx
 import { fetchUser } from '../../lib/pacientes';
 import Sidebar from '../../components/sidebar';
 import Bar from '../../components/bar';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import UserData from '../../components/pacientes/UserData';  // Importamos el componente UserData
+import UserData from '../../components/pacientes/UserData'; 
 import UploadReport from '../../components/pacientes/CrearReporte';
 import MedicalReports from '../../components/pacientes/ReportePaciente';
 

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./odonto.css";
+import api from "@/lib/api";
 
 interface Nota {
   id: number;
@@ -37,7 +37,7 @@ const Notas: React.FC<NotasProps> = ({
 
     setCargando(true);
     try {
-      const response = await axios.get("http://localhost:8000/api/notes/", {
+      const response = await api.get('/notes/', {
         params: {
           user_id: userId,
           pieza: piezaSeleccionada === "todas las piezas" ? "" : piezaSeleccionada,
@@ -54,7 +54,7 @@ const Notas: React.FC<NotasProps> = ({
 
   const eliminarNota = async (id: number) => {
     try {
-      await axios.patch(`http://localhost:8000/api/notes/${id}/`, {
+      await api.patch(`/notes/${id}/`, {
         is_active: false,
       });
       cargarNotas();
@@ -65,7 +65,7 @@ const Notas: React.FC<NotasProps> = ({
 
   const restaurarNota = async (id: number) => {
     try {
-      await axios.patch(`http://localhost:8000/api/notes/${id}/restore/`);
+      await api.patch(`/notes/${id}/restore/`);
       cargarNotas();
     } catch (error) {
       console.error("Error al restaurar la nota:", error);
@@ -74,7 +74,7 @@ const Notas: React.FC<NotasProps> = ({
 
   const eliminarDefinitivamente = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8000/api/notes/${id}/delete-permanently/`);
+      await api.delete(`/notes/${id}/delete-permanently/`);
       cargarNotas();
     } catch (error) {
       console.error("Error al eliminar la nota definitivamente:", error);

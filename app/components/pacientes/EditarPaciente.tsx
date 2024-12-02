@@ -1,4 +1,4 @@
-// src/app/components/EditPatientForm.tsx
+// app/components/EditPatientForm.tsx
 "use client";
 import React, { useState } from "react";
 import { User } from "../../types/types";

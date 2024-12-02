@@ -1,4 +1,4 @@
-// src/app/components/bar.tsx
+// app/components/bar.tsx
 "use client";
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';

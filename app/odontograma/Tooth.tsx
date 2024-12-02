@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "@/lib/api";
 
 interface ToothProps {
   number: number;
@@ -138,7 +138,7 @@ const Tooth: React.FC<ToothProps> = ({ number, onRegister, highlightedTooth, use
               };
 
               try {
-                  await axios.post("http://localhost:8000/api/notes/", newNota);
+                  await api.post('/notes/', newNota);
                   onRegister({ lado: selectedFace, color: isExtraccion ? "white" : colorMapping[selectedNumber], fecha, accion });
               } catch (error) {
                   console.error("Error al registrar la nota:", error);
