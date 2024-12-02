@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import Link from 'next/link';
 import Loading from '@/loading';
+import { formatDateForDisplay } from '@/utils/dateUtils';
 
 interface UserDataProps {
   id: string;
@@ -294,7 +295,7 @@ const UserData = ({ id, token }: UserDataProps) => {
                 className="bg-transparent border-b-2 border-gray-400 focus:outline-none focus:border-teal-500 px-2 py-1 mt-2"
               />
             ) : (
-              <span>{user.birth_date}</span>
+              <span>{formatDateForDisplay(user.birth_date)}</span>
             )}
           </div>
         </div>

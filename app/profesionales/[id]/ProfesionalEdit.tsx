@@ -5,6 +5,7 @@ import Sidebar from '../../components/sidebar';
 import Bar from '../../components/bar';
 import { User, EditableUser } from '../../types/types';
 import api from '../../lib/api';
+import { formatDateForDisplay } from '@/utils/dateUtils';
 
 const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -161,7 +162,7 @@ const ProfesionalPageContainer = ({ user, token }: { user: User; token: string }
                 ) : renderDato(genderMap[user.gender] || 'No especificado')}</p>
               </div>
               <div className="w-1/2 space-y-4">
-                <p><strong>Fecha de Nacimiento:</strong> {isEditing ? <input type="date" name="birth_date" value={formData.birth_date} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.birth_date)}</p>
+                <p><strong>Fecha de Nacimiento:</strong> {isEditing ? <input type="date" name="birth_date" value={formData.birth_date} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(formatDateForDisplay(user.birth_date))}</p>
                 <p><strong>Seguro de Salud:</strong> {isEditing ? <input type="text" name="health_insurance" value={formData.health_insurance} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.health_insurance)}</p>
                 <p><strong>Número de Seguro de Salud:</strong> {isEditing ? <input type="text" name="health_insurance_number" value={formData.health_insurance_number} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.health_insurance_number)}</p>
                 <p><strong>Número de Licencia:</strong> {isEditing ? <input type="text" name="licence_number" value={formData.licence_number} onChange={handleInputChange} className={`input-dato ${isEditing ? 'border-blue-500' : ''}`} /> : renderDato(user.licence_number)}</p>

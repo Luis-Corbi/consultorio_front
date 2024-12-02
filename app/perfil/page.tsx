@@ -7,12 +7,14 @@ import { User } from '../types/types';
 import api from '../lib/api';
 import Cookies from 'js-cookie';
 import Loading from '@/loading';
+import { useUser } from '../context/UserContext';
 
 const UserPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { setUser: setContextUser } = useUser();
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -44,6 +46,7 @@ const UserPage = () => {
         }
 
         setUser(response.data);
+        localStorage.setItem('userData', JSON.stringify(response.data));
       } catch (err) {
         console.error('Error al obtener usuario actual:', err);
         setError('Error al cargar los datos del usuario. Por favor, inicie sesión nuevamente.');

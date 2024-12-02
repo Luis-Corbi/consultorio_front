@@ -5,9 +5,12 @@ import React, { useState } from 'react';
 import Bar from '@/components/bar';
 import { User, EditableUser } from '@/types/types';
 import api from '../lib/api';
+import { formatDateForDisplay } from '@/utils/dateUtils';
+import { useUser } from '../context/UserContext';
 
 const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const { user: contextUser, setUser: setContextUser } = useUser();
   const [formData, setFormData] = useState<EditableUser>({
     id: user.id.toString(),
     username: user.username,
@@ -85,7 +88,8 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
       const response = await api.put(`/users/${user.id}/`, updatedData);
 
       if (response.status === 200) {
-        await fetchUserData(); 
+        await fetchUserData();
+        setContextUser(response.data); 
         setIsEditing(false); 
         console.log('Usuario actualizado');
         window.location.reload(); 
@@ -182,7 +186,7 @@ const UserPageContainer = ({ user, token }: { user: User; token: string }) => {
                 <p className="text-sm">
                   <strong className="text-black">Fecha de Nacimiento:</strong> {isEditing ? (
                     <input type="date" name="birth_date" value={formData.birth_date} onChange={handleInputChange} className="input-dato w-full border border-gray-300 rounded px-2 py-1 mt-1 text-gray-700" />
-                  ) : renderDato(user.birth_date)}
+                  ) : renderDato(formatDateForDisplay(user.birth_date))}
                 </p>
                 <p className="text-sm">
                   <strong className="text-black">Seguro de Salud:</strong> {isEditing ? (

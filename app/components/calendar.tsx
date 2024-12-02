@@ -13,6 +13,7 @@ import { Appointment, User } from '../types/types';
 import ModalAlert from './modalAlert';
 import Sidebar from './sidebar';
 import Bar from './bar';
+import { formatDateForDisplay } from '@/utils/dateUtils';
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
@@ -337,7 +338,7 @@ const Calendario: React.FC<{ defaultView: View }> = ({ defaultView }) => {
             <div className='flex flex-col gap-[20px] mt-[10px]'>
               <p><strong>Profesional:</strong> {getProfessionalName(selectedAppointment.professional)}</p>
               <p><strong>Paciente:</strong> {getPatientName(selectedAppointment.patient)}</p>
-              <p><strong>Fecha:</strong> {selectedAppointment.date}</p>
+              <p><strong>Fecha:</strong> {formatDateForDisplay(selectedAppointment.date)}</p>
               <p><strong>Hora:</strong> {selectedAppointment.hour}</p>
               <p><strong>Notas:</strong> {selectedAppointment.notes}</p>
             </div>

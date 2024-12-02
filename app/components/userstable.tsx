@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { User } from '../types/types';
 import CrearPacienteForm from './CrearPacienteForm'; 
+import { formatDateForDisplay } from '@/utils/dateUtils';
 
 
 interface UsersTableProps {
@@ -20,7 +21,6 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
   // Filter users based on the selected criteria
   const filteredUsers = users.filter(user => {
     switch (filterCriteria) {
@@ -72,7 +72,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
             </select>
 
             <div className='flex bg-[#269c95] text-white text-sm px-1.5 py-1.5 border-none rounded-full cursor-pointer w-1/10 gap-0.5 justify-around items-center sm:rounded md:rounded lg:rounded xl:rounded 2xl:rounded' onClick={openModal}>
-              <img className='h-6 items-center' src="/assets/plus.png" alt="" />
+              <img className='h-6 items-center mr-1' src="/assets/plus.png" alt="crear paciente" />
               <button className='hidden bg-none text-white cursor-pointer sm:block md:block lg:block xl:block 2xl:block'>Crear Paciente</button>
             </div>
         </div>
@@ -108,7 +108,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
               <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.email}</td>
               <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.address}</td>
               <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.gender}</td>
-              <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.birth_date}</td>
+              <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{formatDateForDisplay(user.birth_date)}</td>
               <td className='cursor-pointer flex justify-center items-center'>
                 <Link  className='button-ver-p w-[40px] p-1 flex sm:w-[70px]' href={`/pacientes/${user.id}`} >
                   <img className='h-6' src="../assets/ver-paciente.png" alt="" />

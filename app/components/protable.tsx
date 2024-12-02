@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { User } from '../types/types';
 import CrearProfesionalForm from './CrearProf';
 import Image from 'next/image';
+import { formatDateForDisplay } from '@/utils/dateUtils';
 
 interface UsersTableProps {
   users: User[];
@@ -59,7 +60,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
         <input className='h-[30px] p-1 border border-gray-300 rounded transition duration-300 ease-in-out' type="text" />
         <div className='flex bg-[#269c95] text-white px-2 py-2 border-none rounded-full cursor-pointer w-1/10 gap-0.5 justify-around items-center sm:rounded md:rounded lg:rounded xl:rounded 2xl:rounded' onClick={openModal}>
           
-          <Image src="/assets/plus.png" alt="email Icon" width={20} height={20} className='h-6 items-center' />
+          <Image src="/assets/plus.png" alt="crear profesional" width={25} height={25} className='h-6 items-center mr-1' />
           <button className='hidden bg-none text-white cursor-pointer sm:block md:block lg:block xl:block 2xl:block'>Crear Profesional</button>
         </div>
       </div>
@@ -113,7 +114,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
               <td className='hidden sm:hidden md:hidden lg:hidden xl:table-cell 2xl:table-cell'>{user.email}</td>
               <td className='hidden sm:hidden md:hidden lg:table-cell xl:table-cell 2xl:table-cell'>{user.address}</td>
               <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.gender}</td>
-              <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{user.birth_date}</td>
+              <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{formatDateForDisplay(user.birth_date)}</td>
               <td className='cursor-pointer flex justify-center items-center'>
                 <Link className='button-ver-p w-[40px] p-1 flex sm:w-[70px]' href={`/profesionales/${user.id}`}>
                   <Image className='h-6' src="/assets/doctor.png" alt="doctoaar" width={25} height={20} />

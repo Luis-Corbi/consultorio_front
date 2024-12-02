@@ -6,6 +6,7 @@ import axios from 'axios';
 import { fetchUsersByRole } from '../../lib/pacientes';
 import api from '@/lib/api';
 import Loading from '@/loading';
+import { formatDateForDisplay } from '@/utils/dateUtils';
 
 interface MedicalReport {
   id: number;
@@ -123,7 +124,7 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
                   ></div>
                 </td>
                 <td className="pl-5">
-                  <p className="mb-1"><strong>Fecha:</strong> {report.date}</p>
+                  <p className="mb-1"><strong>Fecha:</strong> {formatDateForDisplay(report.date)}</p>
                   <p className="mb-1"><strong>Hora:</strong> {report.hour}</p>
                   <p className="mb-1"><strong>Tipo:</strong> {report.type}</p>
                   <p className="mb-1"><strong>Diagnóstico:</strong> {report.diagnosis}</p>
