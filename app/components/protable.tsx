@@ -117,7 +117,7 @@ const ProTable: React.FC<UsersTableProps> = ({ users }) => {
               <td className='hidden sm:hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell'>{formatDateForDisplay(user.birth_date)}</td>
               <td className='cursor-pointer flex justify-center items-center'>
                 <Link className='button-ver-p w-[40px] p-1 flex sm:w-[70px]' href={`/profesionales/${user.id}`}>
-                  <Image className='h-6' src="/assets/doctor.png" alt="doctoaar" width={25} height={20} />
+                  <Image className='h-6' src="/assets/profesional.svg" alt="doctoaar" width={25} height={20} />
                   <span className='white hidden sm:block md:block lg:block xl:block 2xl:block'>Ver</span>
                 </Link>
               </td>

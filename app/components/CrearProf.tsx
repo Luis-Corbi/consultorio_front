@@ -59,7 +59,7 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
             licence_number: licenceNumber,
             speciality: parseInt(speciality), 
             notes,
-            roles: [1], 
+            roles: [5], 
             color
           };
       
@@ -121,7 +121,12 @@ const CrearProfesionalForm: React.FC<CrearPacienteFormProps> = ({ onClose, onCre
                         </div> 
                         <div className='flex flex-col'>
                             <label className='w-[100%] text-sm'>Género:</label>
-                            <input className='bg-gray-100 p-1 text-sm w-[100%] mb-[1px]' type="text" value={gender} onChange={(e) => setGender(e.target.value)} required />
+                            <select className='bg-gray-100 p-1 text-sm w-[100%] mb-[1px]' value={gender} onChange={(e) => setGender(e.target.value)} required >
+                                <option value="">Selecciona un género</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                                <option value="O">Otro</option>
+                            </select>
                         </div>
                         <div className='flex flex-col'>
                             <label className='w-[100%] text-sm'>Fecha de Nacimiento:</label>
