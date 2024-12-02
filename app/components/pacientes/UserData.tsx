@@ -114,6 +114,36 @@ const UserData = ({ id, token }: UserDataProps) => {
       }
     }
   };
+  const handleDelete = async () => {
+    if (!user) return; // Verifica que `user` existe
+  
+    try {
+      // Crea un nuevo objeto de usuario con `is_active` cambiado a false
+      const updatedUser: User = {
+        ...user,
+        is_active: false, // Actualiza el estado lógico del usuario
+      };
+  
+
+      const response = await api.put(`/users/${user.id}/`, updatedUser, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (response.status === 200) {
+        setUser(updatedUser); 
+        alert("Usuario deshabilitado exitosamente.");
+      } else {
+        console.error("Error al deshabilitar el usuario:", response.data);
+      }
+    } catch (error) {
+      console.error("Error en la API:", error);
+      alert("Ocurrió un error al intentar deshabilitar al usuario.");
+    }
+  };
+  
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -157,10 +187,19 @@ const UserData = ({ id, token }: UserDataProps) => {
                   onChange={handleChange}
                   className="bg-transparent border-b-2 border-gray-400 focus:outline-none focus:border-teal-500 px-2 py-1"
                 />
+                
               </div>
             ) : (
               `${user.name} ${user.lastname}`
             )}
+             {/* {isEditing && (
+          <button
+            className="text-white bg-red-500 hover:bg-red-600 rounded-full px-4 py-2"
+            onClick={handleDelete}
+          >
+            Eliminar Usuario
+          </button> */}
+        {/* )} */}
           </h2>
         </div>
         {!isAdmin && (
@@ -283,6 +322,7 @@ const UserData = ({ id, token }: UserDataProps) => {
               <span>{genderMap[user.gender]}</span>
             )}
           </div>
+
   
           <div className="flex flex-col">
             <label className="font-medium text-gray-700">Fecha de Nacimiento</label>
@@ -298,6 +338,7 @@ const UserData = ({ id, token }: UserDataProps) => {
               <span>{formatDateForDisplay(user.birth_date)}</span>
             )}
           </div>
+          
         </div>
       </div>
     </div>
