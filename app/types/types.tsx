@@ -26,6 +26,7 @@ export interface Speciality {
     notes: string;
     roles: { id: number; name: string }[];
     color?: string;
+    is_active: boolean; 
   }
 
   export interface EditableUser {
