@@ -98,7 +98,7 @@ const TurnosDelDia: React.FC<TurnosDelDiaProps> = ({ token }) => {
     fetchLoggedInUserId(); 
     const loadUsers = async () => {
       try {
-        const fetchedPatients = await fetchPatientsByRole(7);
+        const fetchedPatients = await fetchPatientsByRole(3);
         setPatients(fetchedPatients);
       } catch (error) {
         console.error('Error fetching users:', error);

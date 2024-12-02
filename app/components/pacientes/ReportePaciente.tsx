@@ -67,7 +67,7 @@ const MedicalReports: React.FC<MedicalReportsProps> = ({ patientId, token }) => 
   useEffect(() => {
     const fetchProfessionals = async () => {
       try {
-        const users = await fetchUsersByRole(5); 
+        const users = await fetchUsersByRole(1); 
         setProfessionals(users);
       } catch (error) {
         console.error('Error fetching professionals:', error);

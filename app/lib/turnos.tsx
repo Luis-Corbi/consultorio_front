@@ -43,7 +43,7 @@ export const fetchProfessionals = async (): Promise<User[]> => {
     
     // Filtra los usuarios para obtener solo los profesionales
     const professionals = users.filter((user: any) => 
-      user.roles.some((role: any) => role.id === 5)
+      user.roles.some((role: any) => role.id === 1)
     );
     
     return professionals;
